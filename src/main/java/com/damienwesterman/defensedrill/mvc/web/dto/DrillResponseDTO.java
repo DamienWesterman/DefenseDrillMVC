@@ -24,22 +24,38 @@
  * limitations under the License.
  */
 
-package com.damienwesterman.defensedrill.mvc;
+package com.damienwesterman.defensedrill.mvc.web.dto;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class DefenseDrillMvcApplication {
-	// TODO: TDD for integration tests for calling rest-api
-	// TODO: Create the error pages
-	// TODO: Create header/footer and home page with links to other pages (also dummies?)
-	// TODO: Create /categories and /sub-categories
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-	public static void main(String[] args) {
-		SpringApplication.run(DefenseDrillMvcApplication.class, args);
-	}
+/**
+ * DTO for containing all Drill information from a response.
+ * <br><br>
+ * Never generated, always received from the RestAPI
+ * <br><br>
+ * NOTE: Any changes here must also be reflected in the RestAPI repo.
+ */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class DrillResponseDTO {
+    private Long id;
 
+    private String name;
+
+    @JsonProperty("categories")
+    private List<Long> categoryIds;
+
+    @JsonProperty("sub_categories")
+    private List<Long> subCategoryIds;
+
+    @JsonProperty("related_drills")
+    private List<Long> relatedDrillIds;
 }

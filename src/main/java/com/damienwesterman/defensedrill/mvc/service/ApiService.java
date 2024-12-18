@@ -24,22 +24,16 @@
  * limitations under the License.
  */
 
-package com.damienwesterman.defensedrill.mvc;
+package com.damienwesterman.defensedrill.mvc.service;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class DefenseDrillMvcApplication {
-	// TODO: TDD for integration tests for calling rest-api
-	// TODO: Create the error pages
-	// TODO: Create header/footer and home page with links to other pages (also dummies?)
-	// TODO: Create /categories and /sub-categories
+import lombok.RequiredArgsConstructor;
 
-	public static void main(String[] args) {
-		SpringApplication.run(DefenseDrillMvcApplication.class, args);
-	}
-
+// TODO: Doc comments
+@Service
+@RequiredArgsConstructor
+public class ApiService {
+    private final RestTemplate restTemplate;
 }

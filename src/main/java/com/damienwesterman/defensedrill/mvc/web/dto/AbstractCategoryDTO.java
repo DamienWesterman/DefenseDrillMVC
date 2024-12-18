@@ -24,22 +24,31 @@
  * limitations under the License.
  */
 
-package com.damienwesterman.defensedrill.mvc;
+package com.damienwesterman.defensedrill.mvc.web.dto;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class DefenseDrillMvcApplication {
-	// TODO: TDD for integration tests for calling rest-api
-	// TODO: Create the error pages
-	// TODO: Create header/footer and home page with links to other pages (also dummies?)
-	// TODO: Create /categories and /sub-categories
+/**
+ * Abstract superclass for {@link CategoryDTO} and {@link SubCategoryDTO}.
+ * <br><br>
+ * NOTE: Any changes here must also be reflected in the RestAPI repo.
+ */
+@Data
+@NoArgsConstructor
+@SuperBuilder
+public abstract class AbstractCategoryDTO {
+    // @NotNull -> This can (and should) be null when creating a new entity
+    protected Long id;
 
-	public static void main(String[] args) {
-		SpringApplication.run(DefenseDrillMvcApplication.class, args);
-	}
+    @NotEmpty
+    @Size(min = 1, max = 255)
+    protected String name;
 
+    @NotEmpty
+    @Size(min = 1, max = 511)
+    protected String description;
 }

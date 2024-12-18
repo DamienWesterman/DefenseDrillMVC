@@ -24,22 +24,23 @@
  * limitations under the License.
  */
 
-package com.damienwesterman.defensedrill.mvc;
+package com.damienwesterman.defensedrill.mvc.web.dto;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class DefenseDrillMvcApplication {
-	// TODO: TDD for integration tests for calling rest-api
-	// TODO: Create the error pages
-	// TODO: Create header/footer and home page with links to other pages (also dummies?)
-	// TODO: Create /categories and /sub-categories
-
-	public static void main(String[] args) {
-		SpringApplication.run(DefenseDrillMvcApplication.class, args);
-	}
-
+/**
+ * DTO to send descriptive error messages back to caller.
+ * <br><br>
+ * Never generated, always received from the RestAPI
+ * <br><br>
+ * NOTE: Any changes here must also be reflected in the RestAPI repo.
+ */
+@Builder
+@Getter
+@Setter
+public class ErrorMessageDTO {
+    private String error;
+    private String message;
 }

@@ -24,22 +24,40 @@
  * limitations under the License.
  */
 
-package com.damienwesterman.defensedrill.mvc;
+package com.damienwesterman.defensedrill.mvc.web.dto;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import java.util.List;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class DefenseDrillMvcApplication {
-	// TODO: TDD for integration tests for calling rest-api
-	// TODO: Create the error pages
-	// TODO: Create header/footer and home page with links to other pages (also dummies?)
-	// TODO: Create /categories and /sub-categories
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-	public static void main(String[] args) {
-		SpringApplication.run(DefenseDrillMvcApplication.class, args);
-	}
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 
+/**
+ * DTO for updating a Drill.
+ * <br><br>
+ * NOTE: Any changes here must also be reflected in the RestAPI repo.
+ */
+@Data
+public class DrillUpdateDTO {
+    @NotEmpty
+    @Size(min = 1, max = 255)
+    private String name;
+
+    @Nullable
+    @JsonProperty("categories")
+    private List<Long> categoryIds;
+
+    @Nullable
+    @JsonProperty("sub_categories")
+    private List<Long> subCategoryIds;
+
+    @Nullable
+    @JsonProperty("related_drills")
+    private List<Long> relatedDrills;
+
+    @Nullable
+    private List<InstructionsDTO> instructions;
 }
