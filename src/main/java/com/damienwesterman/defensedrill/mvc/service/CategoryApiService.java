@@ -54,27 +54,32 @@ public class CategoryApiService extends AbstractCategoryApiService<CategoryDTO> 
     @Override
     public BackendResponse<CategoryDTO[]> getAll() {
         BackendResponse<CategoryDTO[]> ret;
-        ResponseEntity<String> response = restTemplate.getForEntity(API_ENDPOINT, String.class);
+        ResponseEntity<String> response =
+            restTemplate.getForEntity(API_ENDPOINT, String.class);
 
-        if (HttpStatus.OK == response.getStatusCode()) {
-            try {
+        switch( (HttpStatus) response.getStatusCode()) {
+            case OK:
+                try {
+                    ret = new BackendResponse<>(
+                        response.getStatusCode(),
+                        objectMapper.readValue(response.getBody(), CategoryDTO[].class),
+                        null);
+                } catch (JsonProcessingException e) {
+                    log.error(e.toString());
+                    ret = new BackendResponse<>(
+                        HttpStatus.NO_CONTENT,
+                        null,
+                        null);
+                }
+                break;
+            case NO_CONTENT:
+                // Fallthrough intentional
+            default:
                 ret = new BackendResponse<>(
                     response.getStatusCode(),
-                    objectMapper.readValue(response.getBody(), CategoryDTO[].class),
-                    null);
-            } catch (JsonProcessingException e) {
-                log.error(e.toString());
-                ret = new BackendResponse<>(
-                    HttpStatus.NO_CONTENT,
                     null,
                     null);
-            }
-        } else {
-            // Status 204 NO_CONTENT
-            ret = new BackendResponse<>(
-                response.getStatusCode(),
-                null,
-                null);
+                break;
         }
 
         return ret;

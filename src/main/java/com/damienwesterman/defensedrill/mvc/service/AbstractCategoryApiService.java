@@ -54,7 +54,7 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
     /**
      * Get all AbstractCategories from the database.
      *
-     * @return List of abstract AbstractCategories.
+     * @return BackendResponse containing a List of AbstractCategories.
      */
     public abstract BackendResponse<D[]> getAll();
     /* 
@@ -62,7 +62,14 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
      *   objectMapper.readValue(response.getBody(), CATEGORY_CLASS[].class);
      */
 
+     /**
+      * Find one AbstractCategory by ID.
+      *
+      * @param id
+      * @return
+      */
      public ResponseEntity<D> get(@NonNull Long id) {
+        // TODO: Don't forget internal server error for switch case
         return restTemplate.getForEntity(
             API_ENDPOINT + ID_ENDPOINT,
             CATEGORY_CLASS,
