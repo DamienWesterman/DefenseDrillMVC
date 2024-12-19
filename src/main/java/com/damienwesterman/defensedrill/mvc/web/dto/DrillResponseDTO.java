@@ -30,9 +30,12 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * DTO for containing all Drill information from a response.
@@ -43,6 +46,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Builder
+@ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class DrillResponseDTO {
@@ -58,4 +64,6 @@ public class DrillResponseDTO {
 
     @JsonProperty("related_drills")
     private List<Long> relatedDrillIds;
+
+    private List<InstructionsDTO> instructions;
 }

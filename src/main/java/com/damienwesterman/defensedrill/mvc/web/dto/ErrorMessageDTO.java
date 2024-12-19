@@ -26,9 +26,13 @@
 
 package com.damienwesterman.defensedrill.mvc.web.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * DTO to send descriptive error messages back to caller.
@@ -40,6 +44,10 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class ErrorMessageDTO {
     private String error;
     private String message;

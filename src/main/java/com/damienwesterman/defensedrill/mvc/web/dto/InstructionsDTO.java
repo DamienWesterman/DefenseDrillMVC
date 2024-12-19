@@ -30,24 +30,28 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * DTO for all requests involving Instructions.
  * <br><br>
  * NOTE: Any changes here must also be reflected in the MVC repo.
  */
-@Data
-@RequiredArgsConstructor
+@ToString
+@EqualsAndHashCode
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class InstructionsDTO {
-    @NotEmpty
-    @Size(min = 1, max = 511)
     private String description;
-
-    @NotEmpty
     private List<String> steps;
 
     @JsonProperty("video_id")

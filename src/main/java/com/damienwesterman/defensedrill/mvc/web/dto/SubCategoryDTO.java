@@ -26,7 +26,6 @@
 
 package com.damienwesterman.defensedrill.mvc.web.dto;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -37,7 +36,6 @@ import lombok.experimental.SuperBuilder;
  * <br><br>
  * NOTE: Any changes here must also be reflected in the MVC repo.
  */
-@Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @SuperBuilder

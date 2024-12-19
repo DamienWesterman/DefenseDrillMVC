@@ -30,34 +30,37 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import jakarta.annotation.Nullable;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * DTO for updating a Drill.
  * <br><br>
  * NOTE: Any changes here must also be reflected in the RestAPI repo.
  */
-@Data
+@EqualsAndHashCode
+@ToString
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class DrillUpdateDTO {
-    @NotEmpty
-    @Size(min = 1, max = 255)
     private String name;
 
-    @Nullable
     @JsonProperty("categories")
     private List<Long> categoryIds;
 
-    @Nullable
     @JsonProperty("sub_categories")
     private List<Long> subCategoryIds;
 
-    @Nullable
     @JsonProperty("related_drills")
     private List<Long> relatedDrills;
 
-    @Nullable
     private List<InstructionsDTO> instructions;
 }

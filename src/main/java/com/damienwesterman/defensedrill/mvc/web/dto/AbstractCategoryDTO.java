@@ -26,10 +26,11 @@
 
 package com.damienwesterman.defensedrill.mvc.web.dto;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 /**
@@ -37,18 +38,14 @@ import lombok.experimental.SuperBuilder;
  * <br><br>
  * NOTE: Any changes here must also be reflected in the RestAPI repo.
  */
-@Data
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 @SuperBuilder
 public abstract class AbstractCategoryDTO {
-    // @NotNull -> This can (and should) be null when creating a new entity
     protected Long id;
-
-    @NotEmpty
-    @Size(min = 1, max = 255)
     protected String name;
-
-    @NotEmpty
-    @Size(min = 1, max = 511)
     protected String description;
 }

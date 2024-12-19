@@ -26,18 +26,26 @@
 
 package com.damienwesterman.defensedrill.mvc.web.dto;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * DTO for creating a Drill.
  * <br><br>
  * NOTE: Any changes here must also be reflected in the RestAPI repo.
  */
-@Data
+@Getter
+@Setter
+@Builder
+@ToString
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class DrillCreateDTO {
-    @NotEmpty
-    @Size(min = 1, max = 255)
     private String name;
 }
