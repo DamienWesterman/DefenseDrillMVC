@@ -35,19 +35,18 @@ public class PracticeController {
         }
 
         sb.append("<br><h1>Categories</h1><br>");
-        CategoryDTO[] categories = categoryApiService.getAll().getBody();
+        CategoryDTO[] categories = categoryApiService.getAll().getResponse();
         for (CategoryDTO category : categories) {
             sb.append(category.getName());
             sb.append(" | ");
         }
 
         sb.append("<br><h1>SubCategories</h1><br>");
-        SubCategoryDTO[] subCategories = subCategoryApiService.getAll().getBody();
+        SubCategoryDTO[] subCategories = subCategoryApiService.getAll().getResponse();
         for (SubCategoryDTO subCategory : subCategories) {
             sb.append(subCategory.getName());
             sb.append(" | ");
         }
-        ResponseEntity
 
         return sb.toString();
     }

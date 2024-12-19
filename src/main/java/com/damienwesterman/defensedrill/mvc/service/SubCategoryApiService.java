@@ -26,26 +26,57 @@
 
 package com.damienwesterman.defensedrill.mvc.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.damienwesterman.defensedrill.mvc.util.Constants;
+import com.damienwesterman.defensedrill.mvc.web.BackendResponse;
 import com.damienwesterman.defensedrill.mvc.web.dto.SubCategoryDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Service for interacting with the SubCategory backend.
  */
 @Service
+@Slf4j
 public class SubCategoryApiService extends AbstractCategoryApiService<SubCategoryDTO> {
     private final static String API_ENDPOINT = Constants.REST_API_ADDRESS + "/sub_category";
 
-    public SubCategoryApiService(RestTemplate restTemplate) {
-        super(restTemplate, API_ENDPOINT);
+    public SubCategoryApiService(RestTemplate restTemplate, ObjectMapper objectMapper) {
+        super(restTemplate, objectMapper, API_ENDPOINT);
     }
 
     @Override
-    public ResponseEntity<SubCategoryDTO[]> getAll() {
-        return restTemplate.getForEntity(API_ENDPOINT, SubCategoryDTO[].class);
+    public BackendResponse<SubCategoryDTO[]> getAll() {
+        BackendResponse<SubCategoryDTO[]> ret;
+        ResponseEntity<String> response = restTemplate.getForEntity(API_ENDPOINT, String.class);
+
+        if (HttpStatus.OK == response.getStatusCode()) {
+            try {
+                ret = new BackendResponse<>(
+                    response.getStatusCode(),
+                    objectMapper.readValue(response.getBody(), SubCategoryDTO[].class),
+                    null);
+            } catch (JsonProcessingException e) {
+                log.error(e.toString());
+                ret = new BackendResponse<>(
+                    HttpStatus.NO_CONTENT,
+                    null,
+                    null);
+            }
+        } else {
+            // Status 204 NO_CONTENT
+            ret = new BackendResponse<>(
+                response.getStatusCode(),
+                null,
+                null);
+        }
+
+        return ret;
     }
 }

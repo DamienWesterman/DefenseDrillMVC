@@ -31,7 +31,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.client.RestTemplate;
 
+import com.damienwesterman.defensedrill.mvc.web.BackendResponse;
 import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -44,6 +46,7 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
     private final Class<D> CATEGORY_CLASS =
         (Class<D>) GenericTypeResolver.resolveTypeArgument(getClass(), AbstractCategoryDTO.class);
     protected final RestTemplate restTemplate;
+    protected final ObjectMapper objectMapper;
     private final String API_ENDPOINT;
 
     private final static String ID_ENDPOINT = "/id/{id}";
@@ -53,10 +56,10 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
      *
      * @return List of abstract AbstractCategories.
      */
-    public abstract ResponseEntity<D[]> getAll();
+    public abstract BackendResponse<D[]> getAll();
     /* 
      * The above is difficult to implement here because the following doesn't work:
-     *   return restTemplate.getForEntity(API_ENDPOINT, CATEGORY_CLASS[].class);
+     *   objectMapper.readValue(response.getBody(), CATEGORY_CLASS[].class);
      */
 
      public ResponseEntity<D> get(@NonNull Long id) {
