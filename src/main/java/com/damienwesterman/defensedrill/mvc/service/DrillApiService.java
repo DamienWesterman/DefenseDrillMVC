@@ -26,14 +26,29 @@
 
 package com.damienwesterman.defensedrill.mvc.service;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.damienwesterman.defensedrill.mvc.web.dto.DrillResponseDTO;
+
 import lombok.RequiredArgsConstructor;
 
-// TODO: Doc comments
+/**
+ * Service to interact with the Drill Rest API backend.
+ */
 @Service
 @RequiredArgsConstructor
-public class ApiService {
+public class DrillApiService {
     private final RestTemplate restTemplate;
+
+    /**
+     * Get all Drills from the database.
+     *
+     * @return List of Drills.
+     */
+    public ResponseEntity<DrillResponseDTO[]> getAll() {
+        return restTemplate.getForEntity("lb://rest-api/drill", 
+            DrillResponseDTO[].class);
+    }
 }

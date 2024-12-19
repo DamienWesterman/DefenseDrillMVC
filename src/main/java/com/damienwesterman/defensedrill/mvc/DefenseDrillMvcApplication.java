@@ -33,7 +33,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class DefenseDrillMvcApplication {
-	// TODO: TDD for integration tests for calling rest-api
+	// TODO: Create the api access services
 	// TODO: Create the error pages
 	// TODO: Create header/footer and home page with links to other pages (also dummies?)
 	// TODO: Create /categories and /sub-categories
