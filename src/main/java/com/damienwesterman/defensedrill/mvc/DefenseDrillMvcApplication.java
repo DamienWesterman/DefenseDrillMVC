@@ -33,8 +33,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class DefenseDrillMvcApplication {
-	// TODO: Create the error pages
-	// TODO: Create header/footer and home page with links to other pages (also dummies?)
+	// TODO: Start with the home page, add links to the header and maybe make the cards better/grid
 	// TODO: Create /categories and /sub-categories
 	// TODO: Generate the links dynamically somehow? Different in dev from prod
 
