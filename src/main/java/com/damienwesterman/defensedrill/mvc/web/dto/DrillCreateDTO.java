@@ -26,6 +26,8 @@
 
 package com.damienwesterman.defensedrill.mvc.web.dto;
 
+import org.springframework.lang.NonNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -47,5 +49,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DrillCreateDTO {
+    @NonNull
     private String name;
 }

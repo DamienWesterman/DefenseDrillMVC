@@ -26,6 +26,8 @@
 
 package com.damienwesterman.defensedrill.mvc.web.dto;
 
+import org.springframework.lang.NonNull;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,7 +47,12 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 public abstract class AbstractCategoryDTO {
+    @NonNull
     protected Long id;
+
+    @NonNull
     protected String name;
+
+    @NonNull
     protected String description;
 }

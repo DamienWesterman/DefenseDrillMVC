@@ -40,7 +40,7 @@ import lombok.ToString;
 /**
  * DTO for containing all Drill information from a response.
  * <br><br>
- * Never generated, always received from the RestAPI
+ * Never generated, always received from the RestAPI.
  * <br><br>
  * NOTE: Any changes here must also be reflected in the RestAPI repo.
  */

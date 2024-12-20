@@ -28,6 +28,9 @@ package com.damienwesterman.defensedrill.mvc.web.dto;
 
 import java.util.List;
 
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -51,9 +54,13 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InstructionsDTO {
+    @NonNull
     private String description;
+
+    @NonNull
     private List<String> steps;
 
+    @Nullable
     @JsonProperty("video_id")
     private String videoId;
 }

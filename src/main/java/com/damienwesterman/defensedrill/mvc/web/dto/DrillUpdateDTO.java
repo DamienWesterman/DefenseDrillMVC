@@ -28,6 +28,9 @@ package com.damienwesterman.defensedrill.mvc.web.dto;
 
 import java.util.List;
 
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -51,16 +54,21 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DrillUpdateDTO {
+    @NonNull
     private String name;
 
+    @Nullable
     @JsonProperty("categories")
     private List<Long> categoryIds;
 
+    @Nullable
     @JsonProperty("sub_categories")
     private List<Long> subCategoryIds;
 
+    @Nullable
     @JsonProperty("related_drills")
     private List<Long> relatedDrills;
 
+    @Nullable
     private List<InstructionsDTO> instructions;
 }
