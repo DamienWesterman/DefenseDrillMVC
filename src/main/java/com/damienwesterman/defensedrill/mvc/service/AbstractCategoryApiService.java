@@ -117,4 +117,51 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
 
     // retDto = objectMapper.readValue(response.getBody(), categoryClass);
 
+    /**
+     * Update an AbstractCategory.
+     *
+     * @param abstractCategory AbstractCategory to update.
+     * @return BackendResponse containing the updated AbstractCategory.
+     */
+    @NonNull
+    public BackendResponse<D> update(@NonNull AbstractCategoryDTO abstractCategory) {
+        // TODO: FINISH
+        return null;
+    }
+
+    /**
+     * Delete an AbstractCategory by its ID.
+     *
+     * @param id ID of the AbstractCategory to delete.
+     * @return An empty BackendResponse assuming success, unless an error occurred.
+     */
+    @NonNull
+    public BackendResponse<Void> delete(@NonNull Long id) {
+        // TODO: FINISH
+        return null;
+    }
+
+    /**
+     * Create a new AbstractCategory.
+     *
+     * @param abstractCategory AbstractCategory to create.
+     * @return BackendResponse containing the created AbstractCategory.
+     */
+    @NonNull
+    public BackendResponse<D> create(@NonNull D abstractCategory) {
+        // TODO: FINISH
+        return null;
+    }
+
+    /**
+     * Find one AbstractCategoryEntity by name (case insensitive).
+     *
+     * @param name Name of the AbstractCategory.
+     * @return BackendResponse containing the found AbstractCategory.
+     */
+    @NonNull
+    public BackendResponse<D> get(@NonNull String name) {
+        // TODO: FINISH
+        return null;
+    }
 }
