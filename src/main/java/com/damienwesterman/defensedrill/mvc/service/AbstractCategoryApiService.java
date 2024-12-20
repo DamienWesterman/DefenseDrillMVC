@@ -26,53 +26,108 @@
 
 package com.damienwesterman.defensedrill.mvc.service;
 
-import org.springframework.core.GenericTypeResolver;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.client.RestTemplate;
 
+import com.damienwesterman.defensedrill.mvc.util.Constants;
 import com.damienwesterman.defensedrill.mvc.web.BackendResponse;
 import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryDTO;
+import com.damienwesterman.defensedrill.mvc.web.dto.ErrorMessageDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Abstract superclass for {@link CategoryApiService} and {@link SubCategoryApiService}.
  */
 @RequiredArgsConstructor
+@Slf4j
 public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> {
-    @SuppressWarnings("unchecked")
-    private final Class<D> CATEGORY_CLASS =
-        (Class<D>) GenericTypeResolver.resolveTypeArgument(getClass(), AbstractCategoryDTO.class);
+    private final Class<D> categoryClass;
     protected final RestTemplate restTemplate;
     protected final ObjectMapper objectMapper;
-    private final String API_ENDPOINT;
+    private final String apiEndpoint;
 
     private final static String ID_ENDPOINT = "/id/{id}";
 
+    /*
+     * The below is difficult to implement here because the following doesn't work:
+     *   objectMapper.readValue(response.getBody(), CATEGORY_CLASS[].class);
+     */
     /**
      * Get all AbstractCategories from the database.
      *
      * @return BackendResponse containing a List of AbstractCategories.
      */
+    @NonNull
     public abstract BackendResponse<D[]> getAll();
-    /* 
-     * The above is difficult to implement here because the following doesn't work:
-     *   objectMapper.readValue(response.getBody(), CATEGORY_CLASS[].class);
-     */
 
-     /**
-      * Find one AbstractCategory by ID.
-      *
-      * @param id
-      * @return
-      */
-     public ResponseEntity<D> get(@NonNull Long id) {
-        // TODO: Don't forget internal server error for switch case
-        return restTemplate.getForEntity(
-            API_ENDPOINT + ID_ENDPOINT,
-            CATEGORY_CLASS,
-            id);
-     }
+    /**
+     * Find one AbstractCategory by ID.
+     *
+     * @param id ID of the AbstractCategory.
+     * @return BackenResponse containing the found AbstractCategory.
+     */
+    @NonNull
+    public BackendResponse<D> get(@NonNull Long id) {
+        HttpStatusCode retStatus = null;
+        D retDto = null;
+        ErrorMessageDTO retError = null;
+        ResponseEntity<String> response =
+            restTemplate.getForEntity(
+                apiEndpoint + ID_ENDPOINT,
+                String.class,
+                id
+            );
+
+        switch((HttpStatus) response.getStatusCode()) {
+            case OK:
+                retStatus = HttpStatus.OK;
+                retError = null;
+
+                // Extract the desired DTO
+                try {
+                    retDto = objectMapper.readValue(response.getBody(), categoryClass);
+                } catch (JsonProcessingException e) {
+                    log.error(e.toString());
+
+                    retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                    retDto = null;
+                    retError = new ErrorMessageDTO(
+                        Constants.GENERIC_INTERNAL_ERROR,
+                        Constants.GENERIC_INTERNAL_ERROR_MESSAGE
+                    );
+                }
+                break;
+
+            case NOT_FOUND:
+                retStatus = HttpStatus.NOT_FOUND;
+                retDto = null;
+                retError = new ErrorMessageDTO(
+                    Constants.NOT_FOUND_ERROR,
+                    "Category " + id + " does not exist."
+                );
+                break;
+
+            case INTERNAL_SERVER_ERROR:
+                // Fallthrough intentional
+            default:
+                retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                retDto = null;
+                retError = new ErrorMessageDTO(
+                    Constants.GENERIC_INTERNAL_ERROR,
+                    Constants.GENERIC_INTERNAL_ERROR_MESSAGE
+                );
+                break;
+        }
+
+        return new BackendResponse<D>(retStatus, retDto, retError);
+    }
+
+
 }

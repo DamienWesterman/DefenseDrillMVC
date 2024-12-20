@@ -1,6 +1,5 @@
 package com.damienwesterman.defensedrill.mvc.web.controller;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,6 +39,13 @@ public class PracticeController {
             sb.append(category.getName());
             sb.append(" | ");
         }
+        sb.append("<br>One Category<br>");
+        sb.append(categoryApiService.get(45L).getResponse().getName());
+        sb.append("<br>Not found category<br>");
+        var category = categoryApiService.get(0L);
+        sb.append(category.getError().getError());
+        sb.append(": ");
+        sb.append(category.getError().getMessage());
 
         sb.append("<br><h1>SubCategories</h1><br>");
         SubCategoryDTO[] subCategories = subCategoryApiService.getAll().getResponse();

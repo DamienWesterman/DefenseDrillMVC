@@ -27,13 +27,16 @@
 package com.damienwesterman.defensedrill.mvc.service;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.damienwesterman.defensedrill.mvc.util.Constants;
 import com.damienwesterman.defensedrill.mvc.web.BackendResponse;
 import com.damienwesterman.defensedrill.mvc.web.dto.CategoryDTO;
+import com.damienwesterman.defensedrill.mvc.web.dto.ErrorMessageDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -45,43 +48,59 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class CategoryApiService extends AbstractCategoryApiService<CategoryDTO> {
-    private final static String API_ENDPOINT = Constants.REST_API_ADDRESS + "/category";
+    private final static String API_ENDPOINT = Constants.REST_API_BASE_ADDRESS + "/category";
 
     public CategoryApiService(RestTemplate restTemplate, ObjectMapper objectMapper) {
-        super(restTemplate, objectMapper, API_ENDPOINT);
+        super(CategoryDTO.class, restTemplate, objectMapper, API_ENDPOINT);
     }
 
     @Override
+    @NonNull
     public BackendResponse<CategoryDTO[]> getAll() {
-        BackendResponse<CategoryDTO[]> ret;
+        HttpStatusCode retStatus = null;
+        CategoryDTO[] retDto = null;
+        ErrorMessageDTO retError = null;
         ResponseEntity<String> response =
             restTemplate.getForEntity(API_ENDPOINT, String.class);
 
-        switch( (HttpStatus) response.getStatusCode()) {
+        switch((HttpStatus) response.getStatusCode()) {
             case OK:
+                retStatus = HttpStatus.OK;
+                retError = null;
+
+                // Extract the desired DTO
                 try {
-                    ret = new BackendResponse<>(
-                        response.getStatusCode(),
-                        objectMapper.readValue(response.getBody(), CategoryDTO[].class),
-                        null);
+                    retDto = objectMapper.readValue(response.getBody(), CategoryDTO[].class);
                 } catch (JsonProcessingException e) {
                     log.error(e.toString());
-                    ret = new BackendResponse<>(
-                        HttpStatus.NO_CONTENT,
-                        null,
-                        null);
+
+                    retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                    retDto = null;
+                    retError = new ErrorMessageDTO(
+                        Constants.GENERIC_INTERNAL_ERROR,
+                        Constants.GENERIC_INTERNAL_ERROR_MESSAGE
+                    );
                 }
                 break;
+
             case NO_CONTENT:
+                retStatus = HttpStatus.NO_CONTENT;
+                retDto = new CategoryDTO[] { /* Empty */ };
+                retError = null;
+                break;
+
+            case INTERNAL_SERVER_ERROR:
                 // Fallthrough intentional
             default:
-                ret = new BackendResponse<>(
-                    response.getStatusCode(),
-                    null,
-                    null);
+                retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                retDto = null;
+                retError = new ErrorMessageDTO(
+                    Constants.GENERIC_INTERNAL_ERROR,
+                    Constants.GENERIC_INTERNAL_ERROR_MESSAGE
+                );
                 break;
         }
 
-        return ret;
+        return new BackendResponse<CategoryDTO[]>(retStatus, retDto, retError);
     }
 }

@@ -30,5 +30,10 @@ package com.damienwesterman.defensedrill.mvc.util;
  * Public static constants common to the entire application.
  */
 public class Constants {
-    public final static String REST_API_ADDRESS = "lb://rest-api";
+    public final static String REST_API_BASE_ADDRESS = "lb://rest-api";
+
+    // User feedback messages
+    public final static String GENERIC_INTERNAL_ERROR = "Internal Error";
+    public final static String GENERIC_INTERNAL_ERROR_MESSAGE = "Please try again later.";
+    public final static String NOT_FOUND_ERROR = "Not Found";
 }
