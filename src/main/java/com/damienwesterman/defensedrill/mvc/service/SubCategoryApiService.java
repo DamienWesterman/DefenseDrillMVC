@@ -37,7 +37,6 @@ import com.damienwesterman.defensedrill.mvc.util.Constants;
 import com.damienwesterman.defensedrill.mvc.web.BackendResponse;
 import com.damienwesterman.defensedrill.mvc.web.dto.ErrorMessageDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.SubCategoryDTO;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -60,27 +59,14 @@ public class SubCategoryApiService extends AbstractCategoryApiService<SubCategor
         HttpStatusCode retStatus = null;
         SubCategoryDTO[] retDto = null;
         ErrorMessageDTO retError = null;
-        ResponseEntity<String> response =
-            restTemplate.getForEntity(API_ENDPOINT, String.class);
+        ResponseEntity<SubCategoryDTO[]> response =
+            restTemplate.getForEntity(API_ENDPOINT, SubCategoryDTO[].class);
 
         switch((HttpStatus) response.getStatusCode()) {
             case OK:
                 retStatus = HttpStatus.OK;
                 retError = null;
-
-                // Extract the desired DTO
-                try {
-                    retDto = objectMapper.readValue(response.getBody(), SubCategoryDTO[].class);
-                } catch (JsonProcessingException e) {
-                    log.error(e.toString());
-
-                    retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-                    retDto = null;
-                    retError = new ErrorMessageDTO(
-                        Constants.GENERIC_INTERNAL_ERROR,
-                        Constants.GENERIC_INTERNAL_ERROR_MESSAGE
-                    );
-                }
+                retDto = response.getBody();
                 break;
 
             case NO_CONTENT:

@@ -36,7 +36,6 @@ import com.damienwesterman.defensedrill.mvc.util.Constants;
 import com.damienwesterman.defensedrill.mvc.web.BackendResponse;
 import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.ErrorMessageDTO;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -78,10 +77,10 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
         HttpStatusCode retStatus = null;
         D retDto = null;
         ErrorMessageDTO retError = null;
-        ResponseEntity<String> response =
+        ResponseEntity<D> response =
             restTemplate.getForEntity(
                 apiEndpoint + ID_ENDPOINT,
-                String.class,
+                categoryClass,
                 id
             );
 
@@ -89,20 +88,7 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
             case OK:
                 retStatus = HttpStatus.OK;
                 retError = null;
-
-                // Extract the desired DTO
-                try {
-                    retDto = objectMapper.readValue(response.getBody(), categoryClass);
-                } catch (JsonProcessingException e) {
-                    log.error(e.toString());
-
-                    retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-                    retDto = null;
-                    retError = new ErrorMessageDTO(
-                        Constants.GENERIC_INTERNAL_ERROR,
-                        Constants.GENERIC_INTERNAL_ERROR_MESSAGE
-                    );
-                }
+                retDto = response.getBody();
                 break;
 
             case NOT_FOUND:
@@ -129,5 +115,6 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
         return new BackendResponse<D>(retStatus, retDto, retError);
     }
 
+    // retDto = objectMapper.readValue(response.getBody(), categoryClass);
 
 }

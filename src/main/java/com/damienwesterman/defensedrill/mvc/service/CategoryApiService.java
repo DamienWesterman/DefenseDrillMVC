@@ -37,7 +37,6 @@ import com.damienwesterman.defensedrill.mvc.util.Constants;
 import com.damienwesterman.defensedrill.mvc.web.BackendResponse;
 import com.damienwesterman.defensedrill.mvc.web.dto.CategoryDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.ErrorMessageDTO;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -60,27 +59,14 @@ public class CategoryApiService extends AbstractCategoryApiService<CategoryDTO> 
         HttpStatusCode retStatus = null;
         CategoryDTO[] retDto = null;
         ErrorMessageDTO retError = null;
-        ResponseEntity<String> response =
-            restTemplate.getForEntity(API_ENDPOINT, String.class);
+        ResponseEntity<CategoryDTO[]> response =
+            restTemplate.getForEntity(API_ENDPOINT, CategoryDTO[].class);
 
         switch((HttpStatus) response.getStatusCode()) {
             case OK:
                 retStatus = HttpStatus.OK;
                 retError = null;
-
-                // Extract the desired DTO
-                try {
-                    retDto = objectMapper.readValue(response.getBody(), CategoryDTO[].class);
-                } catch (JsonProcessingException e) {
-                    log.error(e.toString());
-
-                    retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-                    retDto = null;
-                    retError = new ErrorMessageDTO(
-                        Constants.GENERIC_INTERNAL_ERROR,
-                        Constants.GENERIC_INTERNAL_ERROR_MESSAGE
-                    );
-                }
+                retDto = response.getBody();
                 break;
 
             case NO_CONTENT:
