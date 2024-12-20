@@ -1,0 +1,176 @@
+/* main.css */
+/* Generated using AI */
+
+/* Global styles */
+body {
+    background-color: #2D2D2D; /* Dark gray/charcoal background */
+    color: #FFFFFF; /* White text for contrast */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.center {
+    text-align: center;
+}
+
+a {
+    color: #F8E860; /* Drill yellow for links */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Header */
+nav {
+    border-radius: 8px; /* Slightly round the corners */
+    padding: 10px; /* Add padding inside the nav bar */
+    background-color: #2D7100; /* Optional: Add a background color */
+}
+
+nav ul {
+    list-style-type: none; /* Remove bullets */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Arrange items horizontally */
+    justify-content: space-around; /* Space items evenly */
+}
+
+nav li {
+    margin: 0 15px; /* Add spacing between links */
+}
+
+nav a {
+    text-decoration: none; /* Remove underline */
+    color: #FFFFFF; /* Use primary color */
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline; /* Add underline on hover for feedback */
+}
+
+/* Container styling */
+.container {
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 1200px;
+}
+
+/* Card layout */
+.card {
+    background-color: #4EA217; /* Drill green */
+    border: 1px solid #2D7100; /* Drill green variant */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    padding: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #F8E860; /* Drill yellow */
+}
+
+.card-text {
+    color: #FFFFFF;
+    line-height: 1.5;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    background-color: #4EA217; /* Drill green */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.tab {
+    padding: 10px 15px;
+    color: #FFFFFF;
+    cursor: pointer;
+    border-bottom: 1px solid #2D7100; /* Drill green variant */
+    transition: background-color 0.2s;
+}
+
+.tab:hover {
+    background-color: #2D7100; /* Drill green variant */
+}
+
+.tab-active {
+    background-color: #F8E860; /* Drill yellow */
+    color: #2D7100; /* Contrast for active tab */
+}
+
+/* Buttons */
+.button {
+    background-color: #2D7100; /* Drill green variant */
+    border: none;
+    color: #F8E860; /* Drill yellow */
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+    position: relative;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.button:hover {
+    background-color: #4EA217; /* Drill green */
+}
+
+.button:disabled {
+    background-color: #9E9E9E; /* Field label gray */
+    cursor: not-allowed;
+}
+
+/* Forms */
+.input-field {
+    background-color: #2D2D2D;
+    border: 1px solid #4EA217;
+    border-radius: 4px;
+    color: #FFFFFF;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.input-field:focus {
+    border-color: #F8E860; /* Drill yellow */
+    outline: none;
+}
+
+/* Popups */
+.popup {
+    background-color: #4EA217;
+    border: 1px solid #2D7100;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 300px;
+    margin: auto;
+}
+
+.popup-header {
+    font-size: 1.25em;
+    color: #F8E860;
+    margin-bottom: 10px;
+}
+
+.popup-content {
+    color: #FFFFFF;
+}

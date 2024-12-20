@@ -24,22 +24,20 @@
  * limitations under the License.
  */
 
-package com.damienwesterman.defensedrill.mvc;
+package com.damienwesterman.defensedrill.mvc.web.controller;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class DefenseDrillMvcApplication {
-	// TODO: Create the error pages
-	// TODO: Create header/footer and home page with links to other pages (also dummies?)
-	// TODO: Create /categories and /sub-categories
-	// TODO: Generate the links dynamically somehow? Different in dev from prod
-
-	public static void main(String[] args) {
-		SpringApplication.run(DefenseDrillMvcApplication.class, args);
-	}
-
+/**
+ * Controller for the home page / root
+ */
+@Controller
+@RequestMapping("/")
+public class HomeController {
+    @GetMapping
+    public String homePage() {
+        return "home";
+    }
 }
