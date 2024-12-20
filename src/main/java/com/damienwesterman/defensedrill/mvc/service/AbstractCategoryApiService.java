@@ -165,6 +165,15 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
                 }
                 break;
 
+            case NOT_FOUND:
+                retStatus = HttpStatus.NOT_FOUND;
+                retDto = null;
+                retError = new ErrorMessageDTO(
+                    Constants.NOT_FOUND_ERROR,
+                    "Category " + abstractCategory.getId() + " does not exist."
+                );
+                break;
+
             case INTERNAL_SERVER_ERROR:
                 // Fallthrough intentional
             default:
