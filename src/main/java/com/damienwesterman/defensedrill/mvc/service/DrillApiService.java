@@ -24,22 +24,31 @@
  * limitations under the License.
  */
 
-package com.damienwesterman.defensedrill.mvc;
+package com.damienwesterman.defensedrill.mvc.service;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class DefenseDrillMvcApplication {
-	// TODO: Create the api access services
-	// TODO: Create the error pages
-	// TODO: Create header/footer and home page with links to other pages (also dummies?)
-	// TODO: Create /categories and /sub-categories
+import com.damienwesterman.defensedrill.mvc.web.dto.DrillResponseDTO;
 
-	public static void main(String[] args) {
-		SpringApplication.run(DefenseDrillMvcApplication.class, args);
-	}
+import lombok.RequiredArgsConstructor;
 
+/**
+ * Service to interact with the Drill Rest API backend.
+ */
+@Service
+@RequiredArgsConstructor
+public class DrillApiService {
+    private final RestTemplate restTemplate;
+
+    /**
+     * Get all Drills from the database.
+     *
+     * @return List of Drills.
+     */
+    public ResponseEntity<DrillResponseDTO[]> getAll() {
+        return restTemplate.getForEntity("lb://rest-api/drill", 
+            DrillResponseDTO[].class);
+    }
 }
