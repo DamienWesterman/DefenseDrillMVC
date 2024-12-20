@@ -47,7 +47,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 public abstract class AbstractCategoryDTO {
-    @NonNull
     protected Long id;
 
     @NonNull

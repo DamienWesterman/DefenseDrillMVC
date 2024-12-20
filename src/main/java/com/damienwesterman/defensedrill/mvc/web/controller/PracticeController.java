@@ -21,6 +21,7 @@ public class PracticeController {
     private final CategoryApiService categoryApiService;
     private final SubCategoryApiService subCategoryApiService;
 
+    @SuppressWarnings("null")
     @GetMapping("/")
     @ResponseBody
     public String getMethodName() {
@@ -46,6 +47,34 @@ public class PracticeController {
         sb.append(category.getError().getError());
         sb.append(": ");
         sb.append(category.getError().getMessage());
+        categoryApiService.delete(
+            categoryApiService.get("New Name 1").getResponse().getId()
+        );
+        sb.append("<br>Creating New Category<br>");
+        sb.append(categoryApiService
+            .create(CategoryDTO.builder()
+                .name("New Name")
+                .description("New Description")
+                .build())
+            .getResponse()
+            .getName());
+        sb.append("<br>Failing to Create New Category<br>");
+        sb.append(categoryApiService
+            .create(CategoryDTO.builder()
+                .name("New Name")
+                .description("New Description")
+                .build())
+            .getError()
+            .getMessage());
+        sb.append("<br>Updating category<br>");
+        sb.append(categoryApiService
+            .update(CategoryDTO.builder()
+                .id(categoryApiService.get("New Name").getResponse().getId())
+                .name("New Name 1")
+                .description("New Description")
+                .build())
+            .getResponse()
+            .getName());
 
         sb.append("<br><h1>SubCategories</h1><br>");
         SubCategoryDTO[] subCategories = subCategoryApiService.getAll().getResponse();
@@ -53,6 +82,13 @@ public class PracticeController {
             sb.append(subCategory.getName());
             sb.append(" | ");
         }
+        sb.append("<br>One SubCategory<br>");
+        sb.append(subCategoryApiService.get("Strikes").getResponse().getName());
+        sb.append("<br>Not found sub-category<br>");
+        var subCategory = subCategoryApiService.get("Non-Existent SubCategory");
+        sb.append(subCategory.getError().getError());
+        sb.append(": ");
+        sb.append(subCategory.getError().getMessage());
 
         return sb.toString();
     }

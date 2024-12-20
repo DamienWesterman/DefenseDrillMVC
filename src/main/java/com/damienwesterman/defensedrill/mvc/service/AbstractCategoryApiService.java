@@ -26,6 +26,8 @@
 
 package com.damienwesterman.defensedrill.mvc.service;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,7 @@ import com.damienwesterman.defensedrill.mvc.util.Constants;
 import com.damienwesterman.defensedrill.mvc.web.BackendResponse;
 import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.ErrorMessageDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -53,6 +56,7 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
     private final String apiEndpoint;
 
     private final static String ID_ENDPOINT = "/id/{id}";
+    private final static String NAME_ENDPOINT = "/name/{name}";
 
     /*
      * The below is difficult to implement here because the following doesn't work:
@@ -105,17 +109,12 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
             default:
                 retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
                 retDto = null;
-                retError = new ErrorMessageDTO(
-                    Constants.GENERIC_INTERNAL_ERROR,
-                    Constants.GENERIC_INTERNAL_ERROR_MESSAGE
-                );
+                retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
                 break;
         }
 
         return new BackendResponse<D>(retStatus, retDto, retError);
     }
-
-    // retDto = objectMapper.readValue(response.getBody(), categoryClass);
 
     /**
      * Update an AbstractCategory.
@@ -125,20 +124,66 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
      */
     @NonNull
     public BackendResponse<D> update(@NonNull AbstractCategoryDTO abstractCategory) {
-        // TODO: FINISH
-        return null;
+        HttpStatusCode retStatus = null;
+        D retDto = null;
+        ErrorMessageDTO retError = null;
+        ResponseEntity<String> response =
+            restTemplate.exchange(
+                apiEndpoint + ID_ENDPOINT,
+                HttpMethod.PUT,
+                new HttpEntity<AbstractCategoryDTO>(abstractCategory),
+                String.class,
+                abstractCategory.getId()
+            );
+
+        switch((HttpStatus) response.getStatusCode()) {
+            case OK:
+                retStatus = HttpStatus.OK;
+                retError = null;
+
+                // Extract returned object
+                try {
+                    retDto = objectMapper.readValue(response.getBody(), categoryClass);
+                } catch (JsonProcessingException e) {
+                    log.error(e.toString());
+                    retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                    retDto = null;
+                    retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
+                }
+                break;
+
+            case BAD_REQUEST:
+                retStatus = HttpStatus.BAD_REQUEST;
+                retDto = null;
+                try {
+                    retError = objectMapper.readValue(response.getBody(), ErrorMessageDTO.class);
+                } catch (JsonProcessingException e) {
+                    log.error(e.toString());
+                    retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                    retDto = null;
+                    retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
+                }
+                break;
+
+            case INTERNAL_SERVER_ERROR:
+                // Fallthrough intentional
+            default:
+                retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                retDto = null;
+                retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
+                break;
+        }
+
+        return new BackendResponse<D>(retStatus, retDto, retError);
     }
 
     /**
-     * Delete an AbstractCategory by its ID.
+     * Delete an AbstractCategory by its ID. Always presumed to work.
      *
      * @param id ID of the AbstractCategory to delete.
-     * @return An empty BackendResponse assuming success, unless an error occurred.
      */
-    @NonNull
-    public BackendResponse<Void> delete(@NonNull Long id) {
-        // TODO: FINISH
-        return null;
+    public void delete(@NonNull Long id) {
+        restTemplate.delete(apiEndpoint + ID_ENDPOINT, id);
     }
 
     /**
@@ -149,8 +194,56 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
      */
     @NonNull
     public BackendResponse<D> create(@NonNull D abstractCategory) {
-        // TODO: FINISH
-        return null;
+        HttpStatusCode retStatus = null;
+        D retDto = null;
+        ErrorMessageDTO retError = null;
+        abstractCategory.setId(null);
+        ResponseEntity<String> response =
+            restTemplate.postForEntity(
+                apiEndpoint,
+                abstractCategory,
+                String.class
+            );
+
+        switch((HttpStatus) response.getStatusCode()) {
+            case CREATED:
+                retStatus = HttpStatus.CREATED;
+                retError = null;
+
+                // Extract returned object
+                try {
+                    retDto = objectMapper.readValue(response.getBody(), categoryClass);
+                } catch (JsonProcessingException e) {
+                    log.error(e.toString());
+                    retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                    retDto = null;
+                    retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
+                }
+                break;
+
+            case BAD_REQUEST:
+                retStatus = HttpStatus.BAD_REQUEST;
+                retDto = null;
+                try {
+                    retError = objectMapper.readValue(response.getBody(), ErrorMessageDTO.class);
+                } catch (JsonProcessingException e) {
+                    log.error(e.toString());
+                    retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                    retDto = null;
+                    retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
+                }
+                break;
+
+            case INTERNAL_SERVER_ERROR:
+                // Fallthrough intentional
+            default:
+                retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                retDto = null;
+                retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
+                break;
+        }
+
+        return new BackendResponse<D>(retStatus, retDto, retError);
     }
 
     /**
@@ -161,7 +254,41 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
      */
     @NonNull
     public BackendResponse<D> get(@NonNull String name) {
-        // TODO: FINISH
-        return null;
+        HttpStatusCode retStatus = null;
+        D retDto = null;
+        ErrorMessageDTO retError = null;
+        ResponseEntity<D> response =
+            restTemplate.getForEntity(
+                apiEndpoint + NAME_ENDPOINT,
+                categoryClass,
+                name
+            );
+
+        switch((HttpStatus) response.getStatusCode()) {
+            case OK:
+                retStatus = HttpStatus.OK;
+                retError = null;
+                retDto = response.getBody();
+                break;
+
+            case NOT_FOUND:
+                retStatus = HttpStatus.NOT_FOUND;
+                retDto = null;
+                retError = new ErrorMessageDTO(
+                    Constants.NOT_FOUND_ERROR,
+                    "Category \"" + name + "\" does not exist."
+                );
+                break;
+
+            case INTERNAL_SERVER_ERROR:
+                // Fallthrough intentional
+            default:
+                retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                retDto = null;
+                retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
+                break;
+        }
+
+        return new BackendResponse<D>(retStatus, retDto, retError);
     }
 }

@@ -80,10 +80,7 @@ public class SubCategoryApiService extends AbstractCategoryApiService<SubCategor
             default:
                 retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
                 retDto = null;
-                retError = new ErrorMessageDTO(
-                    Constants.GENERIC_INTERNAL_ERROR,
-                    Constants.GENERIC_INTERNAL_ERROR_MESSAGE
-                );
+                retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
                 break;
         }
 

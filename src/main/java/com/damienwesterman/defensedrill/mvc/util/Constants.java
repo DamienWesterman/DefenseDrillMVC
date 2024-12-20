@@ -26,11 +26,18 @@
 
 package com.damienwesterman.defensedrill.mvc.util;
 
+import com.damienwesterman.defensedrill.mvc.web.dto.ErrorMessageDTO;
+
 /**
  * Public static constants common to the entire application.
  */
 public class Constants {
     public final static String REST_API_BASE_ADDRESS = "lb://rest-api";
+
+    public final static ErrorMessageDTO GENERIC_INTERNAL_ERROR_DTO = new ErrorMessageDTO(
+        Constants.GENERIC_INTERNAL_ERROR,
+        Constants.GENERIC_INTERNAL_ERROR_MESSAGE
+    );
 
     // User feedback messages
     public final static String GENERIC_INTERNAL_ERROR = "Internal Error";
