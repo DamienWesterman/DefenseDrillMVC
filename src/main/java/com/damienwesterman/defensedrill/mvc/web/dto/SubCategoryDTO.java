@@ -24,21 +24,21 @@
  * limitations under the License.
  */
 
-package com.damienwesterman.defensedrill.mvc;
+package com.damienwesterman.defensedrill.mvc.web.dto;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class DefenseDrillMvcApplication {
-	// TODO: Start with the home page, add links to the header and maybe make the cards better/grid
-	// TODO: Create /categories and /sub-categories
-	// TODO: Generate the links dynamically somehow? Different in dev from prod
 
-	public static void main(String[] args) {
-		SpringApplication.run(DefenseDrillMvcApplication.class, args);
-	}
-
+/**
+ * Database Entity to contain all the information for a drill SubCategory.
+ * <br><br>
+ * NOTE: Any changes here must also be reflected in the MVC repo.
+ */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+@SuperBuilder
+public class SubCategoryDTO extends AbstractCategoryDTO {
+    public SubCategoryDTO() {}
 }

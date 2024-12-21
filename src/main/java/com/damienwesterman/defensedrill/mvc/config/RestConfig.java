@@ -24,21 +24,22 @@
  * limitations under the License.
  */
 
-package com.damienwesterman.defensedrill.mvc;
+package com.damienwesterman.defensedrill.mvc.config;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.NoOpResponseErrorHandler;
+import org.springframework.web.client.RestTemplate;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class DefenseDrillMvcApplication {
-	// TODO: Start with the home page, add links to the header and maybe make the cards better/grid
-	// TODO: Create /categories and /sub-categories
-	// TODO: Generate the links dynamically somehow? Different in dev from prod
+@Configuration
+public class RestConfig {
 
-	public static void main(String[] args) {
-		SpringApplication.run(DefenseDrillMvcApplication.class, args);
-	}
-
+    @LoadBalanced
+    @Bean
+    RestTemplate restTemplate() {
+        RestTemplate ret = new RestTemplate();
+        ret.setErrorHandler(new NoOpResponseErrorHandler());
+        return ret;
+    }
 }

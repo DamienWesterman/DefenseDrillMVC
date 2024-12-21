@@ -24,21 +24,37 @@
  * limitations under the License.
  */
 
-package com.damienwesterman.defensedrill.mvc;
+package com.damienwesterman.defensedrill.mvc.web;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class DefenseDrillMvcApplication {
-	// TODO: Start with the home page, add links to the header and maybe make the cards better/grid
-	// TODO: Create /categories and /sub-categories
-	// TODO: Generate the links dynamically somehow? Different in dev from prod
+import com.damienwesterman.defensedrill.mvc.web.dto.ErrorMessageDTO;
 
-	public static void main(String[] args) {
-		SpringApplication.run(DefenseDrillMvcApplication.class, args);
-	}
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
+/**
+ * Wapper class that contains all the information from a request to the RestAPI backend.
+ */
+@RequiredArgsConstructor
+@Getter
+@ToString
+@EqualsAndHashCode
+public class BackendResponse<T> {
+    @NonNull
+    private final HttpStatusCode status;
+
+    @Nullable
+    private final T response;
+
+    @Nullable
+    private final ErrorMessageDTO error;
+
+    public boolean hasError() {
+        return null != error;
+    }
 }
