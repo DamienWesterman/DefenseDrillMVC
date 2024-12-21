@@ -3,21 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 Not Found</title>
+    <title>DefenseDrill Home</title>
     <link rel="stylesheet" href="/thymeleaf/css/main.css">
 </head>
 <body>
     <header th:insert="~{layouts/header :: headerFragment}"></header>
-    <div class="card">
-        <a href="http://localhost:5433/swagger-ui/index.html#/">
-            <p class="card-title">RestAPI Documentation</p>
-            <p class="card-text">Access the documentation for blah blah</p>
+    <div class="card-container">
+        <a href="/modify/drill">
+            <div class="card">
+                <p class="card-title">Modify Drills</p>
+                <p class="card-text">View, edit, create, and remove Drills from the database.</p>
+            </div>
         </a>
-    </div>
-    <div class="card">
+        <a href="/modify/category">
+            <div class="card">
+                <p class="card-title">Modify Categories</p>
+                <p class="card-text">View, edit, create, and remove Categories from the database.</p>
+            </div>
+        </a>
+        <a href="/modify/sub_category">
+            <div class="card">
+                <p class="card-title">Modify Sub-Categories</p>
+                <p class="card-text">View, edit, create, and remove Sub-Categories from the database.</p>
+            </div>
+        </a>
+        <a href="http://localhost:9999/users">
+            <div class="card">
+                <p class="card-title">Modify Users</p>
+                <p class="card-text">View, edit, create, and remove User profiles from the database.</p>
+            </div>
+        </a>
         <a href="http://localhost:5433/swagger-ui/index.html#/">
-            <p class="card-title">RestAPI Documentation</p>
-            <p class="card-text">Access the documentation for blah blah</p>
+            <div class="card">
+                <p class="card-title">RestAPI Documentation</p>
+                <p class="card-text">Access the swagger documentation for the DefenseDrill RestAPI backend.</p>
+            </div>
+        </a>
+        <a href="http://localhost:8200/">
+            <div class="card">
+                <p class="card-title">Vault</p>
+                <p class="card-text">Access the secure Vault for configuration and maintenance.</p>
+            </div>
+        </a>
+        <a href="http://localhost:8096/">
+            <div class="card">
+                <p class="card-title">Jellyfin</p>
+                <p class="card-text">Access the Jellyfin media server for configuration and maintenance.</p>
+            </div>
+        </a>
+        <a href="http://localhost:8097/">
+            <div class="card">
+                <p class="card-title">File Browser</p>
+                <p class="card-text">Access the File Browser to configure, maintain, and upload videos.</p>
+            </div>
+        </a>
+        <a href="https://github.com/DamienWesterman">
+            <div class="card">
+                <p class="card-title">My GitHub</p>
+                <p class="card-text">View my personal GitHub.</p>
+            </div>
         </a>
     </div>
     <footer th:insert="~{layouts/footer :: footerFragment}"></footer>

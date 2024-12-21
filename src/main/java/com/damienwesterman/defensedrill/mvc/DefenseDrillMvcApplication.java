@@ -33,9 +33,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class DefenseDrillMvcApplication {
-	// TODO: Start with the home page, add links to the header and maybe make the cards better/grid
+	// TODO: Start working on modify categories and make it nice
 	// TODO: Create /categories and /sub-categories
 	// TODO: Generate the links dynamically somehow? Different in dev from prod
+	// TODO: Go through the css and html see if we can take anything out of the css, maybe make some variables in the css, and consolidate anything if necessary or make more classes
 
 	public static void main(String[] args) {
 		SpringApplication.run(DefenseDrillMvcApplication.class, args);

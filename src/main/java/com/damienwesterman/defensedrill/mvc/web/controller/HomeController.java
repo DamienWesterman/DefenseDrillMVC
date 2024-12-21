@@ -40,4 +40,14 @@ public class HomeController {
     public String homePage() {
         return "home";
     }
+
+    @GetMapping("/modify")
+    public String modifyPage() {
+        return "modify";
+    }
+
+    @GetMapping("/modify/category")
+    public String modifyCategories() {
+        return "modify_categories";
+    }
 }

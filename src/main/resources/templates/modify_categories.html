@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="layouts/" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modify - DefenseDrill</title>
+    <link rel="stylesheet" href="/thymeleaf/css/main.css">
+</head>
+<body>
+    <header th:insert="~{layouts/header :: headerFragment}"></header>
+
+    <div class="modify-container">
+        <!-- Sidebar for tabs -->
+        <nav class="side-nav">
+            <ul>
+                <li><a href="#" class="active">Modify Drill</a></li>
+                <li><a href="#">Modify Category</a></li>
+                <li><a href="#">Modify Subcategory</a></li>
+                <!-- Add more tabs as needed -->
+            </ul>
+        </nav>
+
+        <!-- Main content area -->
+        <div class="content-area">
+            <div class="bordered-box">
+                <p>Add HTMX target content here.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer th:insert="~{layouts/footer :: footerFragment}"></footer>
+</body>
+</html>
