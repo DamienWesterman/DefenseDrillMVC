@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="layouts/" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${tabTitle}">Modify</title>
+    <link rel="stylesheet" href="/thymeleaf/css/main.css">
+    <script src="https://unpkg.com/htmx.org@1.8.0"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const sideNavLinks = document.querySelectorAll("#sideNav a");
+
+            sideNavLinks.forEach(link => {
+                link.addEventListener("click", () => {
+                    // Remove the 'active' class from all links
+                    sideNavLinks.forEach(link => link.classList.remove("active"));
+                    // Add the 'active' class to the clicked link
+                    link.classList.add("active");
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <header th:insert="~{layouts/header :: headerFragment}"></header>
+
+    <h1 class="center" th:text="${pageTitle}">Modify</h1>
+
+    <div class="modify-container">
+        <!-- Sidebar for tabs -->
+        <nav class="side-nav" id="sideNav">
+            <ul>
+                <li th:each="listItem : ${listItems}">
+                    <a th:hx-get="${listItem['htmxEndpoint']}"
+                       hx-target="#modifyWindow"
+                       hx-swap="innerHTML"
+                       th:text="${listItem['name']}"></a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main content area -->
+        <div class="content-area">
+            <div class="bordered-box" id="modifyWindow">
+                <p>Please select an option from the left to get started.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer th:insert="~{layouts/footer :: footerFragment}"></footer>
+</body>
+</html>

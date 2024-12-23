@@ -33,10 +33,11 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class DefenseDrillMvcApplication {
-	// TODO: Start working on modify categories and make it nice
+	// TODO: Work on htmx responses
 	// TODO: Create /categories and /sub-categories
 	// TODO: Generate the links dynamically somehow? Different in dev from prod
 	// TODO: Go through the css and html see if we can take anything out of the css, maybe make some variables in the css, and consolidate anything if necessary or make more classes
+	// TODO: Favico icon thing?
 
 	public static void main(String[] args) {
 		SpringApplication.run(DefenseDrillMvcApplication.class, args);

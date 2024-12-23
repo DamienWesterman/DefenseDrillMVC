@@ -26,12 +26,17 @@
 
 package com.damienwesterman.defensedrill.mvc.web.controller;
 
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Controller for the home page / root
+ * Controller for all basic UI/template endpoints.
  */
 @Controller
 @RequestMapping("/")
@@ -47,7 +52,68 @@ public class HomeController {
     }
 
     @GetMapping("/modify/category")
-    public String modifyCategories() {
-        return "modify_categories";
+    public String modifyCategories(Model model) {
+        model.addAttribute("tabTitle", "Modify Category");
+        model.addAttribute("pageTitle", "Modify Category");
+
+        // Add the side tabs
+        BiFunction<String, String, Map<String, String>> createListItem =
+            (name, htmxEndpoint) -> Map.of(
+                "name", name,
+                "htmxEndpoint", htmxEndpoint
+            );
+        List<Map<String, String>> listItems = List.of(
+            createListItem.apply("View Categories", "/htmx/category/view"),
+            createListItem.apply("Create Category", "/htmx/category/create"),
+            createListItem.apply("Modify Category", "/htmx/category/modify"),
+            createListItem.apply("Delete Category", "/htmx/category/delete")
+        );
+        model.addAttribute("listItems", listItems);
+
+        return "tab_with_window";
+    }
+
+    @GetMapping("/modify/sub_category")
+    public String modifySubCategories(Model model) {
+        model.addAttribute("tabTitle", "Modify Sub-Category");
+        model.addAttribute("pageTitle", "Modify Sub-Category");
+
+        // Add the side tabs
+        BiFunction<String, String, Map<String, String>> createListItem =
+            (name, htmxEndpoint) -> Map.of(
+                "name", name,
+                "htmxEndpoint", htmxEndpoint
+            );
+        List<Map<String, String>> listItems = List.of(
+            createListItem.apply("View Sub-Categories", "/htmx/sub_category/view"),
+            createListItem.apply("Create Sub-Category", "/htmx/sub_category/create"),
+            createListItem.apply("Modify Sub-Category", "/htmx/sub_category/modify"),
+            createListItem.apply("Delete Sub-Category", "/htmx/sub_category/delete")
+        );
+        model.addAttribute("listItems", listItems);
+
+        return "tab_with_window";
+    }
+
+    @GetMapping("/modify/drill")
+    public String modifyDrills(Model model) {
+        model.addAttribute("tabTitle", "Modify Drill");
+        model.addAttribute("pageTitle", "Modify Drill");
+
+        // Add the side tabs
+        BiFunction<String, String, Map<String, String>> createListItem =
+            (name, htmxEndpoint) -> Map.of(
+                "name", name,
+                "htmxEndpoint", htmxEndpoint
+            );
+        List<Map<String, String>> listItems = List.of(
+            createListItem.apply("View Drills", "/htmx/drill/view"),
+            createListItem.apply("Create Drills", "/htmx/drill/create"),
+            createListItem.apply("Modify Drills", "/htmx/drill/modify"),
+            createListItem.apply("Delete Drills", "/htmx/drill/delete")
+        );
+        model.addAttribute("listItems", listItems);
+
+        return "tab_with_window";
     }
 }
