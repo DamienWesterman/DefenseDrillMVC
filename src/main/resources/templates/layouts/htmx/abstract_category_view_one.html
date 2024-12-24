@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <script src="https://unpkg.com/htmx.org@1.8.0"></script>
+    </head>
+
+    <!-- To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" -->
+    <div th:fragment="abstractCategoryDetails">
+        <p class="error center" th:text="${errorMessage}"></p>
+        <div class="view-window">
+            <div class="window-title" th:text="${name}"></div>
+            <p th:text="'ID: ' + ${id}"></p>
+            <p class="description" th:text="${description}"></p>
+            <br>
+            <button class="button"
+            th:hx-get="${backEndpoint}"
+            hx-target="#contentArea"
+            hx-swap="innerHTML">
+                Back
+            </button>
+        </div>
+    </div>
+</html>

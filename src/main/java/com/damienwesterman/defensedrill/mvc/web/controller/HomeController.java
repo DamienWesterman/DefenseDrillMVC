@@ -41,6 +41,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/")
 public class HomeController {
+    /**
+     * Used to create a list item for the vertical tabs on the left of the modify SPA page.
+     */
+    private final static BiFunction<String, String, Map<String, String>> createListItem =
+        (name, htmxEndpoint) -> Map.of(
+            "name", name,
+            "htmxEndpoint", htmxEndpoint
+        );
+
     @GetMapping
     public String homePage() {
         return "home";
@@ -56,12 +65,6 @@ public class HomeController {
         model.addAttribute("tabTitle", "Modify Category");
         model.addAttribute("pageTitle", "Modify Category");
 
-        // Add the side tabs
-        BiFunction<String, String, Map<String, String>> createListItem =
-            (name, htmxEndpoint) -> Map.of(
-                "name", name,
-                "htmxEndpoint", htmxEndpoint
-            );
         List<Map<String, String>> listItems = List.of(
             createListItem.apply("View Categories", "/htmx/category/view"),
             createListItem.apply("Create Category", "/htmx/category/create"),
@@ -78,12 +81,6 @@ public class HomeController {
         model.addAttribute("tabTitle", "Modify Sub-Category");
         model.addAttribute("pageTitle", "Modify Sub-Category");
 
-        // Add the side tabs
-        BiFunction<String, String, Map<String, String>> createListItem =
-            (name, htmxEndpoint) -> Map.of(
-                "name", name,
-                "htmxEndpoint", htmxEndpoint
-            );
         List<Map<String, String>> listItems = List.of(
             createListItem.apply("View Sub-Categories", "/htmx/sub_category/view"),
             createListItem.apply("Create Sub-Category", "/htmx/sub_category/create"),
@@ -100,12 +97,6 @@ public class HomeController {
         model.addAttribute("tabTitle", "Modify Drill");
         model.addAttribute("pageTitle", "Modify Drill");
 
-        // Add the side tabs
-        BiFunction<String, String, Map<String, String>> createListItem =
-            (name, htmxEndpoint) -> Map.of(
-                "name", name,
-                "htmxEndpoint", htmxEndpoint
-            );
         List<Map<String, String>> listItems = List.of(
             createListItem.apply("View Drills", "/htmx/drill/view"),
             createListItem.apply("Create Drills", "/htmx/drill/create"),

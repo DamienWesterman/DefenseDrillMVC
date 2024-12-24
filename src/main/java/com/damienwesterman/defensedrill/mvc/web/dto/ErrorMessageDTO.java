@@ -34,7 +34,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * DTO to send descriptive error messages back to caller.
@@ -47,7 +46,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @EqualsAndHashCode
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class ErrorMessageDTO {
@@ -56,4 +54,9 @@ public class ErrorMessageDTO {
 
     @NonNull
     private String message;
+
+    @Override
+    public String toString() {
+        return error + ": " + message;
+    }
 }

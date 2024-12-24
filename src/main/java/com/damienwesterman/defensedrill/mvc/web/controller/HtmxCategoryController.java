@@ -26,14 +26,15 @@
 
 package com.damienwesterman.defensedrill.mvc.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
+import java.util.Map;
+import java.util.function.BiFunction;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.damienwesterman.defensedrill.mvc.service.CategoryApiService;
 import com.damienwesterman.defensedrill.mvc.service.DrillApiService;
 import com.damienwesterman.defensedrill.mvc.web.dto.CategoryDTO;
@@ -51,17 +52,48 @@ public class HtmxCategoryController {
     private final DrillApiService drillApiService;
 
     @GetMapping("/view")
-    @ResponseBody
-    public String viewCategories() {
+    public String viewCategories(Model model) {
         var response = categoryApiService.getAll();
-        if (!response.hasError()) {
-            return String.join(",  ", 
-                List.of(
-                    response.getResponse()).stream()
-                        .map(CategoryDTO::getName)
-                        .collect(Collectors.toList()));
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
         } else {
-            return "ERROR";
+            List<CategoryDTO> categories = List.of(response.getResponse());
+
+            model.addAttribute("windowTitle",
+                "Total Categories: " + categories.size());
+
+            // Add categories to list
+            BiFunction<String, Long, Map<String, String>> createListItem =
+                (description, categoryId) -> Map.of(
+                    "description", description,
+                    "htmxEndpoint", "/htmx/category/view/" + categoryId
+                );
+            List<Map<String, String>> listItems = new ArrayList<>(categories.size());
+            for (var category : categories) {
+                listItems.add(
+                    createListItem.apply(category.getName(), category.getId())
+                );
+            }
+            model.addAttribute("listItems", listItems);
         }
+
+        return "layouts/htmx/view_window_list :: viewWindowList";
+    }
+
+    @GetMapping("/view/{id}")
+    public String viewOneCategory(Model model, @PathVariable Long id) {
+        var response = categoryApiService.get(id);
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+        } else {
+            var category = response.getResponse();
+            model.addAttribute("name", category.getName());
+            // ID already included
+            model.addAttribute("description", category.getDescription());
+        }
+
+        model.addAttribute("backEndpoint", "/htmx/category/view");
+
+        return "layouts/htmx/abstract_category_view_one :: abstractCategoryDetails";
     }
 }

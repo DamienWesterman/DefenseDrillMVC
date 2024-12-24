@@ -26,14 +26,15 @@
 
 package com.damienwesterman.defensedrill.mvc.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
+import java.util.Map;
+import java.util.function.BiFunction;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.damienwesterman.defensedrill.mvc.service.DrillApiService;
 import com.damienwesterman.defensedrill.mvc.service.SubCategoryApiService;
 import com.damienwesterman.defensedrill.mvc.web.dto.SubCategoryDTO;
@@ -51,17 +52,48 @@ public class HtmxSubCategoryController {
     private final DrillApiService drillApiService;
 
     @GetMapping("/view")
-    @ResponseBody
-    public String viewCategories() {
+    public String viewSubCategories(Model model) {
         var response = subCategoryApiService.getAll();
-        if (!response.hasError()) {
-            return String.join(",  ", 
-                List.of(
-                    response.getResponse()).stream()
-                        .map(SubCategoryDTO::getName)
-                        .collect(Collectors.toList()));
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
         } else {
-            return "ERROR";
+            List<SubCategoryDTO> subCategories = List.of(response.getResponse());
+
+            model.addAttribute("windowTitle",
+                "Total SubCategories: " + subCategories.size());
+
+            // Add sub-categories to list
+            BiFunction<String, Long, Map<String, String>> createListItem =
+                (description, subCategoryId) -> Map.of(
+                    "description", description,
+                    "htmxEndpoint", "/htmx/sub_category/view/" + subCategoryId
+                );
+            List<Map<String, String>> listItems = new ArrayList<>(subCategories.size());
+            for (var subCategory : subCategories) {
+                listItems.add(
+                    createListItem.apply(subCategory.getName(), subCategory.getId())
+                );
+            }
+            model.addAttribute("listItems", listItems);
         }
+
+        return "layouts/htmx/view_window_list :: viewWindowList";
+    }
+
+    @GetMapping("/view/{id}")
+    public String viewOneSubCategory(Model model, @PathVariable Long id) {
+        var response = subCategoryApiService.get(id);
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+        } else {
+            var subCategory = response.getResponse();
+            model.addAttribute("name", subCategory.getName());
+            // ID already included
+            model.addAttribute("description", subCategory.getDescription());
+        }
+
+        model.addAttribute("backEndpoint", "/htmx/sub_category/view");
+
+        return "layouts/htmx/abstract_category_view_one :: abstractCategoryDetails";
     }
 }

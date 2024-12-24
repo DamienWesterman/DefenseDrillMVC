@@ -35,6 +35,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 public class DefenseDrillMvcApplication {
 	// TODO: Work on htmx responses
 	// TODO: Create /categories and /sub-categories
+	// TODO: In the thymeleaf stuff, list the necessary model attributes for something (i.e. needs listImtes of type map with keys description and htmx endpoint, etc.)
 	// TODO: Generate the links dynamically somehow? Different in dev from prod
 	// TODO: Go through the css and html see if we can take anything out of the css, maybe make some variables in the css, and consolidate anything if necessary or make more classes
 	// TODO: Favico icon thing?
