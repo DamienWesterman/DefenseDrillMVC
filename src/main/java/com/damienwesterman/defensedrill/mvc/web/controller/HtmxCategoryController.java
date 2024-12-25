@@ -33,7 +33,9 @@ import java.util.function.BiFunction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.damienwesterman.defensedrill.mvc.service.CategoryApiService;
 import com.damienwesterman.defensedrill.mvc.service.DrillApiService;
@@ -93,6 +95,33 @@ public class HtmxCategoryController {
         }
 
         model.addAttribute("backEndpoint", "/htmx/category/view");
+
+        return "layouts/htmx/abstract_category_view_one :: abstractCategoryDetails";
+    }
+
+    @GetMapping("/create")
+    public String createCategory(Model model) {
+        model.addAttribute("title", "Create New Category");
+        model.addAttribute("createEndpoint", "/htmx/category/create");
+
+        return "layouts/htmx/abstract_category_create :: abstractCategoryDetails";
+    }
+
+    @PutMapping("/create")
+    public String createCategory(Model model, @ModelAttribute CategoryDTO category) {
+        var response = categoryApiService.create(category);
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+        } else {
+            model.addAttribute("successMessage", "Category Created Successfully!");
+
+            var newCategory = response.getResponse();
+            model.addAttribute("name", newCategory.getName());
+            model.addAttribute("id", newCategory.getId());
+            model.addAttribute("description", newCategory.getDescription());
+        }
+
+        model.addAttribute("backEndpoint", "/htmx/category/create");
 
         return "layouts/htmx/abstract_category_view_one :: abstractCategoryDetails";
     }

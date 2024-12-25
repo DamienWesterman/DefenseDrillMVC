@@ -33,10 +33,13 @@ import java.util.function.BiFunction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.damienwesterman.defensedrill.mvc.service.DrillApiService;
 import com.damienwesterman.defensedrill.mvc.service.SubCategoryApiService;
+import com.damienwesterman.defensedrill.mvc.web.dto.CategoryDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.SubCategoryDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -93,6 +96,33 @@ public class HtmxSubCategoryController {
         }
 
         model.addAttribute("backEndpoint", "/htmx/sub_category/view");
+
+        return "layouts/htmx/abstract_category_view_one :: abstractCategoryDetails";
+    }
+
+    @GetMapping("/create")
+    public String createSubCategory(Model model) {
+        model.addAttribute("title", "Create New Sub-Category");
+        model.addAttribute("createEndpoint", "/htmx/sub_category/create");
+
+        return "layouts/htmx/abstract_category_create :: abstractCategoryDetails";
+    }
+
+    @PutMapping("/create")
+    public String createSubCategory(Model model, @ModelAttribute SubCategoryDTO subCategory) {
+        var response = subCategoryApiService.create(subCategory);
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+        } else {
+            model.addAttribute("successMessage", "Sub-Category Created Successfully!");
+
+            var newSubCategory = response.getResponse();
+            model.addAttribute("name", newSubCategory.getName());
+            model.addAttribute("id", newSubCategory.getId());
+            model.addAttribute("description", newSubCategory.getDescription());
+        }
+
+        model.addAttribute("backEndpoint", "/htmx/sub_category/create");
 
         return "layouts/htmx/abstract_category_view_one :: abstractCategoryDetails";
     }
