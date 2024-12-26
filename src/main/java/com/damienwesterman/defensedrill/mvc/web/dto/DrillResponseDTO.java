@@ -52,6 +52,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DrillResponseDTO {
+    // TODO: FIXME: change to match up to rest-api
     private Long id;
 
     private String name;
