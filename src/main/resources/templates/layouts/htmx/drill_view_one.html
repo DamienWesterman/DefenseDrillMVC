@@ -33,7 +33,7 @@
             <div class="view-window">
                 <div class="window-title">Categories</div>
                 <ul class="window-list">
-                    <li th:each="category : ${categoriesList}" th:text="${category}"></li>
+                    <li th:each="category : ${categoriesList}" th:text="${category.name}"></li>
                 </ul>
             </div>
             <br>
@@ -41,7 +41,7 @@
             <div class="view-window">
                 <div class="window-title">Subcategories</div>
                 <ul class="window-list">
-                    <li th:each="subCategory : ${subCategoriesList}" th:text="${subCategory}"></li>
+                    <li th:each="subCategory : ${subCategoriesList}" th:text="${subCategory.name}"></li>
                 </ul>
             </div>
             <br>
@@ -49,12 +49,11 @@
             <div class="view-window">
                 <div class="window-title">Related Drills</div>
                 <ul class="window-list">
-                    <li th:each="relatedDrill : ${relatedDrillsList}" th:text="${relatedDrill}"></li>
+                    <li th:each="relatedDrill : ${relatedDrillsList}" th:text="${relatedDrill.name}"></li>
                 </ul>
             </div>
             <br><br>
 
-            <!-- TODO: FIXME: also pretty sure I changed this -->
              <div class="button-container">
                 <button class="button"
                     th:hx-get="${backEndpoint}"

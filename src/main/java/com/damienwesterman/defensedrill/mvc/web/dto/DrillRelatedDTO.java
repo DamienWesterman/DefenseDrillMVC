@@ -26,43 +26,20 @@
 
 package com.damienwesterman.defensedrill.mvc.web.dto;
 
-import java.util.List;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-
 /**
- * DTO for containing all Drill information from a response.
- * <br><br>
- * Never generated, always received from the RestAPI.
+ * DTO for related drills.
  * <br><br>
  * NOTE: Any changes here must also be reflected in the RestAPI repo.
  */
 @Getter
 @Setter
-@Builder
-@ToString
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class DrillResponseDTO {
+public class DrillRelatedDTO {
     private Long id;
-
     private String name;
-
-    private List<CategoryDTO> categories;
-
-    @JsonProperty("sub_categories")
-    private List<SubCategoryDTO> subCategories;
-
-    @JsonProperty("related_drills")
-    private List<DrillRelatedDTO> relatedDrillIds;
-
-    private List<InstructionsDTO> instructions;
 }

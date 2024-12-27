@@ -63,11 +63,12 @@ public class HtmxDrillController {
 
             model.addAttribute("windowTitle",
                 "Total Drills: " + drills.size());
+            model.addAttribute("buttonText", "Details");
 
             // Add drills to list
             BiFunction<String, Long, Map<String, String>> createListItem =
                 (description, drillId) -> Map.of(
-                    "description", description,
+                    "itemDescription", description,
                     "htmxEndpoint", "/htmx/drill/view/" + drillId
                 );
             List<Map<String, String>> listItems = new ArrayList<>(drills.size());
@@ -94,8 +95,8 @@ public class HtmxDrillController {
             model.addAttribute("description", "temp");
             model.addAttribute("instructionsList", drill.getInstructions());
             // TODO: Change endpoint to retrieve a list of CategoryDTO and RelatedDrillDTO (only name and ID) instead of lists of Longs
-            model.addAttribute("categoriesList", drill.getCategoryIds());
-            model.addAttribute("subCategoriesList", drill.getSubCategoryIds());
+            model.addAttribute("categoriesList", drill.getCategories());
+            model.addAttribute("subCategoriesList", drill.getSubCategories());
             model.addAttribute("relatedDrillsList", drill.getRelatedDrillIds());
         }
         // TODO: FIXME FINISH THIS AND THE CORRESPONDING html (using the newly updated API)
