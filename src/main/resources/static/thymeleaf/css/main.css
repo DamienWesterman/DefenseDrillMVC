@@ -261,7 +261,7 @@ nav a:hover {
 
 .view-window {
     width: 100%;
-    max-height: 80vh; /* Adjust based on desired window height */
+    max-height: 70vh; /* Adjust based on desired window height */
     overflow-y: auto;
     border: 1px solid #4EA217; /* Matches drill_green */
     border-radius: 8px;
@@ -338,4 +338,33 @@ nav a:hover {
     display: flex;
     justify-content: center;
     margin-top: 1rem;
+}
+
+.sub-window {
+    border: 1px solid #4EA217; /* Drill green */
+    border-radius: 8px;
+    padding: 10px;
+    max-height: 25vh; /* Adjust as needed */
+    overflow-y: auto; /* Enables scrolling if the list is long */
+    background-color: #FFFFFF; /* Matches the view-window */
+    color: #000000;
+}
+
+.check-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.check-list li {
+    margin-bottom: 10px;
+}
+
+.check-list label {
+    display: flex;
+    align-items: center;
+}
+
+.check-list input[type="checkbox"] {
+    margin-right: 10px;
 }
