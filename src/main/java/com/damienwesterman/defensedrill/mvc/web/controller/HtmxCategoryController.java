@@ -37,7 +37,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.damienwesterman.defensedrill.mvc.service.CategoryApiService;
 import com.damienwesterman.defensedrill.mvc.service.DrillApiService;
@@ -56,7 +55,7 @@ public class HtmxCategoryController {
     private final DrillApiService drillApiService;
 
     @GetMapping("/view")
-    public String viewCategories(Model model) {
+    public String viewAllCategories(Model model) {
         var response = categoryApiService.getAll();
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
@@ -103,7 +102,7 @@ public class HtmxCategoryController {
     }
 
     @GetMapping("/create")
-    public String createCategory(Model model) {
+    public String createCategoryForm(Model model) {
         model.addAttribute("title", "Create New Category");
         model.addAttribute("postEndpoint", "/htmx/category/create");
         model.addAttribute("buttonText", "Create");
@@ -133,7 +132,7 @@ public class HtmxCategoryController {
     }
 
     @GetMapping("/modify")
-    public String modifyCategory(Model model) {
+    public String modifyCategoryList(Model model) {
         var response = categoryApiService.getAll();
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
@@ -163,7 +162,7 @@ public class HtmxCategoryController {
     }
 
     @GetMapping("/modify/{id}")
-    public String modifyOneCategory(Model model, @PathVariable Long id) {
+    public String modifyOneCategoryForm(Model model, @PathVariable Long id) {
         var response = categoryApiService.get(id);
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
@@ -183,13 +182,12 @@ public class HtmxCategoryController {
     @PostMapping("/modify/{id}")
     public String modifyOneCategory(Model model,
             @PathVariable Long id, @ModelAttribute CategoryDTO category) {
-        // TODO: FIXME START HERE
         category.setId(id);
         var response = categoryApiService.update(category);
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
         } else {
-            model.addAttribute("successMessage", "Category Created Successfully!");
+            model.addAttribute("successMessage", "Category Modified Successfully!");
 
             var newCategory = response.getResponse();
             model.addAttribute("name", newCategory.getName());
@@ -200,5 +198,61 @@ public class HtmxCategoryController {
         model.addAttribute("backEndpoint", "/htmx/category/modify");
 
         return "layouts/htmx/abstract_category_view_one :: abstractCategoryDetails";
+    }
+
+    @GetMapping("/delete")
+    public String deleteCategoryList(Model model) {
+        var response = categoryApiService.getAll();
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+        } else {
+            List<CategoryDTO> categories = List.of(response.getResponse());
+
+            model.addAttribute("windowTitle",
+                "Choose Category to Delete");
+            model.addAttribute("buttonText", "Delete");
+
+            // Add categories to list
+            BiFunction<String, Long, Map<String, String>> createListItem =
+                (description, categoryId) -> Map.of(
+                    "itemDescription", description,
+                    "htmxEndpoint", "/htmx/category/confirm_delete/" + categoryId
+                );
+            List<Map<String, String>> listItems = new ArrayList<>(categories.size());
+            for (var category : categories) {
+                listItems.add(
+                    createListItem.apply(category.getName(), category.getId())
+                );
+            }
+            model.addAttribute("listItems", listItems);
+        }
+
+        return "layouts/htmx/view_window_list :: viewWindowList";
+    }
+
+    @GetMapping("/confirm_delete/{id}")
+    public String confirmDeleteCategory(Model model, @PathVariable Long id) {
+        var response = categoryApiService.get(id);
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+            return deleteCategoryList(model);
+        }
+
+        CategoryDTO category = response.getResponse();
+
+        model.addAttribute("windowTitle", "Confirm Category Deletion:");
+        // ID already set
+        model.addAttribute("name", category.getName());
+        model.addAttribute("cancelEndpoint", "/htmx/category/delete");
+        model.addAttribute("confirmEndpoint", "/htmx/category/delete/" + id);
+
+        return "layouts/htmx/confirm_delete :: confirmDelete";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteOneCategory(Model model, @PathVariable Long id) {
+        categoryApiService.delete(id);
+        model.addAttribute("successMessage", "Category Successfully Deleted!");
+        return deleteCategoryList(model);
     }
 }

@@ -30,19 +30,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.damienwesterman.defensedrill.mvc.service.CategoryApiService;
 import com.damienwesterman.defensedrill.mvc.service.DrillApiService;
 import com.damienwesterman.defensedrill.mvc.service.SubCategoryApiService;
-import com.damienwesterman.defensedrill.mvc.web.dto.CategoryDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.DrillResponseDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -59,7 +54,7 @@ public class HtmxDrillController {
     private final SubCategoryApiService subCategoryApiService;
 
     @GetMapping("/view")
-    public String viewDrills(Model model) {
+    public String viewAllDrills(Model model) {
         var response = drillApiService.getAll();
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());

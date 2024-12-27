@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.damienwesterman.defensedrill.mvc.service.DrillApiService;
 import com.damienwesterman.defensedrill.mvc.service.SubCategoryApiService;
 import com.damienwesterman.defensedrill.mvc.web.dto.SubCategoryDTO;
@@ -54,7 +55,7 @@ public class HtmxSubCategoryController {
     private final DrillApiService drillApiService;
 
     @GetMapping("/view")
-    public String viewSubCategories(Model model) {
+    public String viewAllSubCategories(Model model) {
         var response = subCategoryApiService.getAll();
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
@@ -62,7 +63,7 @@ public class HtmxSubCategoryController {
             List<SubCategoryDTO> subCategories = List.of(response.getResponse());
 
             model.addAttribute("windowTitle",
-                "Total SubCategories: " + subCategories.size());
+                "Total Sub-Categories: " + subCategories.size());
             model.addAttribute("buttonText", "Details");
 
             // Add sub-categories to list
@@ -101,7 +102,7 @@ public class HtmxSubCategoryController {
     }
 
     @GetMapping("/create")
-    public String createSubCategory(Model model) {
+    public String createSubCategoryForm(Model model) {
         model.addAttribute("title", "Create New Sub-Category");
         model.addAttribute("postEndpoint", "/htmx/sub_category/create");
         model.addAttribute("buttonText", "Create");
@@ -125,6 +126,133 @@ public class HtmxSubCategoryController {
 
         model.addAttribute("backEndpoint", "/htmx/sub_category/create");
 
+        // TODO: ask if the user wants to tie it to any drills
+
         return "layouts/htmx/abstract_category_view_one :: abstractCategoryDetails";
+    }
+
+    @GetMapping("/modify")
+    public String modifySubCategoryList(Model model) {
+        var response = subCategoryApiService.getAll();
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+        } else {
+            List<SubCategoryDTO> subCategories = List.of(response.getResponse());
+
+            model.addAttribute("windowTitle",
+                "Choose Sub-Category to Modify");
+            model.addAttribute("buttonText", "Modify");
+
+            // Add sub-categories to list
+            BiFunction<String, Long, Map<String, String>> createListItem =
+                (description, subCategoryId) -> Map.of(
+                    "itemDescription", description,
+                    "htmxEndpoint", "/htmx/sub_category/modify/" + subCategoryId
+                );
+            List<Map<String, String>> listItems = new ArrayList<>(subCategories.size());
+            for (var subCategory : subCategories) {
+                listItems.add(
+                    createListItem.apply(subCategory.getName(), subCategory.getId())
+                );
+            }
+            model.addAttribute("listItems", listItems);
+        }
+
+        return "layouts/htmx/view_window_list :: viewWindowList";
+    }
+
+    @GetMapping("/modify/{id}")
+    public String modifyOneSubCategoryForm(Model model, @PathVariable Long id) {
+        var response = subCategoryApiService.get(id);
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+        } else {
+            SubCategoryDTO subCategory = response.getResponse();
+
+            model.addAttribute("title", "Modify Sub-Category: " + id);
+            model.addAttribute("postEndpoint", "/htmx/sub_category/modify/" + id);
+            model.addAttribute("buttonText", "Update");
+            model.addAttribute("nameText", subCategory.getName());
+            model.addAttribute("descriptionText", subCategory.getDescription());
+        }
+
+        return "layouts/htmx/abstract_category_form :: abstractCategoryForm";
+    }
+
+    @PostMapping("/modify/{id}")
+    public String modifyOneSubCategory(Model model,
+            @PathVariable Long id, @ModelAttribute SubCategoryDTO subCategory) {
+        subCategory.setId(id);
+        var response = subCategoryApiService.update(subCategory);
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+        } else {
+            model.addAttribute("successMessage", "Sub-Category Modified Successfully!");
+
+            var newSubCategory = response.getResponse();
+            model.addAttribute("name", newSubCategory.getName());
+            model.addAttribute("id", newSubCategory.getId());
+            model.addAttribute("description", newSubCategory.getDescription());
+        }
+
+        model.addAttribute("backEndpoint", "/htmx/sub_category/modify");
+
+        return "layouts/htmx/abstract_category_view_one :: abstractCategoryDetails";
+    }
+
+    @GetMapping("/delete")
+    public String deleteSubCategoryList(Model model) {
+        var response = subCategoryApiService.getAll();
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+        } else {
+            List<SubCategoryDTO> subCategories = List.of(response.getResponse());
+
+            model.addAttribute("windowTitle",
+                "Choose Sub-Category to Delete");
+            model.addAttribute("buttonText", "Delete");
+
+            // Add sub-categories to list
+            BiFunction<String, Long, Map<String, String>> createListItem =
+                (description, subCategoryId) -> Map.of(
+                    "itemDescription", description,
+                    "htmxEndpoint", "/htmx/sub_category/confirm_delete/" + subCategoryId
+                );
+            List<Map<String, String>> listItems = new ArrayList<>(subCategories.size());
+            for (var subCategory : subCategories) {
+                listItems.add(
+                    createListItem.apply(subCategory.getName(), subCategory.getId())
+                );
+            }
+            model.addAttribute("listItems", listItems);
+        }
+
+        return "layouts/htmx/view_window_list :: viewWindowList";
+    }
+
+    @GetMapping("/confirm_delete/{id}")
+    public String confirmDeleteSubCategory(Model model, @PathVariable Long id) {
+        var response = subCategoryApiService.get(id);
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+            return deleteSubCategoryList(model);
+        }
+
+        SubCategoryDTO subCategory = response.getResponse();
+
+        model.addAttribute("windowTitle", "Confirm Sub-Category Deletion:");
+        // ID already set
+        model.addAttribute("name", subCategory.getName());
+        model.addAttribute("cancelEndpoint", "/htmx/sub_category/delete");
+        model.addAttribute("confirmEndpoint", "/htmx/sub_category/delete/" + id);
+
+        return "layouts/htmx/confirm_delete :: confirmDelete";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteOneSubCategory(Model model, @PathVariable Long id) {
+        subCategoryApiService.delete(id);
+        model.addAttribute("successMessage", "Sub-Category Successfully Deleted!");
+        return deleteSubCategoryList(model);
     }
 }
