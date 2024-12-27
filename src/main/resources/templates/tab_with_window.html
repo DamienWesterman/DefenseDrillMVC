@@ -19,9 +19,9 @@
                 <ul>
                     <li th:each="listItem : ${listItems}">
                         <a th:hx-get="${listItem['htmxEndpoint']}"
-                        hx-target="#contentArea"
-                        hx-swap="innerHTML"
-                        th:text="${listItem['name']}"></a>
+                            hx-target="#contentArea"
+                            hx-swap="innerHTML"
+                            th:text="${listItem['name']}"></a>
                     </li>
                 </ul>
             </nav>

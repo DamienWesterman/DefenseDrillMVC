@@ -35,8 +35,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.damienwesterman.defensedrill.mvc.service.CategoryApiService;
 import com.damienwesterman.defensedrill.mvc.service.DrillApiService;
 import com.damienwesterman.defensedrill.mvc.web.dto.CategoryDTO;
@@ -63,11 +65,12 @@ public class HtmxCategoryController {
 
             model.addAttribute("windowTitle",
                 "Total Categories: " + categories.size());
+            model.addAttribute("buttonText", "Details");
 
             // Add categories to list
             BiFunction<String, Long, Map<String, String>> createListItem =
                 (description, categoryId) -> Map.of(
-                    "description", description,
+                    "itemDescription", description,
                     "htmxEndpoint", "/htmx/category/view/" + categoryId
                 );
             List<Map<String, String>> listItems = new ArrayList<>(categories.size());
@@ -102,12 +105,13 @@ public class HtmxCategoryController {
     @GetMapping("/create")
     public String createCategory(Model model) {
         model.addAttribute("title", "Create New Category");
-        model.addAttribute("createEndpoint", "/htmx/category/create");
+        model.addAttribute("postEndpoint", "/htmx/category/create");
+        model.addAttribute("buttonText", "Create");
 
-        return "layouts/htmx/abstract_category_create :: abstractCategoryDetails";
+        return "layouts/htmx/abstract_category_form :: abstractCategoryForm";
     }
 
-    @PutMapping("/create")
+    @PostMapping("/create")
     public String createCategory(Model model, @ModelAttribute CategoryDTO category) {
         var response = categoryApiService.create(category);
         if (response.hasError() || null == response.getResponse()) {
@@ -122,6 +126,78 @@ public class HtmxCategoryController {
         }
 
         model.addAttribute("backEndpoint", "/htmx/category/create");
+
+        // TODO: ask if the user wants to tie it to any drills
+
+        return "layouts/htmx/abstract_category_view_one :: abstractCategoryDetails";
+    }
+
+    @GetMapping("/modify")
+    public String modifyCategory(Model model) {
+        var response = categoryApiService.getAll();
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+        } else {
+            List<CategoryDTO> categories = List.of(response.getResponse());
+
+            model.addAttribute("windowTitle",
+                "Choose Category to Modify");
+            model.addAttribute("buttonText", "Modify");
+
+            // Add categories to list
+            BiFunction<String, Long, Map<String, String>> createListItem =
+                (description, categoryId) -> Map.of(
+                    "itemDescription", description,
+                    "htmxEndpoint", "/htmx/category/modify/" + categoryId
+                );
+            List<Map<String, String>> listItems = new ArrayList<>(categories.size());
+            for (var category : categories) {
+                listItems.add(
+                    createListItem.apply(category.getName(), category.getId())
+                );
+            }
+            model.addAttribute("listItems", listItems);
+        }
+
+        return "layouts/htmx/view_window_list :: viewWindowList";
+    }
+
+    @GetMapping("/modify/{id}")
+    public String modifyOneCategory(Model model, @PathVariable Long id) {
+        var response = categoryApiService.get(id);
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+        } else {
+            CategoryDTO category = response.getResponse();
+
+            model.addAttribute("title", "Modify Category: " + id);
+            model.addAttribute("postEndpoint", "/htmx/category/modify/" + id);
+            model.addAttribute("buttonText", "Update");
+            model.addAttribute("nameText", category.getName());
+            model.addAttribute("descriptionText", category.getDescription());
+        }
+
+        return "layouts/htmx/abstract_category_form :: abstractCategoryForm";
+    }
+
+    @PostMapping("/modify/{id}")
+    public String modifyOneCategory(Model model,
+            @PathVariable Long id, @ModelAttribute CategoryDTO category) {
+        // TODO: FIXME START HERE
+        category.setId(id);
+        var response = categoryApiService.update(category);
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+        } else {
+            model.addAttribute("successMessage", "Category Created Successfully!");
+
+            var newCategory = response.getResponse();
+            model.addAttribute("name", newCategory.getName());
+            model.addAttribute("id", newCategory.getId());
+            model.addAttribute("description", newCategory.getDescription());
+        }
+
+        model.addAttribute("backEndpoint", "/htmx/category/modify");
 
         return "layouts/htmx/abstract_category_view_one :: abstractCategoryDetails";
     }

@@ -12,13 +12,12 @@
             <div class="window-title" th:text="${windowTitle}"></div>
             <ul class="window-list">
                 <li th:each="listItem : ${listItems}">
-                    <span th:text="${listItem['description']}"></span>
+                    <span th:text="${listItem['itemDescription']}"></span>
                     <button
-                    th:hx-get="${listItem['htmxEndpoint']}"
-                    hx-target="#contentArea"
-                    hx-swap="innerHTML">
-                        Details
-                    </button>
+                        th:text="${buttonText}"
+                        th:hx-get="${listItem['htmxEndpoint']}"
+                        hx-target="#contentArea"
+                        hx-swap="innerHTML"></button>
                 </li>
             </ul>
         </div>

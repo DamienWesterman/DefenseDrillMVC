@@ -35,11 +35,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.damienwesterman.defensedrill.mvc.service.DrillApiService;
 import com.damienwesterman.defensedrill.mvc.service.SubCategoryApiService;
-import com.damienwesterman.defensedrill.mvc.web.dto.CategoryDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.SubCategoryDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -64,11 +63,12 @@ public class HtmxSubCategoryController {
 
             model.addAttribute("windowTitle",
                 "Total SubCategories: " + subCategories.size());
+            model.addAttribute("buttonText", "Details");
 
             // Add sub-categories to list
             BiFunction<String, Long, Map<String, String>> createListItem =
                 (description, subCategoryId) -> Map.of(
-                    "description", description,
+                    "itemDescription", description,
                     "htmxEndpoint", "/htmx/sub_category/view/" + subCategoryId
                 );
             List<Map<String, String>> listItems = new ArrayList<>(subCategories.size());
@@ -103,12 +103,13 @@ public class HtmxSubCategoryController {
     @GetMapping("/create")
     public String createSubCategory(Model model) {
         model.addAttribute("title", "Create New Sub-Category");
-        model.addAttribute("createEndpoint", "/htmx/sub_category/create");
+        model.addAttribute("postEndpoint", "/htmx/sub_category/create");
+        model.addAttribute("buttonText", "Create");
 
-        return "layouts/htmx/abstract_category_create :: abstractCategoryDetails";
+        return "layouts/htmx/abstract_category_form :: abstractCategoryForm";
     }
 
-    @PutMapping("/create")
+    @PostMapping("/create")
     public String createSubCategory(Model model, @ModelAttribute SubCategoryDTO subCategory) {
         var response = subCategoryApiService.create(subCategory);
         if (response.hasError() || null == response.getResponse()) {

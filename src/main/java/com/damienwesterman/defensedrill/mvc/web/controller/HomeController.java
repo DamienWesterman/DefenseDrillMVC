@@ -33,13 +33,11 @@ import java.util.function.BiFunction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Controller for all basic UI/template endpoints.
  */
 @Controller
-@RequestMapping("/")
 public class HomeController {
     /**
      * Used to create a list item for the vertical tabs on the left of the modify SPA page.
@@ -50,7 +48,7 @@ public class HomeController {
             "htmxEndpoint", htmxEndpoint
         );
 
-    @GetMapping
+    @GetMapping("/")
     public String homePage() {
         return "home";
     }
