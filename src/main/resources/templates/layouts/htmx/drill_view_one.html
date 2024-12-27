@@ -55,12 +55,14 @@
             <br><br>
 
             <!-- TODO: FIXME: also pretty sure I changed this -->
-            <button class="button"
-                th:hx-get="${backEndpoint}"
-                hx-target="#contentArea"
-                hx-swap="innerHTML">
-                Back
-            </button>
+             <div class="button-container">
+                <button class="button"
+                    th:hx-get="${backEndpoint}"
+                    hx-target="#contentArea"
+                    hx-swap="innerHTML">
+                    Back
+                </button>
+            </div>
         </div>
     </div>
 </html>

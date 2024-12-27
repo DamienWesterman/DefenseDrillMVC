@@ -195,6 +195,13 @@ nav a:hover {
 }
 
 /* Buttons */
+.button-container {
+    display: flex;
+    justify-content: center; /* Centers the buttons horizontally */
+    gap: 20px; /* Adds space between the buttons */
+    margin-top: 20px; /* Adds space above the button container */
+}
+
 .button {
     background-color: #4EA217; /* Drill green variant */
     border: none;
@@ -204,10 +211,6 @@ nav a:hover {
     cursor: pointer;
     font-size: 1em;
     transition: background-color 0.3s;
-    position: relative;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
 }
 
 .button:hover {

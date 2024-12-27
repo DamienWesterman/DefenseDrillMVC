@@ -14,12 +14,14 @@
             <p th:text="'ID: ' + ${id}"></p>
             <p class="description" th:text="${description}"></p>
             <br>
-            <button class="button"
-                th:hx-get="${backEndpoint}"
-                hx-target="#contentArea"
-                hx-swap="innerHTML">
-                Back
-            </button>
+            <div class="button-container">
+                <button class="button"
+                    th:hx-get="${backEndpoint}"
+                    hx-target="#contentArea"
+                    hx-swap="innerHTML">
+                    Back
+                </button>
+            </div>
         </div>
     </div>
 </html>

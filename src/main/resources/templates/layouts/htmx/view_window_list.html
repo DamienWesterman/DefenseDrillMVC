@@ -8,6 +8,7 @@
     <!-- To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" -->
     <div th:fragment="viewWindowList">
         <p class="error center" th:text="${errorMessage}"></p>
+        <p class="success center" th:text="${successMessage}"></p>
         <div class="view-window">
             <div class="window-title" th:text="${windowTitle}"></div>
             <ul class="window-list">
