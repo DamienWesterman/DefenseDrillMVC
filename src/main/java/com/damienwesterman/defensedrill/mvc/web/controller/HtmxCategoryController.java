@@ -107,6 +107,14 @@ public class HtmxCategoryController {
         model.addAttribute("postEndpoint", "/htmx/category/create");
         model.addAttribute("buttonText", "Create");
 
+        var response = drillApiService.getAll();
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+        } else {
+            // TODO: Display the window
+            model.addAttribute("drillsList", response.getResponse());
+        }
+
         return "layouts/htmx/abstract_category_form :: abstractCategoryForm";
     }
 
@@ -125,8 +133,6 @@ public class HtmxCategoryController {
         }
 
         model.addAttribute("backEndpoint", "/htmx/category/create");
-
-        // TODO: ask if the user wants to tie it to any drills
 
         return "layouts/htmx/abstract_category_view_one :: abstractCategoryDetails";
     }

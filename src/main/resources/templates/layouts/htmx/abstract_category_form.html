@@ -50,62 +50,12 @@
                     <!-- TODO: FINISH THIS AND MAKE OPTIONAL (default no) -->
                     <!-- Sub-window for selecting drills -->
                     <div class="form-group">
-                        <label for="drills">Select Drills:</label>
+                        <label for="drills">Select Drills that belong to this Category:</label>
                         <div class="sub-window">
                             <ul class="check-list">
-                                <!-- Example hard-coded drill items -->
-                                <li>
+                                <li th:each="drill : ${drillsList}">
                                     <label>
-                                        <input type="checkbox" name="drills" value="1" />
-                                        Drill 1 (ID: 1)
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input type="checkbox" name="drills" value="2" />
-                                        Drill 2 (ID: 2)
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input type="checkbox" name="drills" value="3" />
-                                        Drill 3 (ID: 3)
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input type="checkbox" name="drills" value="1" />
-                                        Drill 1 (ID: 1)
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input type="checkbox" name="drills" value="2" />
-                                        Drill 2 (ID: 2)
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input type="checkbox" name="drills" value="3" />
-                                        Drill 3 (ID: 3)
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input type="checkbox" name="drills" value="1" />
-                                        Drill 1 (ID: 1)
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input type="checkbox" name="drills" value="2" />
-                                        Drill 2 (ID: 2)
-                                    </label>
-                                </li>
-                                <li>
-                                    <label>
-                                        <input type="checkbox" name="drills" value="3" />
-                                        Drillffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff 3 (ID: 3)
+                                        <input type="checkbox" name="drills" th:value="${drill.id}" th:text="${drill.name}"/>
                                     </label>
                                 </li>
                             </ul>
