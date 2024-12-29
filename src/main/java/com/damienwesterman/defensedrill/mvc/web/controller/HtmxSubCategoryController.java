@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.damienwesterman.defensedrill.mvc.service.DrillApiService;
 import com.damienwesterman.defensedrill.mvc.service.SubCategoryApiService;
-import com.damienwesterman.defensedrill.mvc.web.dto.SubCategoryDTO;
+import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -60,7 +60,7 @@ public class HtmxSubCategoryController {
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
         } else {
-            List<SubCategoryDTO> subCategories = List.of(response.getResponse());
+            List<AbstractCategoryDTO> subCategories = List.of(response.getResponse());
 
             model.addAttribute("windowTitle",
                 "Total Sub-Categories: " + subCategories.size());
@@ -111,7 +111,7 @@ public class HtmxSubCategoryController {
     }
 
     @PostMapping("/create")
-    public String createSubCategory(Model model, @ModelAttribute SubCategoryDTO subCategory) {
+    public String createSubCategory(Model model, @ModelAttribute AbstractCategoryDTO subCategory) {
         var response = subCategoryApiService.create(subCategory);
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
@@ -137,7 +137,7 @@ public class HtmxSubCategoryController {
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
         } else {
-            List<SubCategoryDTO> subCategories = List.of(response.getResponse());
+            List<AbstractCategoryDTO> subCategories = List.of(response.getResponse());
 
             model.addAttribute("windowTitle",
                 "Choose Sub-Category to Modify");
@@ -167,7 +167,7 @@ public class HtmxSubCategoryController {
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
         } else {
-            SubCategoryDTO subCategory = response.getResponse();
+            AbstractCategoryDTO subCategory = response.getResponse();
 
             model.addAttribute("title", "Modify Sub-Category: " + id);
             model.addAttribute("postEndpoint", "/htmx/sub_category/modify/" + id);
@@ -181,7 +181,7 @@ public class HtmxSubCategoryController {
 
     @PostMapping("/modify/{id}")
     public String modifyOneSubCategory(Model model,
-            @PathVariable Long id, @ModelAttribute SubCategoryDTO subCategory) {
+            @PathVariable Long id, @ModelAttribute AbstractCategoryDTO subCategory) {
         subCategory.setId(id);
         var response = subCategoryApiService.update(subCategory);
         if (response.hasError() || null == response.getResponse()) {
@@ -206,7 +206,7 @@ public class HtmxSubCategoryController {
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
         } else {
-            List<SubCategoryDTO> subCategories = List.of(response.getResponse());
+            List<AbstractCategoryDTO> subCategories = List.of(response.getResponse());
 
             model.addAttribute("windowTitle",
                 "Choose Sub-Category to Delete");
@@ -238,7 +238,7 @@ public class HtmxSubCategoryController {
             return deleteSubCategoryList(model);
         }
 
-        SubCategoryDTO subCategory = response.getResponse();
+        AbstractCategoryDTO subCategory = response.getResponse();
 
         model.addAttribute("windowTitle", "Confirm Sub-Category Deletion:");
         // ID already set

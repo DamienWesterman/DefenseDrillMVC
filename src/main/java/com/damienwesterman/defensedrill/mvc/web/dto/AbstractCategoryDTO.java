@@ -28,15 +28,16 @@ package com.damienwesterman.defensedrill.mvc.web.dto;
 
 import org.springframework.lang.NonNull;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 /**
- * Abstract superclass for {@link CategoryDTO} and {@link SubCategoryDTO}.
+ * Abstract class that works for either a Category or SubCategory.
  * <br><br>
  * NOTE: Any changes here must also be reflected in the RestAPI repo.
  */
@@ -45,13 +46,14 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
-@SuperBuilder
-public abstract class AbstractCategoryDTO {
-    protected Long id;
+@AllArgsConstructor
+@Builder
+public class AbstractCategoryDTO {
+    private Long id;
 
     @NonNull
-    protected String name;
+    private String name;
 
     @NonNull
-    protected String description;
+    private String description;
 }

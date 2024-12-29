@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.damienwesterman.defensedrill.mvc.service.CategoryApiService;
 import com.damienwesterman.defensedrill.mvc.service.DrillApiService;
-import com.damienwesterman.defensedrill.mvc.web.dto.CategoryDTO;
+import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -60,7 +60,7 @@ public class HtmxCategoryController {
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
         } else {
-            List<CategoryDTO> categories = List.of(response.getResponse());
+            List<AbstractCategoryDTO> categories = List.of(response.getResponse());
 
             model.addAttribute("windowTitle",
                 "Total Categories: " + categories.size());
@@ -119,7 +119,7 @@ public class HtmxCategoryController {
     }
 
     @PostMapping("/create")
-    public String createCategory(Model model, @ModelAttribute CategoryDTO category) {
+    public String createCategory(Model model, @ModelAttribute AbstractCategoryDTO category) {
         var response = categoryApiService.create(category);
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
@@ -143,7 +143,7 @@ public class HtmxCategoryController {
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
         } else {
-            List<CategoryDTO> categories = List.of(response.getResponse());
+            List<AbstractCategoryDTO> categories = List.of(response.getResponse());
 
             model.addAttribute("windowTitle",
                 "Choose Category to Modify");
@@ -173,7 +173,7 @@ public class HtmxCategoryController {
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
         } else {
-            CategoryDTO category = response.getResponse();
+            AbstractCategoryDTO category = response.getResponse();
 
             model.addAttribute("title", "Modify Category: " + id);
             model.addAttribute("postEndpoint", "/htmx/category/modify/" + id);
@@ -187,7 +187,7 @@ public class HtmxCategoryController {
 
     @PostMapping("/modify/{id}")
     public String modifyOneCategory(Model model,
-            @PathVariable Long id, @ModelAttribute CategoryDTO category) {
+            @PathVariable Long id, @ModelAttribute AbstractCategoryDTO category) {
         category.setId(id);
         var response = categoryApiService.update(category);
         if (response.hasError() || null == response.getResponse()) {
@@ -212,7 +212,7 @@ public class HtmxCategoryController {
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
         } else {
-            List<CategoryDTO> categories = List.of(response.getResponse());
+            List<AbstractCategoryDTO> categories = List.of(response.getResponse());
 
             model.addAttribute("windowTitle",
                 "Choose Category to Delete");
@@ -244,7 +244,7 @@ public class HtmxCategoryController {
             return deleteCategoryList(model);
         }
 
-        CategoryDTO category = response.getResponse();
+        AbstractCategoryDTO category = response.getResponse();
 
         model.addAttribute("windowTitle", "Confirm Category Deletion:");
         // ID already set

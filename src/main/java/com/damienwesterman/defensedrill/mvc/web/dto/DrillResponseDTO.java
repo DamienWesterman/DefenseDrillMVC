@@ -56,10 +56,10 @@ public class DrillResponseDTO {
 
     private String name;
 
-    private List<CategoryDTO> categories;
+    private List<AbstractCategoryDTO> categories;
 
     @JsonProperty("sub_categories")
-    private List<SubCategoryDTO> subCategories;
+    private List<AbstractCategoryDTO> subCategories;
 
     @JsonProperty("related_drills")
     private List<DrillRelatedDTO> relatedDrillIds;

@@ -26,64 +26,20 @@
 
 package com.damienwesterman.defensedrill.mvc.service;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.damienwesterman.defensedrill.mvc.util.Constants;
-import com.damienwesterman.defensedrill.mvc.web.BackendResponse;
-import com.damienwesterman.defensedrill.mvc.web.dto.ErrorMessageDTO;
-import com.damienwesterman.defensedrill.mvc.web.dto.SubCategoryDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Service for interacting with the SubCategory backend.
  */
 @Service
-@Slf4j
-public class SubCategoryApiService extends AbstractCategoryApiService<SubCategoryDTO> {
+public class SubCategoryApiService extends AbstractCategoryApiService {
     private final static String API_ENDPOINT = Constants.REST_API_BASE_ADDRESS + "/sub_category";
 
     public SubCategoryApiService(RestTemplate restTemplate, ObjectMapper objectMapper) {
-        super(SubCategoryDTO.class, restTemplate, objectMapper, API_ENDPOINT);
-    }
-
-    @Override
-    @NonNull
-    public BackendResponse<SubCategoryDTO[]> getAll() {
-        HttpStatusCode retStatus = null;
-        SubCategoryDTO[] retDto = null;
-        ErrorMessageDTO retError = null;
-        ResponseEntity<SubCategoryDTO[]> response =
-            restTemplate.getForEntity(API_ENDPOINT, SubCategoryDTO[].class);
-
-        switch((HttpStatus) response.getStatusCode()) {
-            case OK:
-                retStatus = HttpStatus.OK;
-                retError = null;
-                retDto = response.getBody();
-                break;
-
-            case NO_CONTENT:
-                retStatus = HttpStatus.NO_CONTENT;
-                retDto = new SubCategoryDTO[] { /* Empty */ };
-                retError = null;
-                break;
-
-            case INTERNAL_SERVER_ERROR:
-                // Fallthrough intentional
-            default:
-                retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-                retDto = null;
-                retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
-                break;
-        }
-
-        return new BackendResponse<SubCategoryDTO[]>(retStatus, retDto, retError);
+        super(restTemplate, objectMapper, API_ENDPOINT);
     }
 }

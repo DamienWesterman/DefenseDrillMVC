@@ -49,26 +49,50 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RequiredArgsConstructor
 @Slf4j
-public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> {
-    private final Class<D> categoryClass;
-    protected final RestTemplate restTemplate;
-    protected final ObjectMapper objectMapper;
+public abstract class AbstractCategoryApiService {
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
     private final String apiEndpoint;
 
     private final static String ID_ENDPOINT = "/id/{id}";
     private final static String NAME_ENDPOINT = "/name/{name}";
-
-    /*
-     * The below is difficult to implement here because the following doesn't work:
-     *   objectMapper.readValue(response.getBody(), CATEGORY_CLASS[].class);
-     */
     /**
      * Get all AbstractCategories from the database.
      *
      * @return BackendResponse containing a List of AbstractCategories.
      */
     @NonNull
-    public abstract BackendResponse<D[]> getAll();
+    public BackendResponse<AbstractCategoryDTO[]> getAll() {
+        HttpStatusCode retStatus = null;
+        AbstractCategoryDTO[] retDto = null;
+        ErrorMessageDTO retError = null;
+        ResponseEntity<AbstractCategoryDTO[]> response =
+            restTemplate.getForEntity(apiEndpoint, AbstractCategoryDTO[].class);
+
+        switch((HttpStatus) response.getStatusCode()) {
+            case OK:
+                retStatus = HttpStatus.OK;
+                retError = null;
+                retDto = response.getBody();
+                break;
+
+            case NO_CONTENT:
+                retStatus = HttpStatus.NO_CONTENT;
+                retDto = new AbstractCategoryDTO[] { /* Empty */ };
+                retError = null;
+                break;
+
+            case INTERNAL_SERVER_ERROR:
+                // Fallthrough intentional
+            default:
+                retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                retDto = null;
+                retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
+                break;
+        }
+
+        return new BackendResponse<AbstractCategoryDTO[]>(retStatus, retDto, retError);
+    }
 
     /**
      * Find one AbstractCategory by ID.
@@ -77,14 +101,14 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
      * @return BackenResponse containing the found AbstractCategory.
      */
     @NonNull
-    public BackendResponse<D> get(@NonNull Long id) {
+    public BackendResponse<AbstractCategoryDTO> get(@NonNull Long id) {
         HttpStatusCode retStatus = null;
-        D retDto = null;
+        AbstractCategoryDTO retDto = null;
         ErrorMessageDTO retError = null;
-        ResponseEntity<D> response =
+        ResponseEntity<AbstractCategoryDTO> response =
             restTemplate.getForEntity(
                 apiEndpoint + ID_ENDPOINT,
-                categoryClass,
+                AbstractCategoryDTO.class,
                 id
             );
 
@@ -113,7 +137,7 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
                 break;
         }
 
-        return new BackendResponse<D>(retStatus, retDto, retError);
+        return new BackendResponse<AbstractCategoryDTO>(retStatus, retDto, retError);
     }
 
     /**
@@ -123,9 +147,9 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
      * @return BackendResponse containing the updated AbstractCategory.
      */
     @NonNull
-    public BackendResponse<D> update(@NonNull AbstractCategoryDTO abstractCategory) {
+    public BackendResponse<AbstractCategoryDTO> update(@NonNull AbstractCategoryDTO abstractCategory) {
         HttpStatusCode retStatus = null;
-        D retDto = null;
+        AbstractCategoryDTO retDto = null;
         ErrorMessageDTO retError = null;
         ResponseEntity<String> response =
             restTemplate.exchange(
@@ -143,7 +167,7 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
 
                 // Extract returned object
                 try {
-                    retDto = objectMapper.readValue(response.getBody(), categoryClass);
+                    retDto = objectMapper.readValue(response.getBody(), AbstractCategoryDTO.class);
                 } catch (JsonProcessingException e) {
                     log.error(e.toString());
                     retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -183,7 +207,7 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
                 break;
         }
 
-        return new BackendResponse<D>(retStatus, retDto, retError);
+        return new BackendResponse<AbstractCategoryDTO>(retStatus, retDto, retError);
     }
 
     /**
@@ -202,9 +226,9 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
      * @return BackendResponse containing the created AbstractCategory.
      */
     @NonNull
-    public BackendResponse<D> create(@NonNull D abstractCategory) {
+    public BackendResponse<AbstractCategoryDTO> create(@NonNull AbstractCategoryDTO abstractCategory) {
         HttpStatusCode retStatus = null;
-        D retDto = null;
+        AbstractCategoryDTO retDto = null;
         ErrorMessageDTO retError = null;
         abstractCategory.setId(null);
         ResponseEntity<String> response =
@@ -221,7 +245,7 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
 
                 // Extract returned object
                 try {
-                    retDto = objectMapper.readValue(response.getBody(), categoryClass);
+                    retDto = objectMapper.readValue(response.getBody(), AbstractCategoryDTO.class);
                 } catch (JsonProcessingException e) {
                     log.error(e.toString());
                     retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -252,7 +276,7 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
                 break;
         }
 
-        return new BackendResponse<D>(retStatus, retDto, retError);
+        return new BackendResponse<AbstractCategoryDTO>(retStatus, retDto, retError);
     }
 
     /**
@@ -262,14 +286,14 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
      * @return BackendResponse containing the found AbstractCategory.
      */
     @NonNull
-    public BackendResponse<D> get(@NonNull String name) {
+    public BackendResponse<AbstractCategoryDTO> get(@NonNull String name) {
         HttpStatusCode retStatus = null;
-        D retDto = null;
+        AbstractCategoryDTO retDto = null;
         ErrorMessageDTO retError = null;
-        ResponseEntity<D> response =
+        ResponseEntity<AbstractCategoryDTO> response =
             restTemplate.getForEntity(
                 apiEndpoint + NAME_ENDPOINT,
-                categoryClass,
+                AbstractCategoryDTO.class,
                 name
             );
 
@@ -298,6 +322,6 @@ public abstract class AbstractCategoryApiService<D extends AbstractCategoryDTO> 
                 break;
         }
 
-        return new BackendResponse<D>(retStatus, retDto, retError);
+        return new BackendResponse<AbstractCategoryDTO>(retStatus, retDto, retError);
     }
 }

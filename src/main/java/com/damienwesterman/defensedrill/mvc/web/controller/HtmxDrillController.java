@@ -94,7 +94,7 @@ public class HtmxDrillController {
             // ID already included
             model.addAttribute("description", "temp");
             model.addAttribute("instructionsList", drill.getInstructions());
-            // TODO: Change endpoint to retrieve a list of CategoryDTO and RelatedDrillDTO (only name and ID) instead of lists of Longs
+            // TODO: Change endpoint to retrieve a list of AbstractCategoryDTO and RelatedDrillDTO (only name and ID) instead of lists of Longs
             model.addAttribute("categoriesList", drill.getCategories());
             model.addAttribute("subCategoriesList", drill.getSubCategories());
             model.addAttribute("relatedDrillsList", drill.getRelatedDrillIds());
