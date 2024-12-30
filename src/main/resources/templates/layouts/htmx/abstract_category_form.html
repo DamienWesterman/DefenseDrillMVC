@@ -13,7 +13,8 @@
                     class="form-container"
                     th:hx-post="${postEndpoint}"
                     hx-target="#contentArea"
-                    hx-swap="innerHTML">
+                    hx-swap="innerHTML"
+                    hx-indicator=".loading-indicator">
 
                     <div class="form-group">
                         <label for="name">Name:</label>
@@ -47,15 +48,14 @@
                             title="Description must be between 1 and 511 characters." />
                     </div>
 
-                    <!-- TODO: FINISH THIS AND MAKE OPTIONAL (default no) -->
                     <!-- Sub-window for selecting drills -->
-                    <div class="form-group">
-                        <label for="drills">Select Drills that belong to this Category:</label>
+                    <div class="form-group" th:if="${displayDrillsList} == true">
+                        <label for="drillIds">Select Drills that belong to this Category:</label>
                         <div class="sub-window">
                             <ul class="check-list">
                                 <li th:each="drill : ${drillsList}">
                                     <label>
-                                        <input type="checkbox" name="drills" th:value="${drill.id}" th:text="${drill.name}"/>
+                                        <input type="checkbox" name="drillIds" th:value="${drill.id}" th:text="${drill.name}"/>
                                     </label>
                                 </li>
                             </ul>
@@ -67,6 +67,8 @@
                     </div>
                 </form>
             </div>
+            <br>
+            <img class="center-image loading-indicator" src="/thymeleaf/images/loading-indicator.gif" />
         </div>
     </body>
 </html>

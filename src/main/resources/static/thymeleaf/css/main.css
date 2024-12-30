@@ -14,6 +14,17 @@ body {
     text-align: center;
 }
 
+.center-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+img {
+    height: 64px;
+    width: 64px;
+}
+
 .error {
     color: #ba3939;
     background: #ffe0e0;
@@ -367,4 +378,13 @@ nav a:hover {
 
 .check-list input[type="checkbox"] {
     margin-right: 10px;
+}
+
+.loading-indicator {
+    opacity: 0;
+    transition: opacity 500ms ease-in;
+}
+
+.htmx-request.loading-indicator{
+    opacity:1;
 }

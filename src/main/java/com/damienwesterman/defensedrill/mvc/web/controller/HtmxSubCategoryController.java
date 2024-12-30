@@ -40,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.damienwesterman.defensedrill.mvc.service.DrillApiService;
 import com.damienwesterman.defensedrill.mvc.service.SubCategoryApiService;
+import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryCreateDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -53,6 +54,8 @@ import lombok.RequiredArgsConstructor;
 public class HtmxSubCategoryController {
     private final SubCategoryApiService subCategoryApiService;
     private final DrillApiService drillApiService;
+
+    // TODO: FIXME: port all changes into here from categorycontroller
 
     @GetMapping("/view")
     public String viewAllSubCategories(Model model) {
@@ -111,7 +114,8 @@ public class HtmxSubCategoryController {
     }
 
     @PostMapping("/create")
-    public String createSubCategory(Model model, @ModelAttribute AbstractCategoryDTO subCategory) {
+    public String createSubCategory(Model model,
+            @ModelAttribute AbstractCategoryCreateDTO subCategory) {
         var response = subCategoryApiService.create(subCategory);
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
@@ -125,8 +129,6 @@ public class HtmxSubCategoryController {
         }
 
         model.addAttribute("backEndpoint", "/htmx/sub_category/create");
-
-        // TODO: ask if the user wants to tie it to any drills
 
         return "layouts/htmx/abstract_category_view_one :: abstractCategoryDetails";
     }

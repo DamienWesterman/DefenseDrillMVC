@@ -40,9 +40,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.damienwesterman.defensedrill.mvc.service.CategoryApiService;
 import com.damienwesterman.defensedrill.mvc.service.DrillApiService;
+import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryCreateDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryDTO;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Controller for all HTMX element access
@@ -50,6 +52,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/htmx/category")
 @RequiredArgsConstructor
+@Slf4j
 public class HtmxCategoryController {
     private final CategoryApiService categoryApiService;
     private final DrillApiService drillApiService;
@@ -111,7 +114,7 @@ public class HtmxCategoryController {
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
         } else {
-            // TODO: Display the window
+            model.addAttribute("displayDrillsList", true);
             model.addAttribute("drillsList", response.getResponse());
         }
 
@@ -119,7 +122,8 @@ public class HtmxCategoryController {
     }
 
     @PostMapping("/create")
-    public String createCategory(Model model, @ModelAttribute AbstractCategoryDTO category) {
+    public String createCategory(Model model,
+            @ModelAttribute AbstractCategoryCreateDTO category) {
         var response = categoryApiService.create(category);
         if (response.hasError() || null == response.getResponse()) {
             model.addAttribute("errorMessage", response.getError().toString());
