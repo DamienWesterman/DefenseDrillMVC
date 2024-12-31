@@ -51,7 +51,7 @@
                     <!-- Sub-window for selecting drills -->
                     <div class="form-group" th:if="${displayDrillsList} == true">
                         <label for="drillIds">Select Drills that belong to this Category:</label>
-                        <div class="sub-window">
+                        <div class="checkbox-window">
                             <ul class="check-list">
                                 <li th:each="drill : ${drillsList}">
                                     <label>

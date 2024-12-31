@@ -173,7 +173,7 @@ nav a:hover {
 .bordered-box {
     border: 2px solid var(--primary-color);
     border-radius: 8px;
-    padding: 20px;
+    padding: 5px;
     height: 100%; /* Take full height of the content area */
     background-color: var(--background-primary);
 }
@@ -351,7 +351,7 @@ nav a:hover {
     margin-top: 1rem;
 }
 
-.sub-window {
+.checkbox-window {
     border: 1px solid #4EA217; /* Drill green */
     border-radius: 8px;
     padding: 10px;
@@ -359,6 +359,64 @@ nav a:hover {
     overflow-y: auto; /* Enables scrolling if the list is long */
     background-color: #FFFFFF; /* Matches the view-window */
     color: #000000;
+}
+
+.sub-window {
+    border: 1px solid #4EA217; /* Drill green */
+    border-radius: 8px;
+    padding: 10px;
+    max-height: 35vh; /* Adjust as needed */
+    overflow-y: auto; /* Enables scrolling if the list is long */
+    background-color: #3E3E3E;
+}
+
+/* Sub-sub-window for individual instructions */
+.sub-sub-window {
+    border: 1px solid #4EA217; /* Matches drill green */
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #444444; /* Slightly lighter than sub-window */
+    color: #FFFFFF;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+/* Remove bullet points from the list */
+.instruction-list {
+    list-style-type: none;
+    padding: 0; /* Removes default padding */
+    margin: 0; /* Removes default margin */
+}
+
+.instruction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #4EA217; /* Divider for clarity */
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.instruction-description {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.instruction-video-id {
+    font-size: 0.9em;
+    color: #AAAAAA; /* Lighter color for less emphasis */
+}
+
+.instruction-steps {
+    padding-left: 15px; /* Adds spacing for the steps section */
+}
+
+.instruction-steps p {
+    margin-bottom: 5px; /* Spacing above the steps list */
+}
+
+.instruction-steps ol {
+    padding-left: 20px; /* Indents the ordered list */
 }
 
 .check-list {

@@ -14,24 +14,28 @@
             <div class="window-title" th:text="${name}"></div>
             <p th:text="'ID: ' + ${id}"></p>
 
-            <!-- TODO: make each of these a box (sub-sub-window?) -->
-            <div class="view-window">
+            <div class="sub-window">
                 <div class="window-title">Instructions</div>
-                <ul>
+                <ul class="instruction-list">
                     <li th:each="instructionDetails : ${instructionsList}">
-                        <div class="description" th:text="${instructionDetails.description}"></div>
-                        <div th:text="'&emsp;Video ID: ' + ${instructionDetails.videoId}"></div>
-                        <p>Steps:</p>
-                        <ol>
-                            <li  th:each="step : ${instructionDetails.steps}" th:text="${step}"></li>
-                        </ol>
-                        <br>
+                        <div class="sub-sub-window">
+                            <div class="instruction-header">
+                                <p class="instruction-description" th:text="${instructionDetails.description}"></p>
+                                <p class="instruction-video-id" th:text="'Video ID: ' + ${instructionDetails.videoId}"></p>
+                            </div>
+                            <div class="instruction-steps">
+                                <p>Steps:</p>
+                                <ol>
+                                    <li th:each="step : ${instructionDetails.steps}" th:text="${step}"></li>
+                                </ol>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </div>
             <br>
 
-            <div class="view-window">
+            <div class="sub-window">
                 <div class="window-title">Categories</div>
                 <ul class="window-list">
                     <li th:each="category : ${categoriesList}" th:text="${category.name}"></li>
@@ -39,7 +43,7 @@
             </div>
             <br>
 
-            <div class="view-window">
+            <div class="sub-window">
                 <div class="window-title">Subcategories</div>
                 <ul class="window-list">
                     <li th:each="subCategory : ${subCategoriesList}" th:text="${subCategory.name}"></li>
@@ -47,7 +51,7 @@
             </div>
             <br>
 
-            <div class="view-window">
+            <div class="sub-window">
                 <div class="window-title">Related Drills</div>
                 <ul class="window-list">
                     <li th:each="relatedDrill : ${relatedDrillsList}" th:text="${relatedDrill.name}"></li>

@@ -98,7 +98,6 @@ public class HtmxDrillController {
             model.addAttribute("subCategoriesList", drill.getSubCategories());
             model.addAttribute("relatedDrillsList", drill.getRelatedDrillIds());
         }
-        // TODO: FINISH THIS AND THE CORRESPONDING html (using the newly updated API)
 
         model.addAttribute("backEndpoint", "/htmx/drill/view");
 
