@@ -26,6 +26,8 @@
 
 package com.damienwesterman.defensedrill.mvc.service;
 
+import java.util.List;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -61,6 +63,8 @@ public class DrillApiService {
     private final static String API_ENDPOINT = Constants.REST_API_BASE_ADDRESS + "/drill";
     private final static String ID_ENDPOINT = "/id/{id}";
     private final static String NAME_ENDPOINT = "/name/{name}";
+    private final static String ADD_CATEGORY_ENDPOINT = "/add_category/{categoryId}";
+    private final static String ADD_SUB_CATEGORY_ENDPOINT = "/add_sub_category/{categoryId}";
     private final static String INSTRUCTIONS_LIST_ENDPOINT = ID_ENDPOINT + "/how-to";
     private final static String INSTRUCTIONS_DETAILS_ENDPOINT = INSTRUCTIONS_LIST_ENDPOINT + "/{number}";
 
@@ -179,6 +183,130 @@ public class DrillApiService {
         }
 
         return new BackendResponse<DrillResponseDTO>(retStatus, retDto, retError);
+    }
+
+    /**
+     * Update a list of drills to add the category.
+     *
+     * @param categoryId ID of the Category to add.
+     * @param drillIds Drills to update.
+     * @return Empty BackendResponse.
+     */
+    @NonNull
+    public BackendResponse<String> updateCategories(@NonNull Long categoryId, @NonNull List<Long> drillIds) {
+        HttpStatusCode retStatus = null;
+        String retDto = null;
+        ErrorMessageDTO retError = null;
+        ResponseEntity<String> response =
+            restTemplate.exchange(
+                API_ENDPOINT + ADD_CATEGORY_ENDPOINT,
+                HttpMethod.PATCH,
+                new HttpEntity<List<Long>>(drillIds),
+                String.class,
+                categoryId
+            );
+
+        switch((HttpStatus) response.getStatusCode()) {
+            case NO_CONTENT:
+                retStatus = HttpStatus.NO_CONTENT;
+                retError = null;
+                retDto = "Successfully added Category to Drills.";
+                break;
+
+            case BAD_REQUEST:
+                retStatus = HttpStatus.BAD_REQUEST;
+                retDto = null;
+                try {
+                    retError = objectMapper.readValue(response.getBody(), ErrorMessageDTO.class);
+                } catch (JsonProcessingException e) {
+                    log.error(e.toString());
+                    retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                    retDto = null;
+                    retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
+                }
+                break;
+
+            case NOT_FOUND:
+                retStatus = HttpStatus.NOT_FOUND;
+                retDto = null;
+                retError = new ErrorMessageDTO(
+                    Constants.NOT_FOUND_ERROR,
+                    "Category " + categoryId + " does not exist."
+                );
+                break;
+
+            case INTERNAL_SERVER_ERROR:
+                // Fallthrough intentional
+            default:
+                retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                retDto = null;
+                retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
+                break;
+        }
+
+        return new BackendResponse<String>(retStatus, retDto, retError);
+    }
+
+    /**
+     * Update a list of drills to add the sub-category.
+     *
+     * @param subCategoryId ID of the SubCategory to add.
+     * @param drillIds Drills to update.
+     * @return Empty BackendResponse.
+     */
+    @NonNull
+    public BackendResponse<String> updateSubCategories(@NonNull Long subCategoryId, @NonNull List<Long> drillIds) {
+        HttpStatusCode retStatus = null;
+        String retDto = null;
+        ErrorMessageDTO retError = null;
+        ResponseEntity<String> response =
+            restTemplate.exchange(
+                API_ENDPOINT + ADD_SUB_CATEGORY_ENDPOINT,
+                HttpMethod.PATCH,
+                new HttpEntity<List<Long>>(drillIds),
+                String.class,
+                subCategoryId
+            );
+
+        switch((HttpStatus) response.getStatusCode()) {
+            case NO_CONTENT:
+                retStatus = HttpStatus.NO_CONTENT;
+                retError = null;
+                retDto = "Successfully added Sub-Category to Drills.";
+                break;
+
+            case BAD_REQUEST:
+                retStatus = HttpStatus.BAD_REQUEST;
+                retDto = null;
+                try {
+                    retError = objectMapper.readValue(response.getBody(), ErrorMessageDTO.class);
+                } catch (JsonProcessingException e) {
+                    log.error(e.toString());
+                    retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                    retDto = null;
+                    retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
+                }
+                break;
+
+            case NOT_FOUND:
+                retStatus = HttpStatus.NOT_FOUND;
+                retDto = null;
+                retError = new ErrorMessageDTO(
+                    Constants.NOT_FOUND_ERROR,
+                    "Sub-Category " + subCategoryId + " does not exist."
+                );
+                break;
+
+            case INTERNAL_SERVER_ERROR:
+                // Fallthrough intentional
+            default:
+                retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                retDto = null;
+                retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
+                break;
+        }
+
+        return new BackendResponse<String>(retStatus, retDto, retError);
     }
 
     /**

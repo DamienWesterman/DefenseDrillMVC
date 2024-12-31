@@ -55,8 +55,6 @@ public class HtmxSubCategoryController {
     private final SubCategoryApiService subCategoryApiService;
     private final DrillApiService drillApiService;
 
-    // TODO: FIXME: port all changes into here from categorycontroller
-
     @GetMapping("/view")
     public String viewAllSubCategories(Model model) {
         var response = subCategoryApiService.getAll();
@@ -110,22 +108,37 @@ public class HtmxSubCategoryController {
         model.addAttribute("postEndpoint", "/htmx/sub_category/create");
         model.addAttribute("buttonText", "Create");
 
+        var response = drillApiService.getAll();
+        if (response.hasError() || null == response.getResponse()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+        } else {
+            model.addAttribute("displayDrillsList", true);
+            model.addAttribute("drillsList", response.getResponse());
+        }
+
         return "layouts/htmx/abstract_category_form :: abstractCategoryForm";
     }
 
     @PostMapping("/create")
     public String createSubCategory(Model model,
             @ModelAttribute AbstractCategoryCreateDTO subCategory) {
-        var response = subCategoryApiService.create(subCategory);
-        if (response.hasError() || null == response.getResponse()) {
-            model.addAttribute("errorMessage", response.getError().toString());
+        var createResponse = subCategoryApiService.create(subCategory.toAbstractCategoryDTO());
+        if (createResponse.hasError() || null == createResponse.getResponse()) {
+            model.addAttribute("errorMessage", createResponse.getError().toString());
         } else {
             model.addAttribute("successMessage", "Sub-Category Created Successfully!");
 
-            var newSubCategory = response.getResponse();
+            var newSubCategory = createResponse.getResponse();
             model.addAttribute("name", newSubCategory.getName());
             model.addAttribute("id", newSubCategory.getId());
             model.addAttribute("description", newSubCategory.getDescription());
+
+            if (null != subCategory.getDrillIds() && !subCategory.getDrillIds().isEmpty()) {
+                var updateDrillsResponse = drillApiService.updateSubCategories(newSubCategory.getId(), subCategory.getDrillIds());
+                if (updateDrillsResponse.hasError()) {
+                    model.addAttribute("errorMessage", updateDrillsResponse.getError().toString());
+                }
+            }
         }
 
         model.addAttribute("backEndpoint", "/htmx/sub_category/create");

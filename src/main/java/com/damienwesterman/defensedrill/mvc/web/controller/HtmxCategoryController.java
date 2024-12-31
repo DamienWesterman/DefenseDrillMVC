@@ -44,7 +44,6 @@ import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryCreateDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryDTO;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Controller for all HTMX element access
@@ -52,7 +51,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/htmx/category")
 @RequiredArgsConstructor
-@Slf4j
 public class HtmxCategoryController {
     private final CategoryApiService categoryApiService;
     private final DrillApiService drillApiService;
@@ -124,16 +122,23 @@ public class HtmxCategoryController {
     @PostMapping("/create")
     public String createCategory(Model model,
             @ModelAttribute AbstractCategoryCreateDTO category) {
-        var response = categoryApiService.create(category);
-        if (response.hasError() || null == response.getResponse()) {
-            model.addAttribute("errorMessage", response.getError().toString());
+        var createResponse = categoryApiService.create(category.toAbstractCategoryDTO());
+        if (createResponse.hasError() || null == createResponse.getResponse()) {
+            model.addAttribute("errorMessage", createResponse.getError().toString());
         } else {
             model.addAttribute("successMessage", "Category Created Successfully!");
 
-            var newCategory = response.getResponse();
+            var newCategory = createResponse.getResponse();
             model.addAttribute("name", newCategory.getName());
             model.addAttribute("id", newCategory.getId());
             model.addAttribute("description", newCategory.getDescription());
+
+            if (null != category.getDrillIds() && !category.getDrillIds().isEmpty()) {
+                var updateDrillsResponse = drillApiService.updateCategories(newCategory.getId(), category.getDrillIds());
+                if (updateDrillsResponse.hasError()) {
+                    model.addAttribute("errorMessage", updateDrillsResponse.getError().toString());
+                }
+            }
         }
 
         model.addAttribute("backEndpoint", "/htmx/category/create");

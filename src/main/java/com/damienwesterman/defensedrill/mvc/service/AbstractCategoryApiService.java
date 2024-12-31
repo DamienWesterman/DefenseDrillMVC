@@ -36,7 +36,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.damienwesterman.defensedrill.mvc.util.Constants;
 import com.damienwesterman.defensedrill.mvc.web.BackendResponse;
-import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryCreateDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.ErrorMessageDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -227,8 +226,7 @@ public abstract class AbstractCategoryApiService {
      * @return BackendResponse containing the created AbstractCategory.
      */
     @NonNull
-    public BackendResponse<AbstractCategoryDTO> create(@NonNull AbstractCategoryCreateDTO abstractCategory) {
-        // TODO: FIXME: START HERE - change the backend to accept the list of drills and add the categories
+    public BackendResponse<AbstractCategoryDTO> create(@NonNull AbstractCategoryDTO abstractCategory) {
         HttpStatusCode retStatus = null;
         AbstractCategoryDTO retDto = null;
         ErrorMessageDTO retError = null;
