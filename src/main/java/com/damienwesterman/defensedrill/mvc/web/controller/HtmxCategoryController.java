@@ -58,7 +58,7 @@ public class HtmxCategoryController {
     @GetMapping("/view")
     public String viewAllCategories(Model model) {
         var response = categoryApiService.getAll();
-        if (response.hasError() || null == response.getResponse()) {
+        if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
         } else {
             List<AbstractCategoryDTO> categories = List.of(response.getResponse());
@@ -88,7 +88,7 @@ public class HtmxCategoryController {
     @GetMapping("/view/{id}")
     public String viewOneCategory(Model model, @PathVariable Long id) {
         var response = categoryApiService.get(id);
-        if (response.hasError() || null == response.getResponse()) {
+        if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
         } else {
             var category = response.getResponse();
@@ -104,14 +104,14 @@ public class HtmxCategoryController {
 
     @GetMapping("/create")
     public String createCategoryForm(Model model) {
-        model.addAttribute("title", "Create New Category");
+        model.addAttribute("windowTitle", "Create New Category");
         model.addAttribute("postEndpoint", "/htmx/category/create");
         model.addAttribute("buttonText", "Create");
 
         var response = drillApiService.getAll();
-        if (response.hasError() || null == response.getResponse()) {
+        if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
-        } else {
+        } else if (0 < response.getResponse().length) {
             model.addAttribute("displayDrillsList", true);
             model.addAttribute("drillsList", response.getResponse());
         }
@@ -123,7 +123,7 @@ public class HtmxCategoryController {
     public String createCategory(Model model,
             @ModelAttribute AbstractCategoryCreateDTO category) {
         var createResponse = categoryApiService.create(category.toAbstractCategoryDTO());
-        if (createResponse.hasError() || null == createResponse.getResponse()) {
+        if (createResponse.hasError()) {
             model.addAttribute("errorMessage", createResponse.getError().toString());
         } else {
             model.addAttribute("successMessage", "Category Created Successfully!");
@@ -149,7 +149,7 @@ public class HtmxCategoryController {
     @GetMapping("/modify")
     public String modifyCategoryList(Model model) {
         var response = categoryApiService.getAll();
-        if (response.hasError() || null == response.getResponse()) {
+        if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
         } else {
             List<AbstractCategoryDTO> categories = List.of(response.getResponse());
@@ -179,12 +179,12 @@ public class HtmxCategoryController {
     @GetMapping("/modify/{id}")
     public String modifyOneCategoryForm(Model model, @PathVariable Long id) {
         var response = categoryApiService.get(id);
-        if (response.hasError() || null == response.getResponse()) {
+        if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
         } else {
             AbstractCategoryDTO category = response.getResponse();
 
-            model.addAttribute("title", "Modify Category: " + id);
+            model.addAttribute("windowTitle", "Modify Category: " + id);
             model.addAttribute("postEndpoint", "/htmx/category/modify/" + id);
             model.addAttribute("buttonText", "Update");
             model.addAttribute("nameText", category.getName());
@@ -199,7 +199,7 @@ public class HtmxCategoryController {
             @PathVariable Long id, @ModelAttribute AbstractCategoryDTO category) {
         category.setId(id);
         var response = categoryApiService.update(category);
-        if (response.hasError() || null == response.getResponse()) {
+        if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
         } else {
             model.addAttribute("successMessage", "Category Modified Successfully!");
@@ -218,7 +218,7 @@ public class HtmxCategoryController {
     @GetMapping("/delete")
     public String deleteCategoryList(Model model) {
         var response = categoryApiService.getAll();
-        if (response.hasError() || null == response.getResponse()) {
+        if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
         } else {
             List<AbstractCategoryDTO> categories = List.of(response.getResponse());
@@ -248,7 +248,7 @@ public class HtmxCategoryController {
     @GetMapping("/confirm_delete/{id}")
     public String confirmDeleteCategory(Model model, @PathVariable Long id) {
         var response = categoryApiService.get(id);
-        if (response.hasError() || null == response.getResponse()) {
+        if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
             return deleteCategoryList(model);
         }

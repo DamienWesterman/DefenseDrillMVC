@@ -27,6 +27,7 @@
 package com.damienwesterman.defensedrill.mvc.web.dto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -71,4 +72,36 @@ public class DrillUpdateDTO {
 
     @Nullable
     private List<InstructionsDTO> instructions;
+
+    /**
+     * Parameterized constructor from the backend's response.
+     *
+     * @param drill Backend DrillResponseDTO
+     */
+    public DrillUpdateDTO(DrillResponseDTO drill) {
+        this.name = drill.getName();
+        this.categoryIds = drill.getCategories().stream()
+            .map(AbstractCategoryDTO::getId)
+            .collect(Collectors.toList());
+        this.subCategoryIds = drill.getSubCategories().stream()
+            .map(AbstractCategoryDTO::getId)
+            .collect(Collectors.toList());
+        this.relatedDrills = drill.getRelatedDrillIds().stream()
+            .map(DrillRelatedDTO::getId)
+            .collect(Collectors.toList());
+        this.instructions = drill.getInstructions();
+    }
+
+    /**
+     * Fill in this DTO's information using DrillCreateHtmxDTO.
+     *
+     * @param drill DrillCreateHtmxDTO object.
+     */
+    public void fillInfo(DrillCreateHtmxDTO drill) {
+        this.name = drill.getName();
+        this.categoryIds = drill.getCategoryIds();
+        this.subCategoryIds = drill.getSubCategoryIds();
+        this.relatedDrills = drill.getRelatedDrillIds();
+        // Instructions are not saved in DrillCreateHtmxDTO, leave as it was
+    }
 }

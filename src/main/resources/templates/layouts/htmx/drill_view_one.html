@@ -6,7 +6,6 @@
     </head>
 
     <!-- To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" -->
-<!-- TODO: Fuss with the css to make sure that it does not overflow left OR right, and to make sub-windows or something, give each sub-window a certain amount of space (40% for instructions, 20 for other, etc.) -->
     <div th:fragment="drillDetails">
         <p class="error center" th:text="${errorMessage}"></p>
         <p class="success center" th:text="${successMessage}"></p>
@@ -16,8 +15,11 @@
 
             <div class="sub-window">
                 <div class="window-title">Instructions</div>
+                <!-- TODO: Add a button to create a new instructions -->
                 <ul class="instruction-list">
                     <li th:each="instructionDetails : ${instructionsList}">
+                        <!-- TODO: Add a button to modify the current instructions -->
+                        <!-- TODO: Add a button to delete the current instructions -->
                         <div class="sub-sub-window">
                             <div class="instruction-header">
                                 <p class="instruction-description" th:text="${instructionDetails.description}"></p>
