@@ -37,6 +37,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.damienwesterman.defensedrill.mvc.service.CategoryApiService;
 import com.damienwesterman.defensedrill.mvc.service.DrillApiService;
 import com.damienwesterman.defensedrill.mvc.service.SubCategoryApiService;
@@ -168,5 +171,35 @@ public class HtmxDrillController {
         model.addAttribute("backEndpoint", "/htmx/drill/create");
 
         return "layouts/htmx/drill_view_one :: drillDetails";
+    }
+
+    @GetMapping("/{drillId}/instructions/create")
+    @ResponseBody
+    public String createNewInstructions(Model model, @PathVariable Long drillId,
+            @RequestParam String startingEndpoint) {
+        // TODO: properly implement
+        // TODO: create accompanying html
+        // TODO: create the post endpoint
+        return "Creating new drill for Drill ID: " + drillId + "<br>Using back button: " + startingEndpoint;
+    }
+
+    @GetMapping("/{drillId}/instructions/modify")
+    @ResponseBody
+    public String modifyInstructions(Model model, @PathVariable Long drillId,
+            @RequestParam String startingEndpoint) {
+        // TODO: Properly implement
+        // TODO: create accompnying html
+        // TODO: create the post endpoint
+        return "Creating new drill for Drill ID: " + drillId + "<br>Using back button: " + startingEndpoint;
+    }
+
+    @GetMapping("/{drillId}/instructions/delete")
+    @ResponseBody
+    public String deleteInstructionsConfirmation(Model model, @PathVariable Long drillId,
+            @RequestParam String startingEndpoint) {
+        // TODO: properly implement
+        // TODO: creat the accompanying html
+        // TODO: create the post endpoint
+        return "Creating new drill for Drill ID: " + drillId + "<br>Using back button: " + startingEndpoint;
     }
 }

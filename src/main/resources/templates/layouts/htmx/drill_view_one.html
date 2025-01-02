@@ -14,16 +14,36 @@
             <p th:text="'ID: ' + ${id}"></p>
 
             <div class="sub-window">
-                <div class="window-title">Instructions</div>
-                <!-- TODO: Add a button to create a new instructions -->
+                <div class="window-title-container">
+                    <div class="window-title">Instructions</div>
+                    <button class="button create-button"
+                        th:hx-get="'/htmx/drill/' + ${id} + '/instructions/create?startingEndpoint=' + ${backEndpoint}"
+                        hx-target="#contentArea"
+                        hx-swap="innerHTML">
+                        Create New Instructions
+                    </button>
+                </div>
+
                 <ul class="instruction-list">
                     <li th:each="instructionDetails : ${instructionsList}">
-                        <!-- TODO: Add a button to modify the current instructions -->
-                        <!-- TODO: Add a button to delete the current instructions -->
                         <div class="sub-sub-window">
                             <div class="instruction-header">
                                 <p class="instruction-description" th:text="${instructionDetails.description}"></p>
                                 <p class="instruction-video-id" th:text="'Video ID: ' + ${instructionDetails.videoId}"></p>
+                            </div>
+                            <div class="button-container">
+                                <button class="button modify-button"
+                                    th:hx-get="'/htmx/drill/' + ${id} + '/instructions/modify?startingEndpoint=' + ${backEndpoint}"
+                                    hx-target="#contentArea"
+                                    hx-swap="innerHTML">
+                                    Modify
+                                </button>
+                                <button class="button delete-button"
+                                    th:hx-get="'/htmx/drill/' + ${id} + '/instructions/delete?startingEndpoint=' + ${backEndpoint}"
+                                    hx-target="#contentArea"
+                                    hx-swap="innerHTML">
+                                    Delete
+                                </button>
                             </div>
                             <div class="instruction-steps">
                                 <p>Steps:</p>

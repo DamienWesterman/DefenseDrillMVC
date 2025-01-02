@@ -233,6 +233,31 @@ nav a:hover {
     cursor: not-allowed;
 }
 
+.create-button {
+    margin-bottom: 10px; /* Space below the create button */
+    display: inline-block;
+    margin-left: auto; /* Push button to the right */
+    font-size: 0.85em; /* Slightly smaller font */
+    padding: 4px 10px; /* Smaller button */
+}
+
+.modify-button {
+    margin-bottom: 10px;
+    display: inline-block;
+    margin-right: auto;
+    font-size: 0.85em;
+    padding: 4px 10px;
+}
+
+.delete-button {
+    margin-bottom: 10px;
+    display: inline-block;
+    margin-left: auto;
+    font-size: 0.85em;
+    padding: 4px 10px;
+    background-color: #D73E3E; /* Red variant */
+}
+
 /* Forms */
 .input-field {
     background-color: #2D2D2D;
@@ -279,6 +304,13 @@ nav a:hover {
     padding: 10px;
     background-color: #2D2D2D; /* Dark background */
     color: #FFFFFF;
+}
+
+/* Window title container for aligning the title and button */
+.window-title-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between title and button */
 }
 
 .window-title {
@@ -393,8 +425,6 @@ nav a:hover {
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #4EA217; /* Divider for clarity */
-    padding-bottom: 5px;
-    margin-bottom: 10px;
 }
 
 .instruction-description {
