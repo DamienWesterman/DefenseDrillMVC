@@ -258,6 +258,11 @@ nav a:hover {
     background-color: #D73E3E; /* Red variant */
 }
 
+.delete-step-button {
+    margin-left: auto;
+    background-color: #D73E3E; /* Red variant */
+}
+
 /* Forms */
 .input-field {
     background-color: #2D2D2D;
@@ -475,4 +480,35 @@ nav a:hover {
 
 .htmx-request.loading-indicator{
     opacity:1;
+}
+
+/* Steps container */
+.steps-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 5px;
+}
+
+/* Step input */
+.step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.step-input {
+    flex-grow: 1;
+}
+
+/* Apply styles to the ordered list (ol) */
+.steps-form-list {
+    list-style: decimal; /* Ensures numbering for list items */
+    color: white; /* Default text color for the list */
+}
+
+.steps-form-list {
+    list-style-type: none;
+    padding: 0; /* Removes default padding */
+    margin: 0; /* Removes default margin */
 }

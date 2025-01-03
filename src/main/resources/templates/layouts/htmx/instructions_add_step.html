@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <link rel="stylesheet" href="styles.css" />
+        <script src="https://unpkg.com/htmx.org@1.8.0"></script>
+    </head>
+    <body>
+        <div th:fragment="instructionsAddStep">
+            <div class="steps-container">
+                <li class="step">
+                    <input
+                        type="text"
+                        name="steps"
+                        placeholder="Enter step..."
+                        class="form-input step-input"
+                        required
+                        minlength="1"
+                        maxlength="255"
+                        title="Step must be between 1 and 255 characters." />
+                        <button
+                            type="button"
+                            class="button delete-step-button"
+                            hx-get="/htmx/drill/empty_htmx"
+                            hx-target="closest .step"
+                            hx-swap="outerHTML">
+                            Delete
+                        </button>
+                </li>
+            </div>
+        </div>
+    </body>
+</html>

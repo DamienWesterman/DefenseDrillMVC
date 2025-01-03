@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <link rel="stylesheet" href="styles.css" />
+        <script src="https://unpkg.com/htmx.org@1.8.0"></script>
+    </head>
+    <body>
+        <!-- To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" -->
+        <div th:fragment="instructionsForm">
+            <div class="view-window">
+                <div class="window-title" th:text="${windowTitle}"></div>
+                <form
+                    class="form-container"
+                    th:hx-post="'/htmx/drill/' + ${drillId} + '/instructions/create?startingEndpoint=' + ${backEndpoint}"
+                    hx-target="#contentArea"
+                    hx-swap="innerHTML">
+                    <!-- Description Field -->
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <!-- descriptionText optional -->
+                        <input
+                            th:value="${descriptionText}"
+                            id="description"
+                            type="text"
+                            name="description"
+                            placeholder="Enter description..."
+                            class="form-input"
+                            required
+                            minlength="1"
+                            maxlength="511"
+                            title="Description must be between 1 and 511 characters." />
+                    </div>
+
+                    <!-- Video ID Field -->
+                    <div class="form-group">
+                        <label for="videoId">Video ID (optional):</label>
+                        <!-- videoIdText optional -->
+                        <input
+                            th:value="${videoIdText}"
+                            id="videoId"
+                            type="text"
+                            name="videoId"
+                            placeholder="Enter Jellyfin video ID..."
+                            class="form-input"
+                            title="Copy/paste the corresponding Jellyfin Item ID." />
+                    </div>
+
+                    <!-- Steps Field -->
+                    <!-- TODO: Modify this so that it will iterate through any existing steps -->
+                    <div class="form-group">
+                        <label for="step">Steps (you do not need to number them):</label>
+                        <ul class="steps-form-list">
+                            <div class="steps-container">
+                                <!-- First Step, always required, cannot be deleted -->
+                                <li class="step">
+                                    <input
+                                        type="text"
+                                        name="steps"
+                                        placeholder="Enter step..."
+                                        class="form-input step-input"
+                                        required
+                                        minlength="1"
+                                        maxlength="255"
+                                        title="Step must be between 1 and 255 characters." />
+                                </li>
+                            </div>
+                            <div id="additionalSteps"></div>
+                        </ul>
+                        <!-- Add Step Button -->
+                        <button
+                            type="button"
+                            class="button"
+                            hx-get="/htmx/drill/instructions/add_step"
+                            hx-target="#additionalSteps"
+                            hx-swap="beforebegin">
+                            Add Step
+                        </button>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions button-container">
+                        <button
+                            type="button"
+                            class="button"
+                            th:hx-get="'/htmx/drill/view/' + ${drillId} + '?backEndpoint=' + ${backEndpoint}"
+                            hx-target="#contentArea"
+                            hx-swap="innerHTML" >
+                            Back
+                        </button>
+                        <button type="submit" class="button" th:text="${buttonText}"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
