@@ -39,7 +39,7 @@
                                     Modify
                                 </button>
                                 <button class="button delete-button"
-                                    th:hx-get="'/htmx/drill/' + ${id} + '/instructions/delete?startingEndpoint=' + ${backEndpoint}"
+                                    th:hx-get="'/htmx/drill/' + ${id} + '/instructions/confirm_delete/' + ${instructionDetails.description} + '?startingEndpoint=' + ${backEndpoint}"
                                     hx-target="#contentArea"
                                     hx-swap="innerHTML">
                                     Delete

@@ -43,6 +43,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.damienwesterman.defensedrill.mvc.service.CategoryApiService;
 import com.damienwesterman.defensedrill.mvc.service.DrillApiService;
 import com.damienwesterman.defensedrill.mvc.service.SubCategoryApiService;
+import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.DrillCreateHtmxDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.DrillResponseDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.DrillUpdateDTO;
@@ -235,13 +236,114 @@ public class HtmxDrillController {
         return "Modifying instructions for Drill ID: " + drillId + "<br>Using back button: " + startingEndpoint;
     }
 
-    @GetMapping("/{drillId}/instructions/delete")
-    @ResponseBody
+    @GetMapping("/{drillId}/instructions/confirm_delete/{instructionsDescription}")
     public String deleteInstructionsConfirmation(Model model, @PathVariable Long drillId,
-            @RequestParam String startingEndpoint) {
-        // TODO: properly implement
-        // TODO: creat the accompanying html
-        // TODO: create the post endpoint
-        return "Deleting instructions for Drill ID: " + drillId + "<br>Using back button: " + startingEndpoint;
+            // We want to use the instructionsDescription so that there are no timing issues with changing index positions
+            @PathVariable String instructionsDescription, @RequestParam String startingEndpoint) {
+        var response = drillApiService.get(drillId);
+        if (response.hasError()) {
+            model.addAttribute("name", instructionsDescription);
+        } else {
+            // Would be nice to remind the user what drill the instructions belond to if possible
+            DrillResponseDTO drill = response.getResponse();
+            model.addAttribute("name", drill.getName() + ": " + instructionsDescription);
+        }
+
+        model.addAttribute("windowTitle", "Confirm Instruction Deletion:");
+        model.addAttribute("id", "Drill " + drillId);
+        model.addAttribute("cancelEndpoint", "/htmx/drill/view/" + drillId + "?backEndpoint=" + startingEndpoint);
+        model.addAttribute("confirmEndpoint",
+            "/htmx/drill/" + drillId + "/instructions/delete/" + instructionsDescription + "?startingEndpoint=" + startingEndpoint);
+
+        return "layouts/htmx/confirm_delete :: confirmDelete";
+    }
+
+    @PostMapping("/{drillId}/instructions/delete/{instructionsDescription}")
+    public String deleteInstructions(Model model, @PathVariable Long drillId,
+            // We want to use the instructionsDescription so that there are no timing issues with changing index positions
+            @PathVariable String instructionsDescription, @RequestParam String startingEndpoint) {
+        var drillGetResponse = drillApiService.get(drillId);
+        if (drillGetResponse.hasError()) {
+            model.addAttribute("errorMessage", drillGetResponse.getError().toString());
+        } else {
+            DrillUpdateDTO drill = new DrillUpdateDTO(drillGetResponse.getResponse());
+
+            if (null == drill.getInstructions() || drill.getInstructions().isEmpty()) {
+                // Nothing to delete
+                return viewOneDrill(model, drillId, startingEndpoint);
+            }
+
+            for (int i = 0; i < drill.getInstructions().size(); i++) {
+                if (drill.getInstructions().get(i).getDescription().equals(instructionsDescription)) {
+                    drill.getInstructions().remove(i);
+                    break;
+                }
+            }
+
+            var drillUpdateResponse = drillApiService.update(drillId, drill);
+            if (drillUpdateResponse.hasError()) {
+                model.addAttribute("errorMessage", drillUpdateResponse.getError().toString());
+            } else {
+                model.addAttribute("successMessage", "Instructions Deleted Successfully!");
+            }
+        }
+
+        return viewOneDrill(model, drillId, startingEndpoint);
+    }
+
+    @GetMapping("/delete")
+    public String deleteDrillList(Model model) {
+        var response = drillApiService.getAll();
+        if (response.hasError()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+        } else {
+            List<DrillResponseDTO> drills = List.of(response.getResponse());
+
+            model.addAttribute("windowTitle",
+                "Choose Drill to Delete");
+            model.addAttribute("buttonText", "Delete");
+
+            // Add categories to list
+            BiFunction<String, Long, Map<String, String>> createListItem =
+                (description, categoryId) -> Map.of(
+                    "itemDescription", description,
+                    "htmxEndpoint", "/htmx/drill/confirm_delete/" + categoryId
+                );
+            List<Map<String, String>> listItems = new ArrayList<>(drills.size());
+            for (var drill : drills) {
+                listItems.add(
+                    createListItem.apply(drill.getName(), drill.getId())
+                );
+            }
+            model.addAttribute("listItems", listItems);
+        }
+
+        return "layouts/htmx/view_window_list :: viewWindowList";
+    }
+
+    @GetMapping("/confirm_delete/{id}")
+    public String confirmDeleteDrill(Model model, @PathVariable Long id) {
+        var response = drillApiService.get(id);
+        if (response.hasError()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+            return deleteDrillList(model);
+        }
+
+        DrillResponseDTO drill = response.getResponse();
+
+        model.addAttribute("windowTitle", "Confirm Drill Deletion:");
+        model.addAttribute("id", id);
+        model.addAttribute("name", drill.getName());
+        model.addAttribute("cancelEndpoint", "/htmx/drill/delete");
+        model.addAttribute("confirmEndpoint", "/htmx/drill/delete/" + id);
+
+        return "layouts/htmx/confirm_delete :: confirmDelete";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteOneDrill(Model model, @PathVariable Long id) {
+        drillApiService.delete(id);
+        model.addAttribute("successMessage", "Drill Successfully Deleted!");
+        return deleteDrillList(model);
     }
 }
