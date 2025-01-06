@@ -86,7 +86,7 @@ public class DrillUpdateDTO {
         this.subCategoryIds = drill.getSubCategories().stream()
             .map(AbstractCategoryDTO::getId)
             .collect(Collectors.toList());
-        this.relatedDrills = drill.getRelatedDrillIds().stream()
+        this.relatedDrills = drill.getRelatedDrills().stream()
             .map(DrillRelatedDTO::getId)
             .collect(Collectors.toList());
         this.instructions = drill.getInstructions();
@@ -97,7 +97,7 @@ public class DrillUpdateDTO {
      *
      * @param drill DrillCreateHtmxDTO object.
      */
-    public void fillInfo(DrillCreateHtmxDTO drill) {
+    public void fillInfo(DrillFormDTO drill) {
         this.name = drill.getName();
         this.categoryIds = drill.getCategoryIds();
         this.subCategoryIds = drill.getSubCategoryIds();

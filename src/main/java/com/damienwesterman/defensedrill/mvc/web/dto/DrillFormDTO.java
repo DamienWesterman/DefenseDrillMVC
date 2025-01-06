@@ -40,7 +40,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * DTO for creating a Drill from the HTMX form.
+ * DTO for retrieving items from the Drill Form HTML.
 */
 @Getter
 @Setter
@@ -49,7 +49,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class DrillCreateHtmxDTO {
+public class DrillFormDTO {
     @NonNull
     private String name;
     @Nullable

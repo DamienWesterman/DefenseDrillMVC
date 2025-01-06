@@ -62,7 +62,7 @@ public class DrillResponseDTO {
     private List<AbstractCategoryDTO> subCategories;
 
     @JsonProperty("related_drills")
-    private List<DrillRelatedDTO> relatedDrillIds;
+    private List<DrillRelatedDTO> relatedDrills;
 
     private List<InstructionsDTO> instructions;
 }

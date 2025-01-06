@@ -7,6 +7,8 @@
     <body>
         <!-- To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" -->
         <div th:fragment="drillForm">
+            <p class="error center" th:text="${errorMessage}"></p>
+            <p class="success center" th:text="${successMessage}"></p>
             <div class="view-window">
                 <div class="window-title" th:text="${windowTitle}"></div>
                 <form
@@ -41,7 +43,12 @@
                             <ul class="check-list">
                                 <li th:each="category : ${categoriesList}">
                                     <label>
-                                        <input type="checkbox" name="categoryIds" th:value="${category.id}" th:text="${category.name}"/>
+                                        <input
+                                            type="checkbox"
+                                            name="categoryIds"
+                                            th:value="${category.id}"
+                                            th:text="${category.name}"
+                                            th:checked="${checkedCategories.contains(category.id)}"/>
                                     </label>
                                 </li>
                             </ul>
@@ -55,7 +62,12 @@
                             <ul class="check-list">
                                 <li th:each="subCategory : ${subCategoriesList}">
                                     <label>
-                                        <input type="checkbox" name="subCategoryIds" th:value="${subCategory.id}" th:text="${subCategory.name}"/>
+                                        <input
+                                            type="checkbox"
+                                            name="subCategoryIds"
+                                            th:value="${subCategory.id}"
+                                            th:text="${subCategory.name}"
+                                            th:checked="${checkedSubCategories.contains(subCategory.id)}"/>
                                     </label>
                                 </li>
                             </ul>
@@ -69,7 +81,12 @@
                             <ul class="check-list">
                                 <li th:each="drill : ${drillsList}">
                                     <label>
-                                        <input type="checkbox" name="relatedDrillIds" th:value="${drill.id}" th:text="${drill.name}"/>
+                                        <input
+                                            type="checkbox"
+                                            name="relatedDrillIds"
+                                            th:value="${drill.id}"
+                                            th:text="${drill.name}"
+                                            th:checked="${checkedRelatedDrills.contains(drill.id)}"/>
                                     </label>
                                 </li>
                             </ul>
