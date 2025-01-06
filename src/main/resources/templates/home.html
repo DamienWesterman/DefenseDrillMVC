@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/thymeleaf/css/main.css">
 </head>
 <body>
-    <header th:insert="~{layouts/header :: headerFragment}"></header>
+    <header th:replace="~{layouts/header :: headerFragment}"></header>
     <div class="card-container">
         <a href="/modify/drill">
             <div class="card">
@@ -64,6 +64,6 @@
             </div>
         </a>
     </div>
-    <footer th:insert="~{layouts/footer :: footerFragment}"></footer>
+    <footer th:replace="~{layouts/footer :: footerFragment}"></footer>
 </body>
 </html>

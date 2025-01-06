@@ -33,7 +33,7 @@
                             </div>
                             <div class="button-container">
                                 <button class="button modify-button"
-                                    th:hx-get="'/htmx/drill/' + ${id} + '/instructions/modify?startingEndpoint=' + ${backEndpoint}"
+                                    th:hx-get="'/htmx/drill/' + ${id} + '/instructions/modify/' + ${instructionDetails.description} + '?startingEndpoint=' + ${backEndpoint}"
                                     hx-target="#contentArea"
                                     hx-swap="innerHTML">
                                     Modify

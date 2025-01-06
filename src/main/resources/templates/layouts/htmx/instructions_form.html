@@ -11,7 +11,7 @@
                 <div class="window-title" th:text="${windowTitle}"></div>
                 <form
                     class="form-container"
-                    th:hx-post="'/htmx/drill/' + ${drillId} + '/instructions/create?startingEndpoint=' + ${backEndpoint}"
+                    th:hx-post="${postEndpoint}"
                     hx-target="#contentArea"
                     hx-swap="innerHTML">
                     <!-- Description Field -->
@@ -46,14 +46,15 @@
                     </div>
 
                     <!-- Steps Field -->
-                    <!-- TODO: Modify this so that it will iterate through any existing steps -->
                     <div class="form-group">
                         <label for="step">Steps (you do not need to number them):</label>
                         <ul class="steps-form-list">
                             <div class="steps-container">
                                 <!-- First Step, always required, cannot be deleted -->
                                 <li class="step">
+                                    <!-- firstStep optional -->
                                     <input
+                                        th:value="${firstSteps}"
                                         type="text"
                                         name="steps"
                                         placeholder="Enter step..."
@@ -63,6 +64,10 @@
                                         maxlength="255"
                                         title="Step must be between 1 and 255 characters." />
                                 </li>
+                            </div>
+                            <!-- List any existing steps - optional -->
+                            <div th:each="oneStep : ${stepsListAfterFirst}">
+                                <div th:replace="~{layouts/htmx/instructions_add_step :: instructionsAddStep(descriptionText=${oneStep})}"></div>
                             </div>
                             <div id="additionalSteps"></div>
                         </ul>

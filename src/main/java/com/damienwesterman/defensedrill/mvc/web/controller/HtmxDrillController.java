@@ -43,7 +43,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.damienwesterman.defensedrill.mvc.service.CategoryApiService;
 import com.damienwesterman.defensedrill.mvc.service.DrillApiService;
 import com.damienwesterman.defensedrill.mvc.service.SubCategoryApiService;
-import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.DrillCreateHtmxDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.DrillResponseDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.DrillUpdateDTO;
@@ -190,9 +189,18 @@ public class HtmxDrillController {
     @GetMapping("/{drillId}/instructions/create")
     public String createNewInstructionsForm(Model model, @PathVariable Long drillId,
             @RequestParam String startingEndpoint) {
-        model.addAttribute("windowTitle", "Create Instructions for Drill: Round Kick");
+        var drillResponse = drillApiService.get(drillId);
+        if (drillResponse.hasError()) {
+            model.addAttribute("windowTitle", "Create Instructions");
+        } else {
+            model.addAttribute("windowTitle", "Create Instructions for Drill: "
+                + drillResponse.getResponse().getName());
+        }
+        model.addAttribute("postEndpoint",
+            "/htmx/drill/" + drillId + "/instructions/create?startingEndpoint=" + startingEndpoint);
         model.addAttribute("buttonText", "Create Instructions");
         model.addAttribute("backEndpoint", startingEndpoint);
+
         return "layouts/htmx/instructions_form :: instructionsForm";
     }
 
@@ -226,14 +234,101 @@ public class HtmxDrillController {
         return "layouts/htmx/instructions_add_step :: instructionsAddStep";
     }
 
-    @GetMapping("/{drillId}/instructions/modify")
-    @ResponseBody
-    public String modifyInstructions(Model model, @PathVariable Long drillId,
-            @RequestParam String startingEndpoint) {
+    @GetMapping("/{drillId}/instructions/modify/{instructionsDescription}")
+    public String modifyInstructionsForm(Model model, @PathVariable Long drillId,
+            // We want to use the instructionsDescription so that there are no timing issues with changing index positions
+            @PathVariable String instructionsDescription, @RequestParam String startingEndpoint) {
         // TODO: Properly implement
         // TODO: create accompnying html
         // TODO: create the post endpoint
-        return "Modifying instructions for Drill ID: " + drillId + "<br>Using back button: " + startingEndpoint;
+        var drillResponse = drillApiService.get(drillId);
+        if (drillResponse.hasError()) {
+            model.addAttribute("errorMessage", drillResponse.getError().toString());
+            return viewOneDrill(model, drillId, startingEndpoint);
+        }
+        DrillResponseDTO drill = drillResponse.getResponse();
+
+        if (null == drill.getInstructions() || drill.getInstructions().isEmpty()) {
+            // Nothing to modify, might be a timing issue
+            model.addAttribute("errorMessage", instructionsDescription + " does not exist, please try again.");
+            return viewOneDrill(model, drillId, startingEndpoint);
+        }
+
+        InstructionsDTO instructions = null;
+        for (int i = 0; i < drill.getInstructions().size(); i++) {
+            if (drill.getInstructions().get(i).getDescription().equals(instructionsDescription)) {
+                instructions = drill.getInstructions().get(i);
+                break;
+            }
+        }
+
+        if (null == instructions) {
+            // Instructions don't exist
+            model.addAttribute("errorMessage", instructionsDescription + " does not exist, please try again.");
+            return viewOneDrill(model, drillId, startingEndpoint);
+        }
+
+
+        model.addAttribute("windowTitle", "Modify Instructions for Drill: "
+            + drill.getName());
+        model.addAttribute("descriptionText", instructions.getDescription());
+        model.addAttribute("videoIdText", instructions.getVideoId());
+        model.addAttribute("firstSteps", instructions.getSteps().get(0));
+        model.addAttribute("stepsListAfterFirst", 
+            instructions.getSteps().subList(1, instructions.getSteps().size()));
+        model.addAttribute("postEndpoint",
+            "/htmx/drill/" + drillId + "/instructions/modify/" + instructionsDescription
+                + "?startingEndpoint=" + startingEndpoint);
+        model.addAttribute("buttonText", "Update Instructions");
+        model.addAttribute("backEndpoint", startingEndpoint);
+
+        return "layouts/htmx/instructions_form :: instructionsForm";
+    }
+
+
+    @PostMapping("/{drillId}/instructions/modify/{originalInstructionsDescription}")
+    public String modifyInstructions(Model model, @PathVariable Long drillId, @ModelAttribute InstructionsDTO instructions,
+            // We want to use the instructionsDescription so that there are no timing issues with changing index positions
+            @PathVariable String originalInstructionsDescription, @RequestParam String startingEndpoint) {
+        var drillGetResponse = drillApiService.get(drillId);
+        if (drillGetResponse.hasError()) {
+            model.addAttribute("errorMessage", drillGetResponse.getError().toString());
+        } else {
+            DrillUpdateDTO drill = new DrillUpdateDTO(drillGetResponse.getResponse());
+
+            if (null == drill.getInstructions() || drill.getInstructions().isEmpty()) {
+                // Nothing to modify, might be a timing issue
+                model.addAttribute("errorMessage", originalInstructionsDescription + " does not exist, please try again.");
+                return viewOneDrill(model, drillId, startingEndpoint);
+            }
+
+            InstructionsDTO instructionsToUpdate = null;
+            for (int i = 0; i < drill.getInstructions().size(); i++) {
+                if (drill.getInstructions().get(i).getDescription().equals(originalInstructionsDescription)) {
+                    instructionsToUpdate = drill.getInstructions().get(i);
+                    break;
+                }
+            }
+
+            if (null == instructionsToUpdate) {
+                // Instructions don't exist
+                model.addAttribute("errorMessage", originalInstructionsDescription + " does not exist, please try again.");
+                return viewOneDrill(model, drillId, startingEndpoint);
+            }
+
+            instructionsToUpdate.setDescription(instructions.getDescription());
+            instructionsToUpdate.setVideoId(instructions.getVideoId());
+            instructionsToUpdate.setSteps(instructions.getSteps());
+
+            var drillUpdateResponse = drillApiService.update(drillId, drill);
+            if (drillUpdateResponse.hasError()) {
+                model.addAttribute("errorMessage", drillUpdateResponse.getError().toString());
+            } else {
+                model.addAttribute("successMessage", "Instructions Updated Successfully!");
+            }
+        }
+
+        return viewOneDrill(model, drillId, startingEndpoint);
     }
 
     @GetMapping("/{drillId}/instructions/confirm_delete/{instructionsDescription}")
