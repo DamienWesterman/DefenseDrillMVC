@@ -45,6 +45,15 @@ a:hover {
 }
 
 /* Header */
+.header-container {
+    display: flex;
+    align-items: center; /* Align items vertically on the same line */
+    justify-content: center; /* Center the entire header horizontally */
+    text-align: center;
+    gap: 15px; /* Add horizontal space between the image and the title */
+    margin: 20px 0; /* Add vertical spacing around the header */
+}
+
 nav {
     border-radius: 8px; /* Slightly round the corners */
     padding: 10px; /* Add padding inside the nav bar */
