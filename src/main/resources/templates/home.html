@@ -1,4 +1,13 @@
+<!--/*
+* Thymeleaf Variables:
+* Variable Key      Required?   Object Type         Description
+* ----------------------------------------------------------------------------------------------------
+* inetAddress       Y           String              Base IP address for the server (not including port
+*                                                   or https://)
+*/-->
+
 <!DOCTYPE html>
+
 <html lang="en" layout:decorate="layouts/" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -27,31 +36,31 @@
                 <p class="card-text">View, edit, create, and remove Sub-Categories from the database.</p>
             </div>
         </a>
-        <a href="http://localhost:9999/users">
+        <a href="/users">
             <div class="card">
                 <p class="card-title">Modify Users</p>
                 <p class="card-text">View, edit, create, and remove User profiles from the database.</p>
             </div>
         </a>
-        <a href="http://localhost:5433/swagger-ui/index.html#/">
+        <a href="/api/swagger-ui/index.html#/">
             <div class="card">
                 <p class="card-title">RestAPI Documentation</p>
                 <p class="card-text">Access the swagger documentation for the DefenseDrill RestAPI backend.</p>
             </div>
         </a>
-        <a href="http://localhost:8200/">
+        <a th:href="'http://' + ${inetAddress} + ':8200/'">
             <div class="card">
                 <p class="card-title">Vault</p>
                 <p class="card-text">Access the secure Vault for configuration and maintenance.</p>
             </div>
         </a>
-        <a href="http://localhost:8096/">
+        <a th:href="'http://' + ${inetAddress} + ':8096/'">
             <div class="card">
                 <p class="card-title">Jellyfin</p>
                 <p class="card-text">Access the Jellyfin media server for configuration and maintenance.</p>
             </div>
         </a>
-        <a href="http://localhost:8097/">
+        <a th:href="'http://' + ${inetAddress} + ':8097/'">
             <div class="card">
                 <p class="card-title">File Browser</p>
                 <p class="card-text">Access the File Browser to configure, maintain, and upload videos.</p>

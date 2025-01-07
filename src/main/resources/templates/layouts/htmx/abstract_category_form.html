@@ -1,11 +1,29 @@
+<!--/*
+* Thymeleaf Variables:
+* Variable Key      Required?   Object Type         Description
+* ----------------------------------------------------------------------------------------------------
+* windowTitle       Y           String              Title for the window (ex. "Create Category")
+* postEndpoint      Y           String              HTMX post endpoint to send the completed form to
+* nameText          N           String              Existing name for the Abstract Category
+* descriptionText   N           String              Existing description for the Abstract Category
+* displayDrillsList N           Boolean             Should we display a list of Drills? Default 'false'.
+*                                                   Used to create an Abstract Category and assign the
+*                                                   created entities to the selected drills.
+* drillsList        Y/N         List<DrillResponseDTO>
+*                                                   List of drills. Only required if displayDrillsList
+*                                                   is 'true'
+* buttonText        Y           String              Text to display on the form's Submit button
+*/-->
+
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <link rel="stylesheet" href="styles.css" />
         <script src="https://unpkg.com/htmx.org@1.8.0"></script>
     </head>
     <body>
-        <!-- To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" -->
+        <!--/* To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" */-->
         <div th:fragment="abstractCategoryForm">
             <div class="view-window">
                 <div class="window-title" th:text="${windowTitle}"></div>
@@ -18,7 +36,6 @@
 
                     <div class="form-group">
                         <label for="name">Name:</label>
-                        <!-- nameText optional -->
                         <input
                             th:value="${nameText}"
                             id="name"
@@ -34,7 +51,6 @@
 
                     <div class="form-group">
                         <label for="description">Description:</label>
-                        <!-- descriptionText optional -->
                         <input
                             th:value="${descriptionText}"
                             id="description"

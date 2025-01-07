@@ -1,11 +1,31 @@
+<!--/*
+* Thymeleaf Variables:
+* Variable Key      Required?   Object Type         Description
+* ----------------------------------------------------------------------------------------------------
+* windowTitle       Y           String              Title of the window ("ex. Instructions for Drill: xyz")
+* postEndpoint      Y           String              HTMX endpoint to submit the instructions form to
+* descriptionText   N           String              Existing instructions description
+* videoIdText       N           String              Existing jellyfin video ID
+* firstSteps        N           String              Existing FIRST steps from the list of steps
+* stepsListAfterFirst
+*                   N           List<String>        Existing list of steps AFTER the first step
+*                                                   (DO NOT include the first step!!)
+* drillId           Y           Long                ID fo the drill the instructions belong to
+* backEndpoint      Y           String              The original HTMX endpoint that started this chain
+*                                                   screens, used to pass along to the next screen if the
+*                                                   user clicks "Back"
+* buttonText        Y           String              Text to put on the Submit form button
+*/-->
+
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <link rel="stylesheet" href="styles.css" />
         <script src="https://unpkg.com/htmx.org@1.8.0"></script>
     </head>
     <body>
-        <!-- To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" -->
+        <!--/* To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" */-->
         <div th:fragment="instructionsForm">
             <div class="view-window">
                 <div class="window-title" th:text="${windowTitle}"></div>
@@ -18,7 +38,6 @@
                     <!-- Description Field -->
                     <div class="form-group">
                         <label for="description">Description:</label>
-                        <!-- descriptionText optional -->
                         <input
                             th:value="${descriptionText}"
                             id="description"
@@ -35,7 +54,6 @@
                     <!-- Video ID Field -->
                     <div class="form-group">
                         <label for="videoId">Video ID (optional):</label>
-                        <!-- videoIdText optional -->
                         <input
                             th:value="${videoIdText}"
                             id="videoId"
@@ -53,7 +71,6 @@
                             <div class="steps-container">
                                 <!-- First Step, always required, cannot be deleted -->
                                 <li class="step">
-                                    <!-- firstStep optional -->
                                     <input
                                         th:value="${firstSteps}"
                                         type="text"
@@ -66,7 +83,6 @@
                                         title="Step must be between 1 and 255 characters." />
                                 </li>
                             </div>
-                            <!-- List any existing steps - optional -->
                             <div th:each="oneStep : ${stepsListAfterFirst}">
                                 <div th:replace="~{layouts/htmx/instructions_add_step :: instructionsAddStep(descriptionText=${oneStep})}"></div>
                             </div>

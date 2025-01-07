@@ -1,3 +1,18 @@
+<!--/*
+* Thymeleaf Variables:
+* Variable Key      Required?   Object Type         Description
+* ----------------------------------------------------------------------------------------------------
+* errorMessage      N           String              Error message
+* successMessage    N           String              Success message
+* windowTitle       Y           String              Title for the window (ex. "Choose Drill to Modify")
+* listItems         Y           Map<String, String> - Must contain keys: ["itemDescription", "htmxEndpoint"]
+*                                                   List of items to display in the window.
+*                                                   "itemDescription" is the description of the list item,
+*                                                   and "htmxEndpoint" is the HTMX endpoint to access for
+*                                                   this specific list item
+* buttonText        Y           String              Text to display on each item's button (ex. "View")
+*/-->
+
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
@@ -5,7 +20,7 @@
         <script src="https://unpkg.com/htmx.org@1.8.0"></script>
     </head>
 
-    <!-- To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" -->
+    <!--/* To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" */-->
     <div th:fragment="viewWindowList">
         <p class="error center" th:text="${errorMessage}"></p>
         <p class="success center" th:text="${successMessage}"></p>

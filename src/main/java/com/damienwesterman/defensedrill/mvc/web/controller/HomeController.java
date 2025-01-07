@@ -34,6 +34,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.damienwesterman.defensedrill.mvc.util.Constants;
+
 /**
  * Controller for all basic UI/template endpoints.
  */
@@ -49,7 +51,9 @@ public class HomeController {
         );
 
     @GetMapping("/")
-    public String homePage() {
+    public String homePage(Model model) {
+        model.addAttribute("inetAddress", Constants.SERVER_IP_ADDRESS);
+
         return "home";
     }
 
