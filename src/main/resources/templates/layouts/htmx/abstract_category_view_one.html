@@ -18,10 +18,12 @@
                 <button class="button"
                     th:hx-get="${backEndpoint}"
                     hx-target="#contentArea"
-                    hx-swap="innerHTML">
+                    hx-swap="innerHTML"
+                    hx-indicator=".loading-indicator">
                     Back
                 </button>
             </div>
         </div>
+        <img class="center-image loading-indicator" src="/thymeleaf/images/loading-indicator.gif" />
     </div>
 </html>

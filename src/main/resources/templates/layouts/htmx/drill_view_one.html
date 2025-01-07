@@ -19,7 +19,8 @@
                     <button class="button create-button"
                         th:hx-get="'/htmx/drill/' + ${id} + '/instructions/create?startingEndpoint=' + ${backEndpoint}"
                         hx-target="#contentArea"
-                        hx-swap="innerHTML">
+                        hx-swap="innerHTML"
+                        hx-indicator=".loading-indicator">
                         Create New Instructions
                     </button>
                 </div>
@@ -35,7 +36,8 @@
                                 <button class="button modify-button"
                                     th:hx-get="'/htmx/drill/' + ${id} + '/instructions/modify/' + ${instructionDetails.description} + '?startingEndpoint=' + ${backEndpoint}"
                                     hx-target="#contentArea"
-                                    hx-swap="innerHTML">
+                                    hx-swap="innerHTML"
+                                    hx-indicator=".loading-indicator">
                                     Modify
                                 </button>
                                 <button class="button delete-button"
@@ -85,10 +87,12 @@
                 <button class="button"
                     th:hx-get="${backEndpoint}"
                     hx-target="#contentArea"
-                    hx-swap="innerHTML">
+                    hx-swap="innerHTML"
+                    hx-indicator=".loading-indicator">
                     Back
                 </button>
             </div>
         </div>
+        <img class="center-image loading-indicator" src="/thymeleaf/images/loading-indicator.gif" />
     </div>
 </html>

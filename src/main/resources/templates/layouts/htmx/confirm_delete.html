@@ -17,16 +17,19 @@
                 <button class="button"
                     th:hx-get="${cancelEndpoint}"
                     hx-target="#contentArea"
-                    hx-swap="innerHTML">
+                    hx-swap="innerHTML"
+                    hx-indicator=".loading-indicator">
                     Cancel
                 </button>
                 <button class="button"
                     th:hx-post="${confirmEndpoint}"
                     hx-target="#contentArea"
-                    hx-swap="innerHTML">
+                    hx-swap="innerHTML"
+                    hx-indicator=".loading-indicator">
                     Confirm
                 </button>
             </div>
         </div>
+        <img class="center-image loading-indicator" src="/thymeleaf/images/loading-indicator.gif" />
     </div>
 </html>

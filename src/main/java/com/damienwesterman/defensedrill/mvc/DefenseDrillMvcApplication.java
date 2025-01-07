@@ -33,7 +33,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class DefenseDrillMvcApplication {
-	// TODO: Add loading animations on every form for proper user feedback
 	// TODO: Create some kind of annotation or something that makes sure that a use does not stumble upon the htmx endpoints?
 	// TODO: In the thymeleaf stuff, list the necessary model attributes for something (i.e. needs listImtes of type map with keys description and htmx endpoint, etc.)
 	// TODO: Generate the links dynamically somehow? Different in dev from prod
@@ -44,5 +43,4 @@ public class DefenseDrillMvcApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DefenseDrillMvcApplication.class, args);
 	}
-
 }

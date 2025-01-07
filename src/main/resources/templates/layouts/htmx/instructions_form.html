@@ -13,7 +13,8 @@
                     class="form-container"
                     th:hx-post="${postEndpoint}"
                     hx-target="#contentArea"
-                    hx-swap="innerHTML">
+                    hx-swap="innerHTML"
+                    hx-indicator=".loading-indicator">
                     <!-- Description Field -->
                     <div class="form-group">
                         <label for="description">Description:</label>
@@ -89,13 +90,15 @@
                             class="button"
                             th:hx-get="'/htmx/drill/view/' + ${drillId} + '?backEndpoint=' + ${backEndpoint}"
                             hx-target="#contentArea"
-                            hx-swap="innerHTML" >
+                            hx-swap="innerHTML"
+                            hx-indicator=".loading-indicator" >
                             Back
                         </button>
                         <button type="submit" class="button" th:text="${buttonText}"></button>
                     </div>
                 </form>
             </div>
+            <img class="center-image loading-indicator" src="/thymeleaf/images/loading-indicator.gif" />
         </div>
     </body>
 </html>

@@ -18,9 +18,11 @@
                         th:text="${buttonText}"
                         th:hx-get="${listItem['htmxEndpoint']}"
                         hx-target="#contentArea"
-                        hx-swap="innerHTML"></button>
+                        hx-swap="innerHTML"
+                        hx-indicator=".loading-indicator"></button>
                 </li>
             </ul>
         </div>
+        <img class="center-image loading-indicator" src="/thymeleaf/images/loading-indicator.gif" />
     </div>
 </html>
