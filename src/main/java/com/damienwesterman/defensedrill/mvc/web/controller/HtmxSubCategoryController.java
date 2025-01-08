@@ -60,6 +60,9 @@ public class HtmxSubCategoryController {
         var response = subCategoryApiService.getAll();
         if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
+            model.addAttribute("windowTitle", "Error");
+            model.addAttribute("buttonText", "");
+            model.addAttribute("listItems", Map.of());
         } else {
             List<AbstractCategoryDTO> subCategories = List.of(response.getResponse());
 
@@ -90,13 +93,13 @@ public class HtmxSubCategoryController {
         var response = subCategoryApiService.get(id);
         if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
-        } else {
-            var subCategory = response.getResponse();
-            model.addAttribute("name", subCategory.getName());
-            // ID already included
-            model.addAttribute("description", subCategory.getDescription());
+            return viewAllSubCategories(model);
         }
 
+        var subCategory = response.getResponse();
+        model.addAttribute("name", subCategory.getName());
+        model.addAttribute("id", id);
+        model.addAttribute("description", subCategory.getDescription());
         model.addAttribute("backEndpoint", "/htmx/sub_category/view");
 
         return "layouts/htmx/abstract_category_view_one :: abstractCategoryDetails";
@@ -125,23 +128,24 @@ public class HtmxSubCategoryController {
         var createResponse = subCategoryApiService.create(subCategory.toAbstractCategoryDTO());
         if (createResponse.hasError()) {
             model.addAttribute("errorMessage", createResponse.getError().toString());
-        } else {
-            model.addAttribute("successMessage", "Sub-Category Created Successfully!");
-
-            var newSubCategory = createResponse.getResponse();
-            model.addAttribute("name", newSubCategory.getName());
-            model.addAttribute("id", newSubCategory.getId());
-            model.addAttribute("description", newSubCategory.getDescription());
-
-            if (null != subCategory.getDrillIds() && !subCategory.getDrillIds().isEmpty()) {
-                var updateDrillsResponse = drillApiService.updateSubCategories(newSubCategory.getId(), subCategory.getDrillIds());
-                if (updateDrillsResponse.hasError()) {
-                    model.addAttribute("errorMessage", updateDrillsResponse.getError().toString());
-                }
-            }
+            return createSubCategoryForm(model);
         }
 
+        model.addAttribute("successMessage", "Sub-Category Created Successfully!");
+
+        var newSubCategory = createResponse.getResponse();
+        model.addAttribute("name", newSubCategory.getName());
+        model.addAttribute("id", newSubCategory.getId());
+        model.addAttribute("description", newSubCategory.getDescription());
         model.addAttribute("backEndpoint", "/htmx/sub_category/create");
+
+        // Update any checked drills
+        if (null != subCategory.getDrillIds() && !subCategory.getDrillIds().isEmpty()) {
+            var updateDrillsResponse = drillApiService.updateSubCategories(newSubCategory.getId(), subCategory.getDrillIds());
+            if (updateDrillsResponse.hasError()) {
+                model.addAttribute("errorMessage", updateDrillsResponse.getError().toString());
+            }
+        }
 
         return "layouts/htmx/abstract_category_view_one :: abstractCategoryDetails";
     }
@@ -151,6 +155,9 @@ public class HtmxSubCategoryController {
         var response = subCategoryApiService.getAll();
         if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
+            model.addAttribute("windowTitle", "Error");
+            model.addAttribute("buttonText", "");
+            model.addAttribute("listItems", Map.of());
         } else {
             List<AbstractCategoryDTO> subCategories = List.of(response.getResponse());
 
@@ -181,15 +188,16 @@ public class HtmxSubCategoryController {
         var response = subCategoryApiService.get(id);
         if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
-        } else {
-            AbstractCategoryDTO subCategory = response.getResponse();
-
-            model.addAttribute("windowTitle", "Modify Sub-Category: " + id);
-            model.addAttribute("postEndpoint", "/htmx/sub_category/modify/" + id);
-            model.addAttribute("buttonText", "Update");
-            model.addAttribute("nameText", subCategory.getName());
-            model.addAttribute("descriptionText", subCategory.getDescription());
+            return modifySubCategoryList(model);
         }
+
+        AbstractCategoryDTO subCategory = response.getResponse();
+
+        model.addAttribute("windowTitle", "Modify Sub-Category: " + id);
+        model.addAttribute("postEndpoint", "/htmx/sub_category/modify/" + id);
+        model.addAttribute("buttonText", "Update");
+        model.addAttribute("nameText", subCategory.getName());
+        model.addAttribute("descriptionText", subCategory.getDescription());
 
         return "layouts/htmx/abstract_category_form :: abstractCategoryForm";
     }
@@ -201,15 +209,15 @@ public class HtmxSubCategoryController {
         var response = subCategoryApiService.update(subCategory);
         if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
-        } else {
-            model.addAttribute("successMessage", "Sub-Category Modified Successfully!");
-
-            var newSubCategory = response.getResponse();
-            model.addAttribute("name", newSubCategory.getName());
-            model.addAttribute("id", newSubCategory.getId());
-            model.addAttribute("description", newSubCategory.getDescription());
+            return modifySubCategoryList(model);
         }
 
+        model.addAttribute("successMessage", "Sub-Category Modified Successfully!");
+
+        var newSubCategory = response.getResponse();
+        model.addAttribute("name", newSubCategory.getName());
+        model.addAttribute("id", newSubCategory.getId());
+        model.addAttribute("description", newSubCategory.getDescription());
         model.addAttribute("backEndpoint", "/htmx/sub_category/modify");
 
         return "layouts/htmx/abstract_category_view_one :: abstractCategoryDetails";
@@ -220,6 +228,9 @@ public class HtmxSubCategoryController {
         var response = subCategoryApiService.getAll();
         if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
+            model.addAttribute("windowTitle", "Error");
+            model.addAttribute("buttonText", "");
+            model.addAttribute("listItems", Map.of());
         } else {
             List<AbstractCategoryDTO> subCategories = List.of(response.getResponse());
 
@@ -256,7 +267,7 @@ public class HtmxSubCategoryController {
         AbstractCategoryDTO subCategory = response.getResponse();
 
         model.addAttribute("windowTitle", "Confirm Sub-Category Deletion:");
-        // ID already set
+        model.addAttribute("id", id);
         model.addAttribute("name", subCategory.getName());
         model.addAttribute("cancelEndpoint", "/htmx/sub_category/delete");
         model.addAttribute("confirmEndpoint", "/htmx/sub_category/delete/" + id);

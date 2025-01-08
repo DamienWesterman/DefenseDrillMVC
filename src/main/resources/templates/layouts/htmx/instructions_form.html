@@ -6,7 +6,7 @@
 * postEndpoint      Y           String              HTMX endpoint to submit the instructions form to
 * descriptionText   N           String              Existing instructions description
 * videoIdText       N           String              Existing jellyfin video ID
-* firstSteps        N           String              Existing FIRST steps from the list of steps
+* firstStep         N           String              Existing FIRST steps from the list of steps
 * stepsListAfterFirst
 *                   N           List<String>        Existing list of steps AFTER the first step
 *                                                   (DO NOT include the first step!!)
@@ -72,7 +72,7 @@
                                 <!-- First Step, always required, cannot be deleted -->
                                 <li class="step">
                                     <input
-                                        th:value="${firstSteps}"
+                                        th:value="${firstStep}"
                                         type="text"
                                         name="steps"
                                         placeholder="Enter step..."

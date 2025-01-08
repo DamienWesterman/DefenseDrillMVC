@@ -67,7 +67,7 @@ public class HtmxDrillController {
     private final SubCategoryApiService subCategoryApiService;
 
     /**
-     * Used for essentially removing an element.
+     * Used for essentially removing an HTML element view HTMX.
      */
     @GetMapping("/empty_htmx")
     @ResponseBody
@@ -80,6 +80,9 @@ public class HtmxDrillController {
         var response = drillApiService.getAll();
         if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
+            model.addAttribute("windowTitle", "Error");
+            model.addAttribute("buttonText", "");
+            model.addAttribute("listItems", Map.of());
         } else {
             List<DrillResponseDTO> drills = List.of(response.getResponse());
 
@@ -111,16 +114,21 @@ public class HtmxDrillController {
         var response = drillApiService.get(id);
         if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
+            model.addAttribute("name", "");
+            model.addAttribute("instructionsList", List.of());
+            model.addAttribute("categoriesList", List.of());
+            model.addAttribute("subCategoriesList", List.of());
+            model.addAttribute("relatedDrillsList", List.of());
         } else {
             var drill = response.getResponse();
             model.addAttribute("name", drill.getName());
-            model.addAttribute("id", id);
             model.addAttribute("instructionsList", drill.getInstructions());
             model.addAttribute("categoriesList", drill.getCategories());
             model.addAttribute("subCategoriesList", drill.getSubCategories());
             model.addAttribute("relatedDrillsList", drill.getRelatedDrills());
         }
 
+        model.addAttribute("id", id);
         model.addAttribute("backEndpoint", backEndpoint);
 
         return "layouts/htmx/drill_view_one :: drillDetails";
@@ -140,6 +148,7 @@ public class HtmxDrillController {
         var drillListResponse = drillApiService.getAll();
         if (drillListResponse.hasError()) {
             model.addAttribute("errorMessage", drillListResponse.getError().toString());
+            model.addAttribute("drillsList", List.of());
         } else if (0 < drillListResponse.getResponse().length) {
             model.addAttribute("drillsList", drillListResponse.getResponse());
         }
@@ -147,6 +156,7 @@ public class HtmxDrillController {
         var categoriesListResponse = categoryApiService.getAll();
         if (categoriesListResponse.hasError()) {
             model.addAttribute("errorMessage", categoriesListResponse.getError().toString());
+            model.addAttribute("categoriesList", List.of());
         } else if (0 < categoriesListResponse.getResponse().length) {
             model.addAttribute("categoriesList", categoriesListResponse.getResponse());
         }
@@ -154,9 +164,12 @@ public class HtmxDrillController {
         var subCategoriesListResponse = subCategoryApiService.getAll();
         if (subCategoriesListResponse.hasError()) {
             model.addAttribute("errorMessage", subCategoriesListResponse.getError().toString());
+            model.addAttribute("subCategoriesList", List.of());
         } else if (0 < subCategoriesListResponse.getResponse().length) {
             model.addAttribute("subCategoriesList", subCategoriesListResponse.getResponse());
         }
+
+        // If more than one error message occurs, only the last one will be displayed. This is okay
 
         return "layouts/htmx/drill_form :: drillForm";
     }
@@ -177,8 +190,17 @@ public class HtmxDrillController {
             updateDrill.fillInfo(drill);
             var drillUpdateResponse = drillApiService.update(
                 createdDrill.getId(), updateDrill);
+
             if (drillUpdateResponse.hasError()) {
                 model.addAttribute("errorMessage", drillUpdateResponse.getError().toString());
+                model.addAttribute("name", "");
+                model.addAttribute("id", -1L);
+                model.addAttribute("instructionsList", List.of());
+                model.addAttribute("categoriesList", List.of());
+                model.addAttribute("subCategoriesList", List.of());
+                model.addAttribute("relatedDrillsList", List.of());
+                // Delete whatever was created since it is incomplete
+                drillApiService.delete(createdDrill.getId());
             } else {
                 model.addAttribute("successMessage", "Drill Created Successfully!");
 
@@ -209,6 +231,7 @@ public class HtmxDrillController {
         }
         model.addAttribute("postEndpoint",
             "/htmx/drill/" + drillId + "/instructions/create?startingEndpoint=" + startingEndpoint);
+        model.addAttribute("drillId", drillId);
         model.addAttribute("buttonText", "Create Instructions");
         model.addAttribute("backEndpoint", startingEndpoint);
 
@@ -262,6 +285,7 @@ public class HtmxDrillController {
             return viewOneDrill(model, drillId, startingEndpoint);
         }
 
+        // Find the instructions to modify by the instructions description
         InstructionsDTO instructions = null;
         for (int i = 0; i < drill.getInstructions().size(); i++) {
             if (drill.getInstructions().get(i).getDescription().equals(instructionsDescription)) {
@@ -276,12 +300,12 @@ public class HtmxDrillController {
             return viewOneDrill(model, drillId, startingEndpoint);
         }
 
-
         model.addAttribute("windowTitle", "Modify Instructions for Drill: "
             + drill.getName());
+        model.addAttribute("drillId", drillId);
         model.addAttribute("descriptionText", instructions.getDescription());
         model.addAttribute("videoIdText", instructions.getVideoId());
-        model.addAttribute("firstSteps", instructions.getSteps().get(0));
+        model.addAttribute("firstStep", instructions.getSteps().get(0));
         model.addAttribute("stepsListAfterFirst", 
             instructions.getSteps().subList(1, instructions.getSteps().size()));
         model.addAttribute("postEndpoint",
@@ -347,7 +371,7 @@ public class HtmxDrillController {
         if (response.hasError()) {
             model.addAttribute("name", instructionsDescription);
         } else {
-            // Would be nice to remind the user what drill the instructions belond to if possible
+            // Would be nice to remind the user what drill the instructions belong to if possible
             DrillResponseDTO drill = response.getResponse();
             model.addAttribute("name", drill.getName() + ": " + instructionsDescription);
         }
@@ -399,6 +423,9 @@ public class HtmxDrillController {
         var response = drillApiService.getAll();
         if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
+            model.addAttribute("windowTitle", "Error");
+            model.addAttribute("buttonText", "");
+            model.addAttribute("listItems", Map.of());
         } else {
             List<DrillResponseDTO> drills = List.of(response.getResponse());
 
@@ -439,30 +466,37 @@ public class HtmxDrillController {
         DrillResponseDTO drill = drillGetResponse.getResponse();
         model.addAttribute("nameText", drill.getName());
 
-        if (null != drill.getCategories()) {
+        if (null != drill.getCategories() && !drill.getCategories().isEmpty()) {
             model.addAttribute("checkedCategories",
                 drill.getCategories().stream()
                     .map(AbstractCategoryDTO::getId)
                     .collect(Collectors.toSet()));
+        } else {
+            model.addAttribute("checkedCategories", Set.of());
         }
 
-        if (null != drill.getSubCategories()) {
+        if (null != drill.getSubCategories() && !drill.getSubCategories().isEmpty()) {
             model.addAttribute("checkedSubCategories",
                 drill.getSubCategories().stream()
                     .map(AbstractCategoryDTO::getId)
                     .collect(Collectors.toSet()));
+        } else {
+            model.addAttribute("checkedSubCategories", Set.of());
         }
 
-        if (null != drill.getRelatedDrills()) {
+        if (null != drill.getRelatedDrills() && !drill.getRelatedDrills().isEmpty()) {
             model.addAttribute("checkedRelatedDrills",
                 drill.getRelatedDrills().stream()
                     .map(DrillRelatedDTO::getId)
                     .collect(Collectors.toSet()));
+        } else {
+            model.addAttribute("checkedRelatedDrills", Set.of());
         }
 
         var drillListResponse = drillApiService.getAll();
         if (drillListResponse.hasError()) {
             model.addAttribute("errorMessage", drillListResponse.getError().toString());
+            model.addAttribute("drillsList", List.of());
         } else if (0 < drillListResponse.getResponse().length) {
             // Have to remove the current drill, can't be related to itself
             var drillList = new ArrayList<>(drillListResponse.getResponse().length - 1);
@@ -477,6 +511,7 @@ public class HtmxDrillController {
         var categoriesListResponse = categoryApiService.getAll();
         if (categoriesListResponse.hasError()) {
             model.addAttribute("errorMessage", categoriesListResponse.getError().toString());
+            model.addAttribute("categoriesList", List.of());
         } else if (0 < categoriesListResponse.getResponse().length) {
             model.addAttribute("categoriesList", categoriesListResponse.getResponse());
         }
@@ -484,13 +519,14 @@ public class HtmxDrillController {
         var subCategoriesListResponse = subCategoryApiService.getAll();
         if (subCategoriesListResponse.hasError()) {
             model.addAttribute("errorMessage", subCategoriesListResponse.getError().toString());
+            model.addAttribute("subCategoriesList", List.of());
         } else if (0 < subCategoriesListResponse.getResponse().length) {
             model.addAttribute("subCategoriesList", subCategoriesListResponse.getResponse());
         }
 
         return "layouts/htmx/drill_form :: drillForm";
     }
-
+    // TODO: FIXME: START HERE< CONTINUE BELOW
     @PostMapping("/modify/{id}")
     public String modifyDrill(Model model, @PathVariable Long id,
             @ModelAttribute DrillFormDTO drill) {

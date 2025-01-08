@@ -2,6 +2,7 @@
 * Thymeleaf Variables:
 * Variable Key      Required?   Object Type         Description
 * ----------------------------------------------------------------------------------------------------
+* errorMessage      N           String              Error message
 * windowTitle       Y           String              Title for the window (ex. "Create Category")
 * postEndpoint      Y           String              HTMX post endpoint to send the completed form to
 * nameText          N           String              Existing name for the Abstract Category
@@ -25,6 +26,7 @@
     <body>
         <!--/* To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" */-->
         <div th:fragment="abstractCategoryForm">
+            <p class="error center" th:text="${errorMessage}"></p>
             <div class="view-window">
                 <div class="window-title" th:text="${windowTitle}"></div>
                 <form
