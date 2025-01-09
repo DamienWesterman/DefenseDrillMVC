@@ -52,6 +52,7 @@ public class Constants {
 
     public final static String SERVER_IP_ADDRESS = getNetworkIpAddress();
 
+    // Thank you ChatGPT or this one
     private static String getNetworkIpAddress() {
         try {
             // Get the list of all network interfaces
