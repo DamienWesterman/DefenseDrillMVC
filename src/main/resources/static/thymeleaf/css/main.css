@@ -1,10 +1,14 @@
-/* main.css */
-/* Generated using AI */
+:root {
+    --main-bg-color: #2D2D2D;
+    --main-text-color: #FFFFFF;
+    --primary-color: #4EA217;
+    --primary-color-variant: #2D7100;
+    --secondary-color: #F8E860;
+}
 
-/* Global styles */
 body {
-    background-color: #2D2D2D; /* Dark gray/charcoal background */
-    color: #FFFFFF; /* White text for contrast */
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -36,7 +40,7 @@ img {
 }
 
 a {
-    color: #F8E860; /* Drill yellow for links */
+    color: var( --secondary-color);
     text-decoration: none;
 }
 
@@ -44,62 +48,59 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Header */
 .header-container {
     display: flex;
-    align-items: center; /* Align items vertically on the same line */
-    justify-content: center; /* Center the entire header horizontally */
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    gap: 15px; /* Add horizontal space between the image and the title */
-    margin: 20px 0; /* Add vertical spacing around the header */
+    gap: 15px;
+    margin: 20px 0;
 }
 
 nav {
-    border-radius: 8px; /* Slightly round the corners */
-    padding: 10px; /* Add padding inside the nav bar */
-    background-color: #2D7100; /* Optional: Add a background color */
+    border-radius: 8px;
+    padding: 10px;
+    background-color: var( --primary-color-variant);
 }
 
 nav ul {
-    list-style-type: none; /* Remove bullets */
+    list-style-type: none;
     margin: 0;
     padding: 0;
-    display: flex; /* Arrange items horizontally */
-    justify-content: space-around; /* Space items evenly */
+    display: flex;
+    justify-content: space-around;
 }
 
 nav li {
-    margin: 0 15px; /* Add spacing between links */
+    margin: 0 15px;
 }
 
 nav a {
-    text-decoration: none; /* Remove underline */
-    color: #FFFFFF; /* Use primary color */
+    text-decoration: none;
+    color: var(--main-text-color);
     font-weight: bold;
 }
 
 nav a:hover {
-    text-decoration: underline; /* Add underline on hover for feedback */
+    text-decoration: underline;
 }
 
-/* Container styling */
 .container {
     margin: 0 auto;
     padding: 20px;
     max-width: 1200px;
 }
 
-/* Card layout */
 .card-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns of equal width */
-    gap: 20px; /* Space between grid items */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
     padding: 20px;
 }
 
 .card {
-    background-color: #4EA217; /* Drill green */
-    border: 1px solid #2D7100; /* Drill green variant */
+    background-color: var(--primary-color);
+    border: 1px solid var( --primary-color-variant);
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin: 10px;
@@ -115,28 +116,26 @@ nav a:hover {
 .card-title {
     font-size: 1.5em;
     margin-bottom: 10px;
-    color: #F8E860; /* Drill yellow */
+    color: var( --secondary-color);
 }
 
 .card-text,
 .description {
-    color: #FFFFFF;
+    color: var(--main-text-color);
     line-height: 1.5;
     font-style: italic;
 }
 
-/* Container for modify screen */
 .modify-container {
     display: flex;
-    height: calc(100vh - 100px); /* Adjust based on your header and footer height */
+    height: calc(100vh - 100px);
     padding: 20px;
     gap: 20px;
 }
 
-/* Sidebar navigation */
 .side-nav {
     width: 200px;
-    background-color: #2D7100;
+    background-color: var( --primary-color-variant);
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -156,7 +155,7 @@ nav a:hover {
 .side-nav a {
     text-decoration: none;
     font-size: 1em;
-    color: #FFFFFF;
+    color: var(--main-text-color);
     display: block;
     padding: 8px 12px;
     border-radius: 4px;
@@ -166,66 +165,28 @@ nav a:hover {
 
 .side-nav a:hover,
 .side-nav a.active {
-    background-color: #F8E860;
-    color: #2D7100;
+    background-color: var( --secondary-color);
+    color: var( --primary-color-variant);
 }
 
-/* Content area */
 .content-area {
     flex: 1;
-    background-color: #2D7100;
-    padding: 20px;
+    background-color: var( --primary-color-variant);
+    padding: 25px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.bordered-box {
-    border: 2px solid var(--primary-color);
-    border-radius: 8px;
-    padding: 5px;
-    height: 100%; /* Take full height of the content area */
-    background-color: var(--background-primary);
-}
-
-/* Tabs */
-.tabs {
-    display: flex;
-    flex-direction: column;
-    width: 200px;
-    background-color: #4EA217; /* Drill green */
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.tab {
-    padding: 10px 15px;
-    color: #FFFFFF;
-    cursor: pointer;
-    border-bottom: 1px solid #2D7100; /* Drill green variant */
-    transition: background-color 0.2s;
-}
-
-.tab:hover {
-    background-color: #2D7100; /* Drill green variant */
-}
-
-.tab-active {
-    background-color: #F8E860; /* Drill yellow */
-    color: #2D7100; /* Contrast for active tab */
-}
-
-/* Buttons */
 .button-container {
     display: flex;
-    justify-content: center; /* Centers the buttons horizontally */
-    gap: 20px; /* Adds space between the buttons */
-    margin-top: 20px; /* Adds space above the button container */
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
 }
 
 .button {
-    background-color: #4EA217; /* Drill green variant */
+    background-color: var(--primary-color);
     border: none;
-    color: #F8E860; /* Drill yellow */
+    color: var( --secondary-color);
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
@@ -234,20 +195,20 @@ nav a:hover {
 }
 
 .button:hover {
-    background-color: #2D7100; /* Drill green */
+    background-color: var( --primary-color-variant);
 }
 
 .button:disabled {
-    background-color: #9E9E9E; /* Field label gray */
+    background-color: #9E9E9E;
     cursor: not-allowed;
 }
 
 .create-button {
-    margin-bottom: 10px; /* Space below the create button */
+    margin-bottom: 10px;
     display: inline-block;
-    margin-left: auto; /* Push button to the right */
-    font-size: 0.85em; /* Slightly smaller font */
-    padding: 4px 10px; /* Smaller button */
+    margin-left: auto;
+    font-size: 0.85em;
+    padding: 4px 10px;
 }
 
 .modify-button {
@@ -264,67 +225,30 @@ nav a:hover {
     margin-left: auto;
     font-size: 0.85em;
     padding: 4px 10px;
-    background-color: #D73E3E; /* Red variant */
+    background-color: red;
+    color: black;
 }
 
 .delete-step-button {
     margin-left: auto;
-    background-color: #D73E3E; /* Red variant */
-}
-
-/* Forms */
-.input-field {
-    background-color: #2D2D2D;
-    border: 1px solid #4EA217;
-    border-radius: 4px;
-    color: #FFFFFF;
-    padding: 10px;
-    width: 100%;
-    margin-bottom: 15px;
-}
-
-.input-field:focus {
-    border-color: #F8E860; /* Drill yellow */
-    outline: none;
-}
-
-/* Popups */
-.popup {
-    background-color: #4EA217;
-    border: 1px solid #2D7100;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    width: 300px;
-    margin: auto;
-}
-
-.popup-header {
-    font-size: 1.25em;
-    color: #F8E860;
-    margin-bottom: 10px;
-}
-
-.popup-content {
-    color: #FFFFFF;
+    background-color: red;
+    color: black;
 }
 
 .view-window {
     width: 100%;
-    max-height: 70vh; /* Adjust based on desired window height */
+    max-height: 70vh;
     overflow-y: auto;
-    border: 1px solid #4EA217; /* Matches drill_green */
+    border: 1px solid var(--primary-color);
     border-radius: 8px;
     padding: 10px;
-    background-color: #2D2D2D; /* Dark background */
-    color: #FFFFFF;
+    background-color: var(--main-bg-color);
 }
 
-/* Window title container for aligning the title and button */
 .window-title-container {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Space between title and button */
+    justify-content: space-between;
 }
 
 .window-title {
@@ -345,12 +269,12 @@ nav a:hover {
     align-items: center;
     margin-bottom: 10px;
     padding: 5px;
-    border-bottom: 1px solid #4EA217;
+    border-bottom: 1px solid var(--primary-color);
 }
 
 .window-list button {
-    background-color: #4EA217;
-    color: #F8E860; /* Matches drill_yellow */
+    background-color: var(--primary-color);
+    color: var( --secondary-color);
     border: none;
     border-radius: 4px;
     padding: 5px 10px;
@@ -358,25 +282,23 @@ nav a:hover {
 }
 
 .window-list button:hover {
-    background-color: #2D7100; /* Matches drill_green_variant */
+    background-color: var( --primary-color-variant);
 }
 
 .form-container {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem; /* Adds space between form elements */
+    gap: 1.5rem;
     padding: 1rem;
     max-width: 400px;
-    margin: 0 auto; /* Centers the form horizontally */
+    margin: 0 auto;
 }
 
-/* Individual form group */
 .form-group {
     display: flex;
     flex-direction: column;
 }
 
-/* Input styles */
 .form-input {
     padding: 0.5rem;
     border: 1px solid #ccc;
@@ -384,7 +306,6 @@ nav a:hover {
     font-size: 1rem;
 }
 
-/* Focus state for inputs */
 .form-input:focus {
     outline: none;
     border-color: #4ea217;
@@ -398,47 +319,45 @@ nav a:hover {
 }
 
 .checkbox-window {
-    border: 1px solid #4EA217; /* Drill green */
+    border: 1px solid var(--primary-color);
     border-radius: 8px;
     padding: 10px;
-    max-height: 25vh; /* Adjust as needed */
-    overflow-y: auto; /* Enables scrolling if the list is long */
-    background-color: #FFFFFF; /* Matches the view-window */
-    color: #000000;
+    max-height: 25vh;
+    overflow-y: auto;
+    background-color: var(--main-text-color);
+    color: black;
 }
 
 .sub-window {
-    border: 1px solid #4EA217; /* Drill green */
+    border: 1px solid var(--primary-color);
     border-radius: 8px;
     padding: 10px;
-    max-height: 35vh; /* Adjust as needed */
-    overflow-y: auto; /* Enables scrolling if the list is long */
+    max-height: 35vh;
+    overflow-y: auto;
     background-color: #3E3E3E;
 }
 
-/* Sub-sub-window for individual instructions */
 .sub-sub-window {
-    border: 1px solid #4EA217; /* Matches drill green */
+    border: 1px solid var(--primary-color);
     border-radius: 8px;
     padding: 10px;
     margin-bottom: 10px;
-    background-color: #444444; /* Slightly lighter than sub-window */
-    color: #FFFFFF;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    background-color: #444444;
+    color: var(--main-text-color);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Remove bullet points from the list */
 .instruction-list {
     list-style-type: none;
-    padding: 0; /* Removes default padding */
-    margin: 0; /* Removes default margin */
+    padding: 0;
+    margin: 0;
 }
 
 .instruction-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #4EA217; /* Divider for clarity */
+    border-bottom: 1px solid var(--primary-color);
 }
 
 .instruction-description {
@@ -448,19 +367,19 @@ nav a:hover {
 
 .instruction-video-id {
     font-size: 0.9em;
-    color: #AAAAAA; /* Lighter color for less emphasis */
+    color: #AAAAAA;
 }
 
 .instruction-steps {
-    padding-left: 15px; /* Adds spacing for the steps section */
+    padding-left: 15px;
 }
 
 .instruction-steps p {
-    margin-bottom: 5px; /* Spacing above the steps list */
+    margin-bottom: 5px;
 }
 
 .instruction-steps ol {
-    padding-left: 20px; /* Indents the ordered list */
+    padding-left: 20px;
 }
 
 .check-list {
@@ -491,7 +410,6 @@ nav a:hover {
     opacity:1;
 }
 
-/* Steps container */
 .steps-container {
     display: flex;
     flex-direction: column;
@@ -499,7 +417,6 @@ nav a:hover {
     padding-bottom: 5px;
 }
 
-/* Step input */
 .step {
     display: flex;
     align-items: center;
@@ -510,14 +427,13 @@ nav a:hover {
     flex-grow: 1;
 }
 
-/* Apply styles to the ordered list (ol) */
 .steps-form-list {
-    list-style: decimal; /* Ensures numbering for list items */
-    color: white; /* Default text color for the list */
+    list-style: decimal;
+    color: white;
 }
 
 .steps-form-list {
     list-style-type: none;
-    padding: 0; /* Removes default padding */
-    margin: 0; /* Removes default margin */
+    padding: 0;
+    margin: 0;
 }

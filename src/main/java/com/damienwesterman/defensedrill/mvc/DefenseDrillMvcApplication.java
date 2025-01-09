@@ -33,11 +33,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class DefenseDrillMvcApplication {
-	// TODO: Go through all Thymeleaf variables to make sure they are used properly
-	// TODO: Go through the css and html see if we can take anything out of the css, maybe make some variables in the css, and consolidate anything if necessary or make more classes Make sure every HTML class="" actually exists
-	// TODO: Painstakingly go through e	ach and every warning
-	// TODO: Check startup warnings
-
 	public static void main(String[] args) {
 		SpringApplication.run(DefenseDrillMvcApplication.class, args);
 	}

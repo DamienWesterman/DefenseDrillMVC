@@ -526,7 +526,7 @@ public class HtmxDrillController {
 
         return "layouts/htmx/drill_form :: drillForm";
     }
-    // TODO: FIXME: START HERE< CONTINUE BELOW
+
     @PostMapping("/modify/{id}")
     public String modifyDrill(Model model, @PathVariable Long id,
             @ModelAttribute DrillFormDTO drill) {
@@ -535,12 +535,19 @@ public class HtmxDrillController {
             model.addAttribute("errorMessage", existingDrillResponse.getError().toString());
             return modifyDrillList(model);
         } else {
-            DrillUpdateDTO updateDrill = new DrillUpdateDTO(existingDrillResponse.getResponse());
+            DrillResponseDTO existingDrill = existingDrillResponse.getResponse();
+            DrillUpdateDTO updateDrill = new DrillUpdateDTO(existingDrill);
             updateDrill.fillInfo(drill);
 
             var drillUpdateResponse = drillApiService.update(id, updateDrill);
             if (drillUpdateResponse.hasError()) {
-                model.addAttribute("errorMessage", drillUpdateResponse.getError().toString());
+                model.addAttribute("errorMessage", "Update failed: " + drillUpdateResponse.getError().toString());
+                model.addAttribute("name", existingDrill.getName());
+                model.addAttribute("id", existingDrill.getId());
+                model.addAttribute("instructionsList", existingDrill.getInstructions());
+                model.addAttribute("categoriesList", existingDrill.getCategories());
+                model.addAttribute("subCategoriesList", existingDrill.getSubCategories());
+                model.addAttribute("relatedDrillsList", existingDrill.getRelatedDrills());
             } else {
                 model.addAttribute("successMessage", "Drill Updated Successfully!");
 
@@ -564,6 +571,9 @@ public class HtmxDrillController {
         var response = drillApiService.getAll();
         if (response.hasError()) {
             model.addAttribute("errorMessage", response.getError().toString());
+            model.addAttribute("windowTitle", "Error");
+            model.addAttribute("buttonText", "");
+            model.addAttribute("listItems", Map.of());
         } else {
             List<DrillResponseDTO> drills = List.of(response.getResponse());
 
