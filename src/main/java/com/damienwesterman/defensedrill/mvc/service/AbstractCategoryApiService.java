@@ -72,8 +72,8 @@ public abstract class AbstractCategoryApiService {
         switch((HttpStatus) response.getStatusCode()) {
             case OK:
                 retStatus = HttpStatus.OK;
-                retError = null;
                 retDto = response.getBody();
+                retError = null;
                 break;
 
             case NO_CONTENT:
@@ -115,8 +115,8 @@ public abstract class AbstractCategoryApiService {
         switch((HttpStatus) response.getStatusCode()) {
             case OK:
                 retStatus = HttpStatus.OK;
-                retError = null;
                 retDto = response.getBody();
+                retError = null;
                 break;
 
             case NOT_FOUND:
@@ -124,7 +124,7 @@ public abstract class AbstractCategoryApiService {
                 retDto = null;
                 retError = new ErrorMessageDTO(
                     Constants.NOT_FOUND_ERROR,
-                    "Category " + id + " does not exist."
+                    "ID " + id + " does not exist."
                 );
                 break;
 
@@ -163,8 +163,6 @@ public abstract class AbstractCategoryApiService {
         switch((HttpStatus) response.getStatusCode()) {
             case OK:
                 retStatus = HttpStatus.OK;
-                retError = null;
-
                 // Extract returned object
                 try {
                     retDto = objectMapper.readValue(response.getBody(), AbstractCategoryDTO.class);
@@ -174,6 +172,7 @@ public abstract class AbstractCategoryApiService {
                     retDto = null;
                     retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
                 }
+                retError = null;
                 break;
 
             case BAD_REQUEST:
@@ -240,8 +239,6 @@ public abstract class AbstractCategoryApiService {
         switch((HttpStatus) response.getStatusCode()) {
             case CREATED:
                 retStatus = HttpStatus.CREATED;
-                retError = null;
-
                 // Extract returned object
                 try {
                     retDto = objectMapper.readValue(response.getBody(), AbstractCategoryDTO.class);
@@ -251,6 +248,7 @@ public abstract class AbstractCategoryApiService {
                     retDto = null;
                     retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
                 }
+                retError = null;
                 break;
 
             case BAD_REQUEST:
@@ -299,8 +297,8 @@ public abstract class AbstractCategoryApiService {
         switch((HttpStatus) response.getStatusCode()) {
             case OK:
                 retStatus = HttpStatus.OK;
-                retError = null;
                 retDto = response.getBody();
+                retError = null;
                 break;
 
             case NOT_FOUND:

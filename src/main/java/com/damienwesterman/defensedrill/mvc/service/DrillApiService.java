@@ -89,8 +89,8 @@ public class DrillApiService {
         switch((HttpStatus) response.getStatusCode()) {
             case OK:
                 retStatus = HttpStatus.OK;
-                retError = null;
                 retDto = response.getBody();
+                retError = null;
                 break;
 
             case NOT_FOUND:
@@ -138,8 +138,6 @@ public class DrillApiService {
         switch((HttpStatus) response.getStatusCode()) {
             case OK:
                 retStatus = HttpStatus.OK;
-                retError = null;
-
                 // Extract returned object
                 try {
                     retDto = objectMapper.readValue(response.getBody(), DrillResponseDTO.class);
@@ -149,6 +147,7 @@ public class DrillApiService {
                     retDto = null;
                     retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
                 }
+                retError = null;
                 break;
 
             case BAD_REQUEST:
@@ -209,8 +208,8 @@ public class DrillApiService {
         switch((HttpStatus) response.getStatusCode()) {
             case NO_CONTENT:
                 retStatus = HttpStatus.NO_CONTENT;
-                retError = null;
                 retDto = "Successfully added Category to Drills.";
+                retError = null;
                 break;
 
             case BAD_REQUEST:
@@ -271,8 +270,8 @@ public class DrillApiService {
         switch((HttpStatus) response.getStatusCode()) {
             case NO_CONTENT:
                 retStatus = HttpStatus.NO_CONTENT;
-                retError = null;
                 retDto = "Successfully added Sub-Category to Drills.";
+                retError = null;
                 break;
 
             case BAD_REQUEST:
@@ -334,8 +333,8 @@ public class DrillApiService {
         switch((HttpStatus) response.getStatusCode()) {
             case OK:
                 retStatus = HttpStatus.OK;
-                retError = null;
                 retDto = response.getBody();
+                retError = null;
                 break;
 
             case NO_CONTENT:
@@ -377,8 +376,6 @@ public class DrillApiService {
         switch((HttpStatus) response.getStatusCode()) {
             case CREATED:
                 retStatus = HttpStatus.CREATED;
-                retError = null;
-
                 // Extract returned object
                 try {
                     retDto = objectMapper.readValue(response.getBody(), DrillResponseDTO.class);
@@ -388,6 +385,7 @@ public class DrillApiService {
                     retDto = null;
                     retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
                 }
+                retError = null;
                 break;
 
             case BAD_REQUEST:
@@ -430,8 +428,8 @@ public class DrillApiService {
         switch((HttpStatus) response.getStatusCode()) {
             case OK:
                 retStatus = HttpStatus.OK;
-                retError = null;
                 retDto = response.getBody();
+                retError = null;
                 break;
 
             case NOT_FOUND:
@@ -476,8 +474,8 @@ public class DrillApiService {
         switch((HttpStatus) response.getStatusCode()) {
             case OK:
                 retStatus = HttpStatus.OK;
-                retError = null;
                 retDto = response.getBody();
+                retError = null;
                 break;
 
             case NO_CONTENT:
@@ -532,8 +530,6 @@ public class DrillApiService {
         switch((HttpStatus) response.getStatusCode()) {
             case OK:
                 retStatus = HttpStatus.OK;
-                retError = null;
-
                 // Extract returned object
                 try {
                     retDto = objectMapper.readValue(response.getBody(), InstructionsDTO.class);
@@ -543,6 +539,7 @@ public class DrillApiService {
                     retDto = null;
                     retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
                 }
+                retError = null;
                 break;
 
             case NOT_FOUND:
