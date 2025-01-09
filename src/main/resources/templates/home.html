@@ -1,0 +1,78 @@
+<!--/*
+* Thymeleaf Variables:
+* Variable Key      Required?   Object Type         Description
+* ----------------------------------------------------------------------------------------------------
+* inetAddress       Y           String              Base IP address for the server (not including port
+*                                                   or https://)
+*/-->
+
+<!DOCTYPE html>
+
+<html lang="en" layout:decorate="layouts/" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DefenseDrill Home</title>
+    <link rel="stylesheet" href="/thymeleaf/css/main.css">
+</head>
+<body>
+    <header th:replace="~{layouts/header :: headerFragment}"></header>
+    <div class="card-container">
+        <a href="/modify/drill">
+            <div class="card">
+                <p class="card-title">Modify Drills</p>
+                <p class="card-text">View, edit, create, and remove Drills from the database.</p>
+            </div>
+        </a>
+        <a href="/modify/category">
+            <div class="card">
+                <p class="card-title">Modify Categories</p>
+                <p class="card-text">View, edit, create, and remove Categories from the database.</p>
+            </div>
+        </a>
+        <a href="/modify/sub_category">
+            <div class="card">
+                <p class="card-title">Modify Sub-Categories</p>
+                <p class="card-text">View, edit, create, and remove Sub-Categories from the database.</p>
+            </div>
+        </a>
+        <a href="/users">
+            <div class="card">
+                <p class="card-title">Modify Users</p>
+                <p class="card-text">View, edit, create, and remove User profiles from the database.</p>
+            </div>
+        </a>
+        <a href="/api/swagger-ui/index.html#/">
+            <div class="card">
+                <p class="card-title">RestAPI Documentation</p>
+                <p class="card-text">Access the swagger documentation for the DefenseDrill RestAPI backend.</p>
+            </div>
+        </a>
+        <a th:href="'http://' + ${inetAddress} + ':8200/'">
+            <div class="card">
+                <p class="card-title">Vault</p>
+                <p class="card-text">Access the secure Vault for configuration and maintenance.</p>
+            </div>
+        </a>
+        <a th:href="'http://' + ${inetAddress} + ':8096/'">
+            <div class="card">
+                <p class="card-title">Jellyfin</p>
+                <p class="card-text">Access the Jellyfin media server for configuration and maintenance.</p>
+            </div>
+        </a>
+        <a th:href="'http://' + ${inetAddress} + ':8097/'">
+            <div class="card">
+                <p class="card-title">File Browser</p>
+                <p class="card-text">Access the File Browser to configure, maintain, and upload videos.</p>
+            </div>
+        </a>
+        <a href="https://github.com/DamienWesterman">
+            <div class="card">
+                <p class="card-title">My GitHub</p>
+                <p class="card-text">View my personal GitHub.</p>
+            </div>
+        </a>
+    </div>
+    <footer th:replace="~{layouts/footer :: footerFragment}"></footer>
+</body>
+</html>

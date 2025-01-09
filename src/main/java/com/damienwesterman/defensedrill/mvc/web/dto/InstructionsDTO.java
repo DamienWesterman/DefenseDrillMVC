@@ -24,16 +24,43 @@
  * limitations under the License.
  */
 
-package com.damienwesterman.defensedrill.mvc;
+package com.damienwesterman.defensedrill.mvc.web.dto;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import java.util.List;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class DefenseDrillMvcApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(DefenseDrillMvcApplication.class, args);
-	}
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+/**
+ * DTO for all requests involving Instructions.
+ * <br><br>
+ * NOTE: Any changes here must also be reflected in the MVC repo.
+ */
+@ToString
+@EqualsAndHashCode
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class InstructionsDTO {
+    @NonNull
+    private String description;
+
+    @NonNull
+    private List<String> steps;
+
+    @Nullable
+    @JsonProperty("video_id")
+    private String videoId;
 }

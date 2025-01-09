@@ -24,16 +24,23 @@
  * limitations under the License.
  */
 
-package com.damienwesterman.defensedrill.mvc;
+package com.damienwesterman.defensedrill.mvc.config;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.JdkClientHttpRequestFactory;
+import org.springframework.web.client.NoOpResponseErrorHandler;
+import org.springframework.web.client.RestTemplate;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class DefenseDrillMvcApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(DefenseDrillMvcApplication.class, args);
-	}
+@Configuration
+public class RestConfig {
+
+    @LoadBalanced
+    @Bean
+    RestTemplate restTemplate() {
+        RestTemplate ret = new RestTemplate(new JdkClientHttpRequestFactory());
+        ret.setErrorHandler(new NoOpResponseErrorHandler());
+        return ret;
+    }
 }

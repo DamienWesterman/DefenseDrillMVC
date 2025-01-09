@@ -1,0 +1,41 @@
+<!--/*
+* Thymeleaf Variables:
+* Variable Key      Required?   Object Type         Description
+* ----------------------------------------------------------------------------------------------------
+* NONE
+*/-->
+
+<!DOCTYPE html>
+
+<html lang="en" layout:decorate="layouts/" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DefenseDrill Home</title>
+    <link rel="stylesheet" href="/thymeleaf/css/main.css">
+</head>
+<body>
+    <header th:replace="~{layouts/header :: headerFragment}"></header>
+    <div class="card-container">
+        <a href="/modify/drill">
+            <div class="card">
+                <p class="card-title">Modify Drills</p>
+                <p class="card-text">View, edit, create, and remove Drills from the database.</p>
+            </div>
+        </a>
+        <a href="/modify/category">
+            <div class="card">
+                <p class="card-title">Modify Categories</p>
+                <p class="card-text">View, edit, create, and remove Categories from the database.</p>
+            </div>
+        </a>
+        <a href="/modify/sub_category">
+            <div class="card">
+                <p class="card-title">Modify Sub-Categories</p>
+                <p class="card-text">View, edit, create, and remove Sub-Categories from the database.</p>
+            </div>
+        </a>
+    </div>
+    <footer th:replace="~{layouts/footer :: footerFragment}"></footer>
+</body>
+</html>

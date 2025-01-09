@@ -1,0 +1,128 @@
+<!--/*
+* Thymeleaf Variables:
+* Variable Key      Required?   Object Type         Description
+* ----------------------------------------------------------------------------------------------------
+* errorMessage      N           String              Error message
+* successMessage    N           String              Success message
+* windowTitle       Y           String              Title for the window (ex. "Create Drill")
+* postEndpoint      Y           String              HTMX endpoint to post the Drill form information to
+* nameText          N           String              Existing name of the drill
+* categoriesList    Y           List<AbstractCategoryDTO>
+*                                                   List of all Categories
+* checkedCategories Y           Set<Long>           Set (may be empty) of Category IDs that already belong to the drill
+* subCategoriesList Y           List<AbstractCategoryDTO>
+*                                                   List of all Sub-Categories
+* checkedSubCategories
+*                   Y           Set<Long>           Set (may be empty) of Sub-Category IDs that already belong to the drill
+* drillsList        Y           List<DrillResponseDTO>
+*                                                   List of all drills
+* checkedRelatedDrills
+*                   Y           Set<Long>           Set (may be empty) of Drill IDs that already belong to the drill
+* buttonText        Y           String              Submit button text for the form (ex. "Create")
+*/-->
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <link rel="stylesheet" href="styles.css" />
+        <script src="https://unpkg.com/htmx.org@1.8.0"></script>
+    </head>
+    <body>
+        <!--/* To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" */-->
+        <div th:fragment="drillForm">
+            <p class="error center" th:text="${errorMessage}"></p>
+            <p class="success center" th:text="${successMessage}"></p>
+            <div class="view-window">
+                <div class="window-title" th:text="${windowTitle}"></div>
+                <form
+                    class="form-container"
+                    th:hx-post="${postEndpoint}"
+                    hx-target="#contentArea"
+                    hx-swap="innerHTML"
+                    hx-indicator=".loading-indicator">
+
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input
+                            th:value="${nameText}"
+                            id="name"
+                            type="text"
+                            name="name"
+                            placeholder="Enter name..."
+                            class="form-input"
+                            required
+                            minlength="1"
+                            maxlength="255"
+                            title="Name must be between 1 and 255 characters." />
+                    </div>
+
+                    <h3>You can add instructions on the next page.</h3>
+
+                    <!-- Sub-window for selecting categories -->
+                    <div class="form-group">
+                        <label for="categoryIds">Select Categories:</label>
+                        <div class="checkbox-window">
+                            <ul class="check-list">
+                                <li th:each="category : ${categoriesList}">
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            name="categoryIds"
+                                            th:value="${category.id}"
+                                            th:text="${category.name}"
+                                            th:checked="${checkedCategories.contains(category.id)}"/>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Sub-window for selecting sub-categories -->
+                    <div class="form-group">
+                        <label for="subCategoryIds">Select Sub-Categories:</label>
+                        <div class="checkbox-window">
+                            <ul class="check-list">
+                                <li th:each="subCategory : ${subCategoriesList}">
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            name="subCategoryIds"
+                                            th:value="${subCategory.id}"
+                                            th:text="${subCategory.name}"
+                                            th:checked="${checkedSubCategories.contains(subCategory.id)}"/>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Sub-window for selecting related drills -->
+                    <div class="form-group">
+                        <label for="relatedDrillIds">Select Related Drills:</label>
+                        <div class="checkbox-window">
+                            <ul class="check-list">
+                                <li th:each="drill : ${drillsList}">
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            name="relatedDrillIds"
+                                            th:value="${drill.id}"
+                                            th:text="${drill.name}"
+                                            th:checked="${checkedRelatedDrills.contains(drill.id)}"/>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="form-actions button-container">
+                        <button type="submit" class="button" th:text="${buttonText}"></button>
+                    </div>
+                </form>
+            </div>
+            <br>
+            <img class="center-image loading-indicator" src="/thymeleaf/images/loading-indicator.gif" />
+        </div>
+    </body>
+</html>

@@ -1,0 +1,52 @@
+<!--/*
+* Thymeleaf Variables:
+* Variable Key      Required?   Object Type         Description
+* ----------------------------------------------------------------------------------------------------
+* tabTitle          Y           String              Text to display in the browser's tab
+* pageTitle         Y           String              Heading text that describes the page's function
+*                                                   (ex. "Modify Drill")
+* listItems         Y           Map<String, String> - Must contain keys: ["name", "htmxEndpoint"]
+*                                                   List of items to display in the left tab list.
+*                                                   "name" is the description of the list item,
+*                                                   and "htmxEndpoint" is the HTMX endpoint to access for
+*                                                   this specific list item
+*/-->
+
+<!DOCTYPE html>
+
+<html lang="en" layout:decorate="layouts/" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title th:text="${tabTitle}">Modify</title>
+        <link rel="stylesheet" href="/thymeleaf/css/main.css">
+        <script src="https://unpkg.com/htmx.org@1.8.0"></script>
+        <script src="/thymeleaf/js/main.js"></script>
+    </head>
+    <body>
+        <header th:replace="~{layouts/header :: headerFragment}"></header>
+
+        <h1 class="center" th:text="${pageTitle}">Modify</h1>
+
+        <div class="modify-container">
+            <!-- Sidebar for tabs -->
+            <nav class="side-nav" id="sideNav">
+                <ul>
+                    <li th:each="listItem : ${listItems}">
+                        <a th:hx-get="${listItem['htmxEndpoint']}"
+                            hx-target="#contentArea"
+                            hx-swap="innerHTML"
+                            th:text="${listItem['name']}"></a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Main content area -->
+            <div class="content-area" id="contentArea">
+                <p>Please select an option from the left to get started.</p>
+            </div>
+        </div>
+
+        <footer th:replace="~{layouts/footer :: footerFragment}"></footer>
+    </body>
+</html>

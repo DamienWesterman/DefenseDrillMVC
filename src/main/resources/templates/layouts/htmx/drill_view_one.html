@@ -1,0 +1,119 @@
+<!--/*
+* Thymeleaf Variables:
+* Variable Key      Required?   Object Type         Description
+* ----------------------------------------------------------------------------------------------------
+* errorMessage      N           String              Error message
+* successMessage    N           String              Success message
+* name              Y           String              Name of the drill
+* id                Y           Long                ID of the drill
+* backEndpoint      Y           String              HTMX endpoint to go to when user clicks "Back".
+*                                                   Also passed to future endpoints as the starting
+*                                                   to return to.
+* instructionsList  Y           List<InstructionsDTO>
+*                                                   List of instructions that belong to the drill
+* categoriesList    Y           List<AbstractCategoryDTO>
+*                                                   List of categories the drill belongs to
+* subCategoriesList Y           List<AbstractCategoryDTO>
+*                                                   List of sub-categories the drill belongs to
+* relatedDrillsList Y           List<DrillRelatedDTO>
+*                                                   List of related drills
+*/-->
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <script src="https://unpkg.com/htmx.org@1.8.0"></script>
+    </head>
+
+    <!--/* To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" */-->
+    <div th:fragment="drillDetails">
+        <p class="error center" th:text="${errorMessage}"></p>
+        <p class="success center" th:text="${successMessage}"></p>
+        <div class="view-window">
+            <div class="window-title" th:text="${name}"></div>
+            <p th:text="'ID: ' + ${id}"></p>
+
+            <div class="sub-window">
+                <div class="window-title-container">
+                    <div class="window-title">Instructions</div>
+                    <button class="button create-button"
+                        th:hx-get="'/htmx/drill/' + ${id} + '/instructions/create?startingEndpoint=' + ${backEndpoint}"
+                        hx-target="#contentArea"
+                        hx-swap="innerHTML"
+                        hx-indicator=".loading-indicator">
+                        Create New Instructions
+                    </button>
+                </div>
+
+                <ul class="instruction-list">
+                    <li th:each="instructionDetails : ${instructionsList}">
+                        <div class="sub-sub-window">
+                            <div class="instruction-header">
+                                <p class="instruction-description" th:text="${instructionDetails.description}"></p>
+                                <p class="instruction-video-id" th:text="'Video ID: ' + ${instructionDetails.videoId}"></p>
+                            </div>
+                            <div class="button-container">
+                                <button class="button modify-button"
+                                    th:hx-get="'/htmx/drill/' + ${id} + '/instructions/modify/' + ${instructionDetails.description} + '?startingEndpoint=' + ${backEndpoint}"
+                                    hx-target="#contentArea"
+                                    hx-swap="innerHTML"
+                                    hx-indicator=".loading-indicator">
+                                    Modify
+                                </button>
+                                <button class="button delete-button"
+                                    th:hx-get="'/htmx/drill/' + ${id} + '/instructions/confirm_delete/' + ${instructionDetails.description} + '?startingEndpoint=' + ${backEndpoint}"
+                                    hx-target="#contentArea"
+                                    hx-swap="innerHTML">
+                                    Delete
+                                </button>
+                            </div>
+                            <div class="instruction-steps">
+                                <p>Steps:</p>
+                                <ol>
+                                    <li th:each="step : ${instructionDetails.steps}" th:text="${step}"></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <br>
+
+            <div class="sub-window">
+                <div class="window-title">Categories</div>
+                <ul class="window-list">
+                    <li th:each="category : ${categoriesList}" th:text="${category.name}"></li>
+                </ul>
+            </div>
+            <br>
+
+            <div class="sub-window">
+                <div class="window-title">Subcategories</div>
+                <ul class="window-list">
+                    <li th:each="subCategory : ${subCategoriesList}" th:text="${subCategory.name}"></li>
+                </ul>
+            </div>
+            <br>
+
+            <div class="sub-window">
+                <div class="window-title">Related Drills</div>
+                <ul class="window-list">
+                    <li th:each="relatedDrill : ${relatedDrillsList}" th:text="${relatedDrill.name}"></li>
+                </ul>
+            </div>
+            <br><br>
+
+             <div class="button-container">
+                <button class="button"
+                    th:hx-get="${backEndpoint}"
+                    hx-target="#contentArea"
+                    hx-swap="innerHTML"
+                    hx-indicator=".loading-indicator">
+                    Back
+                </button>
+            </div>
+        </div>
+        <img class="center-image loading-indicator" src="/thymeleaf/images/loading-indicator.gif" />
+    </div>
+</html>

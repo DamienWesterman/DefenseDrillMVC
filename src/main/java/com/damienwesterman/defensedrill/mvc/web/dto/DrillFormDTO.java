@@ -24,16 +24,44 @@
  * limitations under the License.
  */
 
-package com.damienwesterman.defensedrill.mvc;
+package com.damienwesterman.defensedrill.mvc.web.dto;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import java.util.List;
 
-@SpringBootApplication
-@EnableDiscoveryClient
-public class DefenseDrillMvcApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(DefenseDrillMvcApplication.class, args);
-	}
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+/**
+ * DTO for retrieving items from the Drill Form HTML.
+*/
+@Getter
+@Setter
+@Builder
+@ToString
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
+public class DrillFormDTO {
+    @NonNull
+    private String name;
+    @Nullable
+    private List<Long> categoryIds;
+    @Nullable
+    private List<Long> subCategoryIds;
+    @Nullable
+    private List<Long> relatedDrillIds;
+
+    public DrillCreateDTO toDrillCreateDto() {
+        return DrillCreateDTO.builder()
+            .name(this.name)
+            .build();
+    }
 }

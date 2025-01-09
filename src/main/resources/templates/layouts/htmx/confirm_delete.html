@@ -1,0 +1,47 @@
+<!--/*
+* Thymeleaf Variables:
+* Variable Key      Required?   Object Type         Description
+* ----------------------------------------------------------------------------------------------------
+* errorMessage      N           String              Error message
+* windowTitle       Y           String              Title of the window (ex. "Confirm Category Delete")
+* name              Y           String              Name/Description of the item to delete
+* id                Y           Long                ID of the item to delete
+* cancelEndpoint    Y           String              HTMX endpoint for if the user does NOT want to delete
+* confirmEndpoint   Y           String              HTMX endpoint for if the user DOES want to delete
+*/-->
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <script src="https://unpkg.com/htmx.org@1.8.0"></script>
+    </head>
+
+    <!--/* To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" */-->
+    <div th:fragment="confirmDelete">
+        <p class="error center" th:text="${errorMessage}"></p>
+        <div class="view-window">
+            <div class="window-title" th:text="${windowTitle}"></div>
+            <h1 th:text="${name}"></h1>
+            <p th:text="'ID: ' + ${id}"></p>
+            <h1 class="error center">ARE YOU SURE YOU WANT TO DELETE THE ABOVE?</h1>
+            <div class="button-container">
+                <button class="button"
+                    th:hx-get="${cancelEndpoint}"
+                    hx-target="#contentArea"
+                    hx-swap="innerHTML"
+                    hx-indicator=".loading-indicator">
+                    Cancel
+                </button>
+                <button class="button"
+                    th:hx-post="${confirmEndpoint}"
+                    hx-target="#contentArea"
+                    hx-swap="innerHTML"
+                    hx-indicator=".loading-indicator">
+                    Confirm
+                </button>
+            </div>
+        </div>
+        <img class="center-image loading-indicator" src="/thymeleaf/images/loading-indicator.gif" />
+    </div>
+</html>
