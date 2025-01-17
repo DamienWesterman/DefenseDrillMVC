@@ -31,6 +31,8 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.damienwesterman.defensedrill.mvc.web.dto.ErrorMessageDTO;
 
@@ -39,6 +41,7 @@ import com.damienwesterman.defensedrill.mvc.web.dto.ErrorMessageDTO;
  */
 public class Constants {
     public final static String REST_API_BASE_ADDRESS = "lb://rest-api";
+    public final static String SECURITY_API_BASE_ADDRESS = "lb://security/user";
 
     public final static ErrorMessageDTO GENERIC_INTERNAL_ERROR_DTO = new ErrorMessageDTO(
         Constants.GENERIC_INTERNAL_ERROR,
@@ -52,7 +55,26 @@ public class Constants {
 
     public final static String SERVER_IP_ADDRESS = getNetworkIpAddress();
 
-    // Thank you ChatGPT or this one
+    public static enum UserRoles {
+        USER("USER"),
+        ADMIN("ADMIN");
+
+        private String roleString;
+
+        UserRoles(String roleString) {
+            this.roleString = roleString;
+        }
+
+        public String getStringRepresentation() {
+            return this.roleString;
+        }
+    }
+
+    public static final List<String> ALL_ROLES_LIST = List.of(UserRoles.values()).stream()
+        .map(UserRoles::getStringRepresentation)
+        .collect(Collectors.toList());
+
+    // Thank you ChatGPT for this one
     private static String getNetworkIpAddress() {
         try {
             // Get the list of all network interfaces

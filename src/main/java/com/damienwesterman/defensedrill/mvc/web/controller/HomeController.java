@@ -109,4 +109,20 @@ public class HomeController {
 
         return "tab_with_window";
     }
+
+    @GetMapping("/modify/user")
+    public String modifyUsers(Model model) {
+        model.addAttribute("tabTitle", "Modify User");
+        model.addAttribute("pageTitle", "Modify User");
+
+        List<Map<String, String>> listItems = List.of(
+            createListItem.apply("View Users", "/htmx/user/view"),
+            createListItem.apply("Create Users", "/htmx/user/create"),
+            createListItem.apply("Modify Users", "/htmx/user/modify"),
+            createListItem.apply("Delete Users", "/htmx/user/delete")
+        );
+        model.addAttribute("listItems", listItems);
+
+        return "tab_with_window";
+    }
 }

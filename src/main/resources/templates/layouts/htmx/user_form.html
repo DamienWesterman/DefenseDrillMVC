@@ -1,0 +1,93 @@
+<!--/*
+* Thymeleaf Variables:
+* Variable Key      Required?   Object Type         Description
+* ----------------------------------------------------------------------------------------------------
+* errorMessage      N           String              Error message
+* windowTitle       Y           String              Title for the window (ex. "Create Category")
+* postEndpoint      Y           String              HTMX post endpoint to send the completed form to
+* usernameText      N           String              Existing name for the Abstract Category
+* passwordText      N           String              Existing description for the Abstract Category
+* rolesList         Y           List<Pair<String, Boolean>>
+*                                                   List of items containing role name and if it is
+*                                                   checked.
+* buttonText        Y           String              Text to display on the form's Submit button
+*/-->
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <link rel="stylesheet" href="styles.css" />
+        <script src="https://unpkg.com/htmx.org@1.8.0"></script>
+    </head>
+    <body>
+        <!--/* To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" */-->
+        <div th:fragment="userForm">
+            <p class="error center" th:text="${errorMessage}"></p>
+            <div class="view-window">
+                <div class="window-title" th:text="${windowTitle}"></div>
+                <form
+                    class="form-container"
+                    th:hx-post="${postEndpoint}"
+                    hx-target="#contentArea"
+                    hx-swap="innerHTML"
+                    hx-indicator=".loading-indicator">
+
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input
+                            th:value="${usernameText}"
+                            id="username"
+                            type="text"
+                            name="username"
+                            placeholder="Enter username..."
+                            class="form-input"
+                            required
+                            minlength="6"
+                            maxlength="31"
+                            title="Username must be between 6 and 31 characters." />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input
+                            th:value="${passwordText}"
+                            id="password"
+                            type="password"
+                            name="password"
+                            placeholder="Enter password..."
+                            class="form-input"
+                            required
+                            minlength="8"
+                            maxlength="31"
+                            title="Password must be between 8 and 31 characters." />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="roles">Select roles for the user:</label>
+                        <div class="checkbox-window">
+                            <ul class="check-list">
+                                <li th:each="role : ${rolesList}">
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            name="roles"
+                                            th:value="${role.getValue0()}"
+                                            th:text="${role.getValue0()}"
+                                            th:checked="${role.getValue1().booleanValue()}"/>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="form-actions button-container">
+                        <button type="submit" class="button" th:text="${buttonText}"></button>
+                    </div>
+                </form>
+            </div>
+            <br>
+            <img class="center-image loading-indicator" src="/thymeleaf/images/loading-indicator.gif" />
+        </div>
+    </body>
+</html>
