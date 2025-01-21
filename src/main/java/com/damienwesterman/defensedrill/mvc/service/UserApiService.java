@@ -26,8 +26,6 @@
 
 package com.damienwesterman.defensedrill.mvc.service;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -60,8 +58,9 @@ public class UserApiService {
     private final static String ID_ENDPOINT = "/id/{id}";
 
     /**
-     * TODO: All doc comments
-     * @return
+     * Retrieve all Users.
+     *
+     * @return BackendResponse containing an array of Users.
      */
     @NonNull
     public BackendResponse<UserInfoDTO[]> getAll() {
@@ -96,6 +95,12 @@ public class UserApiService {
         return new BackendResponse<UserInfoDTO[]>(retStatus, retDto, retError);
     }
 
+    /**
+     * Create a User.
+     *
+     * @param user User to create.
+     * @return BackendResponse with the newly created User.
+     */
     @NonNull
     public BackendResponse<UserInfoDTO> create(@NonNull UserFormDTO user) {
         HttpStatusCode retStatus = null;
@@ -148,6 +153,12 @@ public class UserApiService {
         return new BackendResponse<UserInfoDTO>(retStatus, retDto, retError);
     }
 
+    /**
+     * Find a User by their ID.
+     *
+     * @param id User's ID.
+     * @return BackendResponse containing the found User.
+     */
     @NonNull
     public BackendResponse<UserInfoDTO> get(@NonNull Long id) {
         HttpStatusCode retStatus = null;
@@ -187,6 +198,14 @@ public class UserApiService {
 
         return new BackendResponse<UserInfoDTO>(retStatus, retDto, retError);
     }
+
+    /**
+     * Update a User.
+     *
+     * @param id User's ID.
+     * @param user User infor to update.
+     * @return BackendResponse containing the updated User.
+     */
     @NonNull
     public BackendResponse<UserInfoDTO> update(@NonNull Long id, @NonNull UserFormDTO user) {
         HttpStatusCode retStatus = null;
@@ -249,6 +268,11 @@ public class UserApiService {
         return new BackendResponse<UserInfoDTO>(retStatus, retDto, retError);
     }
 
+    /**
+     * Delete a User by their ID.
+     *
+     * @param id User's ID.
+     */
     public void delete(@NonNull Long id) {
         restTemplate.delete(API_ENDPOINT + ID_ENDPOINT, id);
     }
