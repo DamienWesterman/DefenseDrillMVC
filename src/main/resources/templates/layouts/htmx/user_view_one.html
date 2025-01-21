@@ -1,0 +1,49 @@
+<!--/*
+* Thymeleaf Variables:
+* Variable Key      Required?   Object Type         Description
+* ----------------------------------------------------------------------------------------------------
+* errorMessage      N           String              Error message
+* successMessage    N           String              Success message
+* username          Y           String              Username of the User
+* id                Y           Long                ID of the User
+* roles             Y           List<String>        List of user roles. Cannot be null,
+*                                                   but can be empty.
+* backEndpoint      Y           String              HTMX endpoint for the user to navigate back
+*/-->
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <script src="https://unpkg.com/htmx.org@1.8.0"></script>
+    </head>
+
+    <!--/* To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" */-->
+    <div th:fragment="userDetails">
+        <p class="error center" th:text="${errorMessage}"></p>
+        <p class="success center" th:text="${successMessage}"></p>
+        <div class="view-window">
+            <div class="window-title" th:text="${username}"></div>
+            <p th:text="'ID: ' + ${id}"></p>
+            <br>
+
+            <div class="sub-window">
+                <div class="window-title">Roles</div>
+                <ul class="window-list">
+                    <li th:each="role : ${roles}" th:text="${role}"></li>
+                </ul>
+            </div>
+            <br>
+            <div class="button-container">
+                <button class="button"
+                    th:hx-get="${backEndpoint}"
+                    hx-target="#contentArea"
+                    hx-swap="innerHTML"
+                    hx-indicator=".loading-indicator">
+                    Back
+                </button>
+            </div>
+        </div>
+        <img class="center-image loading-indicator" src="/thymeleaf/images/loading-indicator.gif" />
+    </div>
+</html>

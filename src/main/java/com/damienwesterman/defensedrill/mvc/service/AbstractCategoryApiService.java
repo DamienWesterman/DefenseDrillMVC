@@ -35,8 +35,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.client.RestTemplate;
 
 import com.damienwesterman.defensedrill.mvc.util.Constants;
-import com.damienwesterman.defensedrill.mvc.web.BackendResponse;
 import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryDTO;
+import com.damienwesterman.defensedrill.mvc.web.dto.BackendResponse;
 import com.damienwesterman.defensedrill.mvc.web.dto.ErrorMessageDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

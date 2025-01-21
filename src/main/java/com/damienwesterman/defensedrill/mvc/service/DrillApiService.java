@@ -38,7 +38,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.damienwesterman.defensedrill.mvc.util.Constants;
-import com.damienwesterman.defensedrill.mvc.web.BackendResponse;
+import com.damienwesterman.defensedrill.mvc.web.dto.BackendResponse;
 import com.damienwesterman.defensedrill.mvc.web.dto.DrillCreateDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.DrillResponseDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.DrillUpdateDTO;

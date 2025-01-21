@@ -24,13 +24,11 @@
  * limitations under the License.
  */
 
-package com.damienwesterman.defensedrill.mvc.web;
+package com.damienwesterman.defensedrill.mvc.web.dto;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
-
-import com.damienwesterman.defensedrill.mvc.web.dto.ErrorMessageDTO;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
