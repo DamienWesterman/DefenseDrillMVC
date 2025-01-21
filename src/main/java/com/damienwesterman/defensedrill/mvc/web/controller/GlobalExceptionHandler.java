@@ -24,28 +24,22 @@
  * limitations under the License.
  */
 
-package com.damienwesterman.defensedrill.mvc.web.dto;
+package com.damienwesterman.defensedrill.mvc.web.controller;
 
-import java.util.List;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.ResourceAccessException;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * All data for creating or updating user information.
-*/
-@Data
-public class UserFormDTO {
-    @NotEmpty
-    @Size(min = 6, max = 31)
-    private String username;
-
-    @NotEmpty
-    @Size(min = 8, max = 31)
-    private String password;
-
-    @NotNull
-    private List<String> roles;
+@ControllerAdvice
+@Slf4j
+public class GlobalExceptionHandler {
+    @ExceptionHandler({IllegalStateException.class, ResourceAccessException.class})
+    public void handleBackendApiExceptions(Exception e, HttpServletResponse response) {
+        log.error("Internal Error", e);
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        response.setHeader("HX-Redirect", "/error/500.html");
+    }
 }
