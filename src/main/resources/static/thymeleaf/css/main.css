@@ -85,6 +85,17 @@ nav a:hover {
     text-decoration: underline;
 }
 
+.nav-left,
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 200px;
+}
+
+.nav-right {
+    margin-left: auto;
+}
+
 .container {
     margin: 0 auto;
     padding: 20px;
