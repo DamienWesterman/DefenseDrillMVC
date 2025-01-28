@@ -51,7 +51,13 @@
                         <div class="sub-sub-window">
                             <div class="instruction-header">
                                 <p class="instruction-description" th:text="${instructionDetails.description}"></p>
-                                <p class="instruction-video-id" th:text="'Video ID: ' + ${instructionDetails.videoId}"></p>
+                                <div th:if="${!instructionDetails.videoId.isEmpty}">
+                                    <a
+                                        class="instruction-video-id"
+                                        th:text="'Video ID: ' + ${instructionDetails.videoId}"
+                                        th:href="'/videos/' + ${instructionDetails.videoId} + '/stream'" >
+                                    </a>
+                                </div>
                             </div>
                             <div class="button-container">
                                 <button class="button modify-button"
