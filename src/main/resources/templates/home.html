@@ -66,10 +66,10 @@
                 <p class="card-text">Access the File Browser to configure, maintain, and upload videos.</p>
             </div>
         </a>
-        <a href="https://github.com/DamienWesterman">
+        <a th:href="'http://' + ${inetAddress} + ':9411/'">
             <div class="card">
-                <p class="card-title">My GitHub</p>
-                <p class="card-text">View my personal GitHub.</p>
+                <p class="card-title">Zipkin</p>
+                <p class="card-text">Access the Zipkin server to check microservice request performance.</p>
             </div>
         </a>
     </div>
