@@ -40,7 +40,7 @@ import com.damienwesterman.defensedrill.mvc.web.dto.ErrorMessageDTO;
 @Component
 public class Constants {
     public Constants(Environment environment) {
-        SERVER_IP_ADDRESS = environment.getProperty("PRIVATE_IP_ADDRESS");
+        SERVER_IP_ADDRESS = environment.getProperty("LOCAL_IP_ADDRESS", "localhost");
     }
 
     public final static String REST_API_BASE_ADDRESS = "lb://rest-api";

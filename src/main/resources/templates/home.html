@@ -42,10 +42,10 @@
                 <p class="card-text">View, edit, create, and remove User profiles from the database.</p>
             </div>
         </a>
-        <a th:href="'http://' + ${inetAddress} + ':5433/swagger-ui/index.html#/'">
+        <a th:href="${apiDocumentationUri}">
             <div class="card">
                 <p class="card-title">RestAPI Documentation</p>
-                <p class="card-text">Access the swagger documentation for the DefenseDrill RestAPI backend.</p>
+                <p class="card-text">Access the documentation for the DefenseDrill RestAPI backend.</p>
             </div>
         </a>
         <a th:href="'http://' + ${inetAddress} + ':8200/'">
