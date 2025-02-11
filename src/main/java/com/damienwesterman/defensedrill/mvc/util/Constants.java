@@ -26,20 +26,23 @@
 
 package com.damienwesterman.defensedrill.mvc.util;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 import com.damienwesterman.defensedrill.mvc.web.dto.ErrorMessageDTO;
 
 /**
  * Public static constants common to the entire application.
  */
+@Component
 public class Constants {
+    public Constants(Environment environment) {
+        SERVER_IP_ADDRESS = environment.getProperty("LOCAL_IP_ADDRESS", "localhost");
+    }
+
     public final static String REST_API_BASE_ADDRESS = "lb://rest-api";
     public final static String SECURITY_API_BASE_ADDRESS = "lb://security/user";
 
@@ -53,7 +56,7 @@ public class Constants {
     public final static String GENERIC_INTERNAL_ERROR_MESSAGE = "Please try again later.";
     public final static String NOT_FOUND_ERROR = "Not Found";
 
-    public final static String SERVER_IP_ADDRESS = getNetworkIpAddress();
+    public static String SERVER_IP_ADDRESS;
 
     public static enum UserRoles {
         USER("USER"),
@@ -73,39 +76,4 @@ public class Constants {
     public static final List<String> ALL_ROLES_LIST = List.of(UserRoles.values()).stream()
         .map(UserRoles::getStringRepresentation)
         .collect(Collectors.toList());
-
-    // Thank you ChatGPT for this one
-    private static String getNetworkIpAddress() {
-        try {
-            // Get the list of all network interfaces
-            Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-            while (networkInterfaces.hasMoreElements()) {
-                NetworkInterface networkInterface = networkInterfaces.nextElement();
-
-                // Skip non-physical interfaces (like virtual or loopback interfaces)
-                if (networkInterface.isLoopback() || !networkInterface.isUp()) {
-                    continue;
-                }
-
-                // Get the list of IP addresses for this network interface
-                Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
-                while (inetAddresses.hasMoreElements()) {
-                    InetAddress inetAddress = inetAddresses.nextElement();
-
-                    // Skip loopback addresses (127.0.0.1)
-                    if (inetAddress.isLoopbackAddress()) {
-                        continue;
-                    }
-
-                    // If it's an IPv4 address, return it
-                    if (inetAddress instanceof Inet4Address) {
-                        return inetAddress.getHostAddress();
-                    }
-                }
-            }
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
-        return "localhost";
-    }
 }

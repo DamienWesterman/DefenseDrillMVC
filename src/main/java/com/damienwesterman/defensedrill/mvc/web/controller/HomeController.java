@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +42,22 @@ import com.damienwesterman.defensedrill.mvc.util.Constants;
  */
 @Controller
 public class HomeController {
+    private static final String PROD_PROFILE_STRING = "prod";
+    private static final String DEV_API_DOCUMENTATION_ENDPOINT =
+        "http://" + Constants.SERVER_IP_ADDRESS + ":5433/swagger-ui/index.html#/";
+    private static final String PROD_API_DOCUMENTATION_ENDPOINT = "/docs/index.html";
+
+    private final String API_DOCUMENTATION_ENDPOINT;
+
+    public HomeController(Environment environment) {
+        List<String> activeProfiles = List.of(environment.getActiveProfiles());
+        if (activeProfiles.contains(PROD_PROFILE_STRING)) {
+            API_DOCUMENTATION_ENDPOINT = PROD_API_DOCUMENTATION_ENDPOINT;
+        } else {
+            API_DOCUMENTATION_ENDPOINT = DEV_API_DOCUMENTATION_ENDPOINT;
+        }
+    }
+
     /**
      * Used to create a list item for the vertical tabs on the left of the modify SPA page.
      */
@@ -53,6 +70,7 @@ public class HomeController {
     @GetMapping("/")
     public String homePage(Model model) {
         model.addAttribute("inetAddress", Constants.SERVER_IP_ADDRESS);
+        model.addAttribute("apiDocumentationUri", API_DOCUMENTATION_ENDPOINT);
 
         return "home";
     }
