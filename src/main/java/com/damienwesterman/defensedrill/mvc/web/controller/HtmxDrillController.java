@@ -150,7 +150,7 @@ public class HtmxDrillController {
             model.addAttribute("errorMessage", drillListResponse.getError().toString());
             model.addAttribute("drillsList", List.of());
         } else if (0 < drillListResponse.getResponse().length) {
-            model.addAttribute("drillsList", drillListResponse.getResponse());
+            model.addAttribute("drillsList", List.of(drillListResponse.getResponse()));
         }
 
         var categoriesListResponse = categoryApiService.getAll();
@@ -158,7 +158,7 @@ public class HtmxDrillController {
             model.addAttribute("errorMessage", categoriesListResponse.getError().toString());
             model.addAttribute("categoriesList", List.of());
         } else if (0 < categoriesListResponse.getResponse().length) {
-            model.addAttribute("categoriesList", categoriesListResponse.getResponse());
+            model.addAttribute("categoriesList", List.of(categoriesListResponse.getResponse()));
         }
 
         var subCategoriesListResponse = subCategoryApiService.getAll();
@@ -166,7 +166,7 @@ public class HtmxDrillController {
             model.addAttribute("errorMessage", subCategoriesListResponse.getError().toString());
             model.addAttribute("subCategoriesList", List.of());
         } else if (0 < subCategoriesListResponse.getResponse().length) {
-            model.addAttribute("subCategoriesList", subCategoriesListResponse.getResponse());
+            model.addAttribute("subCategoriesList", List.of(subCategoriesListResponse.getResponse()));
         }
 
         // If more than one error message occurs, only the last one will be displayed. This is okay
@@ -513,7 +513,7 @@ public class HtmxDrillController {
             model.addAttribute("errorMessage", categoriesListResponse.getError().toString());
             model.addAttribute("categoriesList", List.of());
         } else if (0 < categoriesListResponse.getResponse().length) {
-            model.addAttribute("categoriesList", categoriesListResponse.getResponse());
+            model.addAttribute("categoriesList", List.of(categoriesListResponse.getResponse()));
         }
 
         var subCategoriesListResponse = subCategoryApiService.getAll();
@@ -521,7 +521,7 @@ public class HtmxDrillController {
             model.addAttribute("errorMessage", subCategoriesListResponse.getError().toString());
             model.addAttribute("subCategoriesList", List.of());
         } else if (0 < subCategoriesListResponse.getResponse().length) {
-            model.addAttribute("subCategoriesList", subCategoriesListResponse.getResponse());
+            model.addAttribute("subCategoriesList", List.of(subCategoriesListResponse.getResponse()));
         }
 
         return "layouts/htmx/drill_form :: drillForm";

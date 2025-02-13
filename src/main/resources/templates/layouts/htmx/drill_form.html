@@ -59,7 +59,7 @@
                     <h3>You can add instructions on the next page.</h3>
 
                     <!-- Sub-window for selecting categories -->
-                    <div class="form-group">
+                    <div class="form-group" th:if="${categoriesList != null and categoriesList.size() > 0}">
                         <label for="categoryIds">Select Categories:</label>
                         <div class="checkbox-window">
                             <ul class="check-list">
@@ -78,7 +78,7 @@
                     </div>
 
                     <!-- Sub-window for selecting sub-categories -->
-                    <div class="form-group">
+                    <div class="form-group" th:if="${subCategoriesList != null and subCategoriesList.size() > 0}">
                         <label for="subCategoryIds">Select Sub-Categories:</label>
                         <div class="checkbox-window">
                             <ul class="check-list">
@@ -97,7 +97,7 @@
                     </div>
 
                     <!-- Sub-window for selecting related drills -->
-                    <div class="form-group">
+                    <div class="form-group" th:if="${drillsList != null and drillsList.size() > 0}">
                         <label for="relatedDrillIds">Select Related Drills:</label>
                         <div class="checkbox-window">
                             <ul class="check-list">
