@@ -13,10 +13,35 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /*
- * Dynamically resize textarea inputs as the user types
+ * Make sure when a user presses "Enter" in a textarea, it submits the form.
+ * Also dynamically resize textarea inputs as the user types.
+ * All textarea tags should be used inside an HTMX request inside of tab_with_window.html.
  */
-function resizeTextarea(textarea) {
-    if (textarea.scrollHeight > textarea.clientHeight) {
-        textarea.style.height = textarea.scrollHeight + "px";
-    }
+function setupTextareas() {
+    document.querySelectorAll("textarea").forEach(textarea => {
+        if (!textarea.dataset.htmxListenerAdded) { 
+            textarea.dataset.htmxListenerAdded = "true";
+
+            // Auto-resize on input
+            textarea.addEventListener("input", function () {
+                if (textarea.scrollHeight > textarea.clientHeight) {
+                    textarea.style.height = textarea.scrollHeight + "px";
+                }
+            });
+
+            // Submit form on Enter (unless Shift+Enter is used)
+            textarea.addEventListener("keydown", function (event) {
+                if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault(); // Prevent new line
+                    const form = this.closest("form");
+                    if (form) {
+                        htmx.trigger(form, "submit");
+                    }
+                }
+            });
+        }
+    });
 }
+document.addEventListener("DOMContentLoaded", setupTextareas);
+document.addEventListener("htmx:afterSwap", setupTextareas);
+
