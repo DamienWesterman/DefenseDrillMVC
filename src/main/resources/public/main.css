@@ -323,12 +323,13 @@ nav a:hover {
     border-radius: 4px;
     font-size: 1rem;
     resize: vertical;
+    line-height: 1rem;
     min-height: 1rem;
     height: 1rem;
 }
 
 .form-input[maxlength] {
-    max-height: 8rem; /* Adjust as needed */
+    max-height: 4rem;
 }
 
 .form-input:focus {

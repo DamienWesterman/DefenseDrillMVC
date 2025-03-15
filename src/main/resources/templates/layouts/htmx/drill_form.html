@@ -26,6 +26,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <script src="https://unpkg.com/htmx.org@1.8.0"></script>
+        <script src="/main.js"></script>
     </head>
     <body>
         <!--/* To be used in conjunction with tab_with_window.html, hence hx-target="#contentArea" */-->
@@ -52,7 +53,8 @@
                             required
                             minlength="1"
                             maxlength="255"
-                            title="Name must be between 1 and 255 characters."></textarea>
+                            title="Name must be between 1 and 255 characters."
+                            oninput="resizeTextarea(this)"></textarea>
                     </div>
 
                     <h3>You can add instructions on the next page.</h3>
