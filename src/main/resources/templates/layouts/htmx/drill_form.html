@@ -43,17 +43,16 @@
 
                     <div class="form-group">
                         <label for="name">Name:</label>
-                        <input
-                            th:value="${nameText}"
+                        <textarea
+                            th:text="${nameText}"
                             id="name"
-                            type="text"
                             name="name"
                             placeholder="Enter name..."
                             class="form-input"
                             required
                             minlength="1"
                             maxlength="255"
-                            title="Name must be between 1 and 255 characters." />
+                            title="Name must be between 1 and 255 characters."></textarea>
                     </div>
 
                     <h3>You can add instructions on the next page.</h3>
