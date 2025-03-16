@@ -38,6 +38,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.damienwesterman.defensedrill.mvc.util.Constants;
+import com.damienwesterman.defensedrill.mvc.util.Utility;
 import com.damienwesterman.defensedrill.mvc.web.dto.BackendResponse;
 import com.damienwesterman.defensedrill.mvc.web.dto.DrillCreateDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.DrillResponseDTO;
@@ -422,7 +423,7 @@ public class DrillApiService {
             restTemplate.getForEntity(
                 API_ENDPOINT + NAME_ENDPOINT,
                 DrillResponseDTO.class,
-                name
+                Utility.convertToUri(name)
             );
 
         switch((HttpStatus) response.getStatusCode()) {

@@ -59,16 +59,16 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="button-container">
+                            <div class="button-container" th:with="Utility=${T(com.damienwesterman.defensedrill.mvc.util.Utility)}">
                                 <button class="button modify-button"
-                                    th:hx-get="'/htmx/drill/' + ${id} + '/instructions/modify/' + ${instructionDetails.description} + '?startingEndpoint=' + ${backEndpoint}"
+                                    th:hx-get="'/htmx/drill/' + ${id} + '/instructions/modify?instructionsDescription=' + ${Utility.convertToUri(instructionDetails.description)} + '&startingEndpoint=' + ${backEndpoint}"
                                     hx-target="#contentArea"
                                     hx-swap="innerHTML"
                                     hx-indicator=".loading-indicator">
                                     Modify
                                 </button>
                                 <button class="button delete-button"
-                                    th:hx-get="'/htmx/drill/' + ${id} + '/instructions/confirm_delete/' + ${instructionDetails.description} + '?startingEndpoint=' + ${backEndpoint}"
+                                    th:hx-get="'/htmx/drill/' + ${id} + '/instructions/confirm_delete?instructionsDescription=' + ${Utility.convertToUri(instructionDetails.description)} + '&startingEndpoint=' + ${backEndpoint}"
                                     hx-target="#contentArea"
                                     hx-swap="innerHTML">
                                     Delete

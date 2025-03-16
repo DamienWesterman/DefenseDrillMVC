@@ -46,6 +46,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.damienwesterman.defensedrill.mvc.service.CategoryApiService;
 import com.damienwesterman.defensedrill.mvc.service.DrillApiService;
 import com.damienwesterman.defensedrill.mvc.service.SubCategoryApiService;
+import com.damienwesterman.defensedrill.mvc.util.Utility;
 import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.DrillFormDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.DrillRelatedDTO;
@@ -268,10 +269,10 @@ public class HtmxDrillController {
         return "layouts/htmx/instructions_add_step :: instructionsAddStep";
     }
 
-    @GetMapping("/{drillId}/instructions/modify/{instructionsDescription}")
+    @GetMapping("/{drillId}/instructions/modify")
     public String modifyInstructionsForm(Model model, @PathVariable Long drillId,
             // We want to use the instructionsDescription so that there are no timing issues with changing index positions
-            @PathVariable String instructionsDescription, @RequestParam String startingEndpoint) {
+            @RequestParam String instructionsDescription, @RequestParam String startingEndpoint) {
         var drillResponse = drillApiService.get(drillId);
         if (drillResponse.hasError()) {
             model.addAttribute("errorMessage", drillResponse.getError().toString());
@@ -310,8 +311,9 @@ public class HtmxDrillController {
         model.addAttribute("stepsListAfterSecond", 
             instructions.getSteps().subList(2, instructions.getSteps().size()));
         model.addAttribute("postEndpoint",
-            "/htmx/drill/" + drillId + "/instructions/modify/" + instructionsDescription
-                + "?startingEndpoint=" + startingEndpoint);
+            "/htmx/drill/" + drillId + "/instructions/modify?originalInstructionsDescription="
+            + Utility.convertToUri(instructionsDescription)
+            + "&startingEndpoint=" + startingEndpoint);
         model.addAttribute("buttonText", "Update Instructions");
         model.addAttribute("backEndpoint", startingEndpoint);
 
@@ -319,10 +321,10 @@ public class HtmxDrillController {
     }
 
 
-    @PostMapping("/{drillId}/instructions/modify/{originalInstructionsDescription}")
+    @PostMapping("/{drillId}/instructions/modify")
     public String modifyInstructions(Model model, @PathVariable Long drillId, @ModelAttribute InstructionsDTO instructions,
             // We want to use the instructionsDescription so that there are no timing issues with changing index positions
-            @PathVariable String originalInstructionsDescription, @RequestParam String startingEndpoint) {
+            @RequestParam String originalInstructionsDescription, @RequestParam String startingEndpoint) {
         var drillGetResponse = drillApiService.get(drillId);
         if (drillGetResponse.hasError()) {
             model.addAttribute("errorMessage", drillGetResponse.getError().toString());
@@ -364,10 +366,10 @@ public class HtmxDrillController {
         return viewOneDrill(model, drillId, startingEndpoint);
     }
 
-    @GetMapping("/{drillId}/instructions/confirm_delete/{instructionsDescription}")
+    @GetMapping("/{drillId}/instructions/confirm_delete")
     public String deleteInstructionsConfirmation(Model model, @PathVariable Long drillId,
             // We want to use the instructionsDescription so that there are no timing issues with changing index positions
-            @PathVariable String instructionsDescription, @RequestParam String startingEndpoint) {
+            @RequestParam String instructionsDescription, @RequestParam String startingEndpoint) {
         var response = drillApiService.get(drillId);
         if (response.hasError()) {
             model.addAttribute("name", instructionsDescription);
@@ -381,15 +383,16 @@ public class HtmxDrillController {
         model.addAttribute("id", "Drill " + drillId);
         model.addAttribute("cancelEndpoint", "/htmx/drill/view/" + drillId + "?backEndpoint=" + startingEndpoint);
         model.addAttribute("confirmEndpoint",
-            "/htmx/drill/" + drillId + "/instructions/delete/" + instructionsDescription + "?startingEndpoint=" + startingEndpoint);
+            "/htmx/drill/" + drillId + "/instructions/delete?instructionsDescription="
+            + Utility.convertToUri(instructionsDescription) + "&startingEndpoint=" + startingEndpoint);
 
         return "layouts/htmx/confirm_delete :: confirmDelete";
     }
 
-    @PostMapping("/{drillId}/instructions/delete/{instructionsDescription}")
+    @PostMapping("/{drillId}/instructions/delete")
     public String deleteInstructions(Model model, @PathVariable Long drillId,
             // We want to use the instructionsDescription so that there are no timing issues with changing index positions
-            @PathVariable String instructionsDescription, @RequestParam String startingEndpoint) {
+            @RequestParam String instructionsDescription, @RequestParam String startingEndpoint) {
         var drillGetResponse = drillApiService.get(drillId);
         if (drillGetResponse.hasError()) {
             model.addAttribute("errorMessage", drillGetResponse.getError().toString());

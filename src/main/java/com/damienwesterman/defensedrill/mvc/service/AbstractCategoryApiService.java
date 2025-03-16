@@ -35,6 +35,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.client.RestTemplate;
 
 import com.damienwesterman.defensedrill.mvc.util.Constants;
+import com.damienwesterman.defensedrill.mvc.util.Utility;
 import com.damienwesterman.defensedrill.mvc.web.dto.AbstractCategoryDTO;
 import com.damienwesterman.defensedrill.mvc.web.dto.BackendResponse;
 import com.damienwesterman.defensedrill.mvc.web.dto.ErrorMessageDTO;
@@ -291,7 +292,7 @@ public abstract class AbstractCategoryApiService {
             restTemplate.getForEntity(
                 apiEndpoint + NAME_ENDPOINT,
                 AbstractCategoryDTO.class,
-                name
+                Utility.convertToUri(name)
             );
 
         switch((HttpStatus) response.getStatusCode()) {
