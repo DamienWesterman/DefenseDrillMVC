@@ -37,30 +37,28 @@
                     <!-- Description Field -->
                     <div class="form-group">
                         <label for="description">Description:</label>
-                        <input
-                            th:value="${descriptionText}"
+                        <textarea
+                            th:text="${descriptionText}"
                             id="description"
-                            type="text"
                             name="description"
                             placeholder="Enter description..."
                             class="form-input"
                             required
                             minlength="1"
                             maxlength="511"
-                            title="Description must be between 1 and 511 characters." />
+                            title="Description must be between 1 and 511 characters."></textarea>
                     </div>
 
                     <!-- Video ID Field -->
                     <div class="form-group">
                         <label for="videoId">Video ID (optional):</label>
-                        <input
-                            th:value="${videoIdText}"
+                        <textarea
+                            th:text="${videoIdText}"
                             id="videoId"
-                            type="text"
                             name="videoId"
                             placeholder="Enter Jellyfin video ID..."
                             class="form-input"
-                            title="Copy/paste the corresponding Jellyfin Item ID." />
+                            title="Copy/paste the corresponding Jellyfin Item ID."></textarea>
                     </div>
 
                     <!-- Steps Field -->
@@ -70,16 +68,15 @@
                             <div class="steps-container">
                                 <!-- First Step, always required, cannot be deleted -->
                                 <li class="step">
-                                    <input
-                                        th:value="${firstStep}"
-                                        type="text"
+                                    <textarea
+                                        th:text="${firstStep}"
                                         name="steps"
                                         placeholder="Enter step..."
                                         class="form-input step-input"
                                         required
                                         minlength="1"
                                         maxlength="255"
-                                        title="Step must be between 1 and 255 characters." />
+                                        title="Step must be between 1 and 255 characters."></textarea>
                                 </li>
                             </div>
                             <div th:each="oneStep : ${stepsListAfterFirst}">
