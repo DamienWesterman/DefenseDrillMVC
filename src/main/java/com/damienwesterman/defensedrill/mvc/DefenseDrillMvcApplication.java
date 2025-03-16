@@ -33,10 +33,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class DefenseDrillMvcApplication {
-	// TODO: Finish changing all input to textarea like in drill_form
-	// TODO: give some text wrapping in the html, maybe up to 3 lines?
-	// TODO: Double check all other input forms to make sure they are looking fine (login)
-	// TODO: make sure instructions have 2 mandatory steps
 	// TODO: research if it is possible to allow the steps to be rearranged
 	// TODO: 101 problems to start
 	public static void main(String[] args) {

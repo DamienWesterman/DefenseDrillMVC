@@ -6,10 +6,11 @@
 * postEndpoint      Y           String              HTMX endpoint to submit the instructions form to
 * descriptionText   N           String              Existing instructions description
 * videoIdText       N           String              Existing jellyfin video ID
-* firstStep         N           String              Existing FIRST steps from the list of steps
-* stepsListAfterFirst
-*                   N           List<String>        Existing list of steps AFTER the first step
-*                                                   (DO NOT include the first step!!)
+* firstStep         N           String              Existing FIRST step from the list of steps
+* secondStep        N           String              Existing SECOND step from the list of steps
+* stepsListAfterSecond
+*                   N           List<String>        Existing list of steps AFTER the second step
+*                                                   (DO NOT include the second step!!)
 * drillId           Y           Long                ID fo the drill the instructions belong to
 * backEndpoint      Y           String              The original HTMX endpoint that started this chain
 *                                                   screens, used to pass along to the next screen if the
@@ -79,7 +80,21 @@
                                         title="Step must be between 1 and 255 characters."></textarea>
                                 </li>
                             </div>
-                            <div th:each="oneStep : ${stepsListAfterFirst}">
+                            <div class="steps-container">
+                                <!-- Second Step, always required (so that Spring does not separate on the comma), cannot be deleted -->
+                                <li class="step">
+                                    <textarea
+                                        th:text="${secondStep}"
+                                        name="steps"
+                                        placeholder="Enter step..."
+                                        class="form-input step-input"
+                                        required
+                                        minlength="1"
+                                        maxlength="255"
+                                        title="Step must be between 1 and 255 characters."></textarea>
+                                </li>
+                            </div>
+                            <div th:each="oneStep : ${stepsListAfterSecond}">
                                 <div th:replace="~{layouts/htmx/instructions_add_step :: instructionsAddStep(descriptionText=${oneStep})}"></div>
                             </div>
                             <div id="additionalSteps"></div>

@@ -306,8 +306,9 @@ public class HtmxDrillController {
         model.addAttribute("descriptionText", instructions.getDescription());
         model.addAttribute("videoIdText", instructions.getVideoId());
         model.addAttribute("firstStep", instructions.getSteps().get(0));
-        model.addAttribute("stepsListAfterFirst", 
-            instructions.getSteps().subList(1, instructions.getSteps().size()));
+        model.addAttribute("secondStep", instructions.getSteps().get(1));
+        model.addAttribute("stepsListAfterSecond", 
+            instructions.getSteps().subList(2, instructions.getSteps().size()));
         model.addAttribute("postEndpoint",
             "/htmx/drill/" + drillId + "/instructions/modify/" + instructionsDescription
                 + "?startingEndpoint=" + startingEndpoint);
