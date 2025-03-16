@@ -33,8 +33,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class DefenseDrillMvcApplication {
-	// TODO: research if it is possible to allow the steps to be rearranged
-	// TODO: 101 problems to start
 	public static void main(String[] args) {
 		SpringApplication.run(DefenseDrillMvcApplication.class, args);
 	}
