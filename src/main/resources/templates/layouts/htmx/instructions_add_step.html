@@ -15,16 +15,15 @@
         <div th:fragment="instructionsAddStep">
             <div class="steps-container">
                 <li class="step">
-                    <input
-                        th:value="${descriptionText}"
-                        type="text"
+                    <textarea
+                        th:text="${descriptionText}"
                         name="steps"
                         placeholder="Enter step..."
                         class="form-input step-input"
                         required
                         minlength="1"
                         maxlength="255"
-                        title="Step must be between 1 and 255 characters." />
+                        title="Step must be between 1 and 255 characters."></textarea>
                         <button
                             type="button"
                             class="button delete-step-button"

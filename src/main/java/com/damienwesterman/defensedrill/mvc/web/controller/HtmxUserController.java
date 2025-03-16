@@ -285,8 +285,12 @@ public class HtmxUserController {
 
     @PostMapping("/delete/{id}")
     public String deleteOneUser(Model model, @PathVariable Long id) {
-        apiService.delete(id);
-        model.addAttribute("successMessage", "User Successfully Deleted!");
+        var response = apiService.delete(id);
+        if (response.hasError()) {
+            model.addAttribute("errorMessage", response.getError().toString());
+        } else {
+            model.addAttribute("successMessage", "User Successfully Deleted!");
+        }
         return deleteUsersList(model);
     }
 }

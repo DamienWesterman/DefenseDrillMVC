@@ -26,6 +26,8 @@
 
 package com.damienwesterman.defensedrill.mvc.service;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -273,7 +275,48 @@ public class UserApiService {
      *
      * @param id User's ID.
      */
-    public void delete(@NonNull Long id) {
-        restTemplate.delete(API_ENDPOINT + ID_ENDPOINT, id);
+    public BackendResponse<String> delete(@NonNull Long id) {
+        HttpStatusCode retStatus = null;
+        String retDto = null;
+        ErrorMessageDTO retError = null;
+        ResponseEntity<String> response =
+            restTemplate.exchange(
+                API_ENDPOINT + ID_ENDPOINT,
+                HttpMethod.DELETE,
+                new HttpEntity<String>(""),
+                String.class,
+                id
+            );
+
+        switch((HttpStatus) response.getStatusCode()) {
+            case NO_CONTENT:
+                retStatus = HttpStatus.NO_CONTENT;
+                retDto = ""; // There should be no return body
+                retError = null;
+                break;
+
+            case BAD_REQUEST:
+                retStatus = HttpStatus.BAD_REQUEST;
+                retDto = null;
+                try {
+                    retError = objectMapper.readValue(response.getBody(), ErrorMessageDTO.class);
+                } catch (JsonProcessingException e) {
+                    log.error(e.toString());
+                    retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                    retDto = null;
+                    retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
+                }
+                break;
+
+            case INTERNAL_SERVER_ERROR:
+                // Fallthrough intentional
+            default:
+                retStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                retDto = null;
+                retError = Constants.GENERIC_INTERNAL_ERROR_DTO;
+                break;
+        }
+
+        return new BackendResponse<String>(retStatus, retDto, retError);
     }
 }
