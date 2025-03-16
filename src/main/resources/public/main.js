@@ -29,9 +29,9 @@ function setupTextareas() {
                 }
             });
 
-            // Submit form on Enter (unless Shift+Enter is used)
+            // Submit form on Enter
             textarea.addEventListener("keydown", function (event) {
-                if (event.key === "Enter" && !event.shiftKey) {
+                if (event.key === "Enter") {
                     event.preventDefault(); // Prevent new line
                     const form = this.closest("form");
                     if (form) {
