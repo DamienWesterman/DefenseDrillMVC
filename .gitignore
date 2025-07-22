@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### APK ###
+src/main/resources/static/DefenseDrill.apk
+src/main/resources/static/DefenseDrill.version
